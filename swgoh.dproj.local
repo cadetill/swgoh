@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/02/20 10:44:46.000.378,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2017/02/20 14:11:05.000.870,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2017/02/28 11:29:47.000.195,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2017/03/01 09:07:54.000.941,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/01/12 11:16:54.000.647,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/01/12 11:52:24.000.981,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/09/19 16:41:47.000.761,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/10/25 18:10:47.000.195,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/12/03 15:18:05.000.344,=D:\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/12/03 15:43:29.000.991,D:\Documents\Embarcadero\Studio\Projects\Unit2.fmx=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.fmx</Transaction>
+    <Transaction>2018/12/03 15:43:29.000.991,D:\Documents\Embarcadero\Studio\Projects\Unit2.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas</Transaction>
+    <Transaction>2018/12/03 15:43:47.000.752,D:\Documents\Embarcadero\Studio\Projects\Project2.dproj=D:\Documents\Dropbox\Programacio\SWGOH\swgoh.dproj</Transaction>
+    <Transaction>2018/12/03 16:07:34.000.832,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/03 16:10:46.000.433,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uCharacter.pas</Transaction>
+    <Transaction>2018/12/06 11:59:08.000.317,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/06 11:59:27.000.807,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas</Transaction>
+    <Transaction>2018/12/12 12:12:49.000.087,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/12 12:13:05.000.619,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uPlayer.pas</Transaction>
+    <Transaction>2018/12/13 17:29:00.000.478,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/13 17:29:14.000.062,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uAbilities.pas</Transaction>
+    <Transaction>2018/12/14 09:56:14.000.869,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/14 09:56:28.000.419,D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uShips.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/14 16:04:46.000.118,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/14 16:05:00.000.167,D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGuild.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/20 23:56:30.000.310,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/20 23:57:02.000.944,D:\Documents\DropBox\Programacio\SWGOH\src\UHomeFrm.fmx=D:\Documents\DropBox\Programacio\SWGOH\Unit1.fmx</Transaction>
+    <Transaction>2018/12/20 23:57:02.000.927,D:\Documents\DropBox\Programacio\SWGOH\src\UHomeFrm.pas=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/21 19:45:28.000.062,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/21 19:48:14.000.434,D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas=D:\Documents\DropBox\Programacio\SWGOH\src\Models\uRESTMdl.pas</Transaction>
+    <Transaction>2018/12/21 19:48:14.000.434,D:\Documents\DropBox\Programacio\SWGOH\Unit1.dfm=D:\Documents\DropBox\Programacio\SWGOH\src\Models\uRESTMdl.dfm</Transaction>
+    <Transaction>2018/12/21 20:25:10.000.989,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/21 20:25:44.000.528,D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uBaseClass.pas</Transaction>
+    <Transaction>2018/12/21 20:30:00.000.748,D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uBaseClass.pas=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uBase.pas</Transaction>
+    <Transaction>2018/12/25 20:44:21.000.862,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/25 20:44:56.000.717,D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas=D:\Documents\DropBox\Programacio\SWGOH\src\UToSumFrm.pas</Transaction>
+    <Transaction>2018/12/25 20:44:56.000.717,D:\Documents\DropBox\Programacio\SWGOH\Unit1.fmx=D:\Documents\DropBox\Programacio\SWGOH\src\UToSumFrm.fmx</Transaction>
+    <Transaction>2018/12/26 00:35:44.000.830,=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uIniFiles.pas</Transaction>
+    <Transaction>2018/12/26 00:35:44.000.820,=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uMessage.pas</Transaction>
+    <Transaction>2018/12/26 00:35:44.000.826,=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uToastUnit.pas</Transaction>
+    <Transaction>2018/12/26 00:58:16.000.323,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/26 00:58:34.000.217,D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uGenFunc.pas</Transaction>
+    <Transaction>2018/12/26 11:23:41.000.993,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/26 11:24:03.000.644,D:\Documents\DropBox\Programacio\SWGOH\src\UDefineTeamsFrm.fmx=D:\Documents\DropBox\Programacio\SWGOH\Unit1.fmx</Transaction>
+    <Transaction>2018/12/26 11:24:03.000.644,D:\Documents\DropBox\Programacio\SWGOH\src\UDefineTeamsFrm.pas=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/26 13:31:44.000.658,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/26 13:32:01.000.916,D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uTeams.pas=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/27 19:46:06.000.444,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/27 19:46:44.000.897,D:\Documents\DropBox\Programacio\SWGOH\src\UTeamFrm.fmx=D:\Documents\DropBox\Programacio\SWGOH\Unit1.fmx</Transaction>
+    <Transaction>2018/12/27 19:46:44.000.897,D:\Documents\DropBox\Programacio\SWGOH\src\UTeamFrm.pas=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/27 19:54:49.000.504,=D:\Documents\DropBox\Programacio\SWGOH\src\Classes\UInterfaces.pas</Transaction>
+    <Transaction>2018/12/28 15:38:51.000.524,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/28 15:39:31.000.260,D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckPlayerFrm.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/28 15:39:31.000.260,D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckPlayerFrm.fmx=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx</Transaction>
+    <Transaction>2018/12/28 18:10:04.000.109,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/28 18:10:49.000.244,D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uMods.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/28 22:57:20.000.230,=D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2018/12/28 22:58:11.000.982,D:\Documents\DropBox\Programacio\SWGOH\Unit1.fmx=D:\Documents\DropBox\Programacio\SWGOH\src\UCheckAllyFrm.fmx</Transaction>
+    <Transaction>2018/12/28 22:58:11.000.982,D:\Documents\DropBox\Programacio\SWGOH\Unit1.pas=D:\Documents\DropBox\Programacio\SWGOH\src\UCheckAllyFrm.pas</Transaction>
+    <Transaction>2018/12/30 10:32:08.000.355,D:\Documents\DropBox\Programacio\SWGOH\src\UCheckAllyFrm.pas=D:\Documents\DropBox\Programacio\SWGOH\src\UCheckGuildsFrm.pas</Transaction>
+    <Transaction>2018/12/30 10:32:08.000.355,D:\Documents\DropBox\Programacio\SWGOH\src\UCheckAllyFrm.fmx=D:\Documents\DropBox\Programacio\SWGOH\src\UCheckGuildsFrm.fmx</Transaction>
+    <Transaction>2019/01/07 16:49:36.000.154,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2019/01/07 16:51:24.000.952,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas=D:\Documents\Dropbox\Programacio\SWGOH\src\Bases\UBaseCheckFrm.pas</Transaction>
+    <Transaction>2019/01/07 16:51:24.000.953,D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx=D:\Documents\Dropbox\Programacio\SWGOH\src\Bases\UBaseCheckFrm.fmx</Transaction>
+    <Transaction>2019/01/09 09:41:39.000.507,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2019/01/09 09:41:54.000.863,D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5" Android="127.0.0.1:62001"/>
+	</ActiveMobileDevice>
+</BorlandProject>
