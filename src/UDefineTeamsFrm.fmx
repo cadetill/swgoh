@@ -1,0 +1,53 @@
+object DefineTeamsFrm: TDefineTeamsFrm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lbTeams: TListBox
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    DisableFocusEffect = True
+    ItemHeight = 50.000000000000000000
+    DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 480.000000000000000000
+    object ListBoxItem1: TListBoxItem
+      ItemData.Detail = 'detail'
+      ItemData.Accessory = aDetail
+      Size.Width = 636.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'ListBoxItem1'
+    end
+    object SearchBox1: TSearchBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 0
+      Size.Width = 636.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object bAdd: TButton
+        Align = Right
+        Margins.Right = 5.000000000000000000
+        Position.X = 587.000000000000000000
+        Size.Width = 44.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Add'
+        OnClick = bAddClick
+      end
+    end
+  end
+end

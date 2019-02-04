@@ -1,0 +1,139 @@
+object MainFrm: TMainFrm
+  Left = 0
+  Top = 0
+  Caption = 'Form2'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object pContent: TPanel
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 432.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+  end
+  object tbHeader: TToolBar
+    Size.Width = 640.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object bBack: TButton
+      Align = Right
+      Position.X = 592.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'backtoolbutton'
+      TabOrder = 1
+      OnClick = bBackClick
+    end
+    object bMultiView: TButton
+      Align = Left
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'drawertoolbuttonbordered'
+      TabOrder = 2
+      Text = 'bMultiView'
+    end
+    object aiIndicator: TAniIndicator
+      Align = Left
+      Position.X = 48.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object lHeader: TLabel
+      Align = Client
+      StyledSettings = [Family, FontColor]
+      Size.Width = 448.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000100000004000000}
+      TextSettings.HorzAlign = Center
+      Text = 'lHeader'
+      TabOrder = 3
+    end
+    object bOk: TButton
+      Align = Right
+      Position.X = 544.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'composetoolbutton'
+      TabOrder = 0
+      OnClick = bOkClick
+    end
+  end
+  object mvMenu: TMultiView
+    MasterButton = bMultiView
+    Mode = Drawer
+    Size.Width = 250.000000000000000000
+    Size.Height = 432.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object bGetUnitsWeb: TButton
+      Align = Top
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Get Units From Web'
+      OnClick = bGetUnitsWebClick
+    end
+    object bSetToSum: TButton
+      Align = Top
+      Position.Y = 60.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Set Values To Sum'
+      OnClick = bSetToSumClick
+    end
+    object bDefineTeams: TButton
+      Align = Top
+      Position.Y = 120.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Define Teams'
+      OnClick = bDefineTeamsClick
+    end
+    object bCheckPlayer: TButton
+      Align = Top
+      Position.Y = 180.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Check Player'
+      OnClick = bCheckPlayerClick
+    end
+    object bComparePlayers: TButton
+      Align = Top
+      Position.Y = 240.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Compare Players'
+      OnClick = bComparePlayersClick
+    end
+    object bCheckGuilds: TButton
+      Align = Top
+      Position.Y = 300.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Check Guilds'
+      OnClick = bCheckGuildsClick
+    end
+  end
+end
