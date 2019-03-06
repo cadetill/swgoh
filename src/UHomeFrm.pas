@@ -32,7 +32,7 @@ var
 implementation
 
 uses
-  FMX.DialogService,
+  FMX.DialogService, System.IOUtils,
   uCharacter, uShips;
 
 {$R *.fmx}
@@ -51,6 +51,7 @@ var
   Pos: Integer;
   List: TUnitList;
   FileName: string;
+  TmpS: string;
 begin
   if not (Sender is TListBoxItem) then
     Exit;
@@ -76,16 +77,22 @@ begin
   if not Assigned(List) then
     Exit;
 
-  TDialogService.InputQuery('Set Multiplier', ['Multiplier'], [List.Items[Pos].Multiplier.ToString],
+  if List.Items[Pos].Alias = '' then
+    TmpS := List.Items[Pos].Name
+  else
+    TmpS := List.Items[Pos].Alias;
+  TDialogService.InputQuery('Set Multiplier', ['Multiplier', 'Alias'], [List.Items[Pos].Multiplier.ToString, TmpS],
     procedure(const AResult: TModalResult; const AValues: array of string)
     var
       TmpInt: Integer;
     begin
-      if (AResult = mrOk) and TryStrToInt(AValues[0], TmpInt) then
+      if AResult = mrOk then
       begin
-        List.Items[Pos].Multiplier := TmpInt;
+        if TryStrToInt(AValues[0], TmpInt) then
+          List.Items[Pos].Multiplier := TmpInt;
+        List.Items[Pos].Alias := AValues[1];
         List.SaveToFile(FileName);
-        TListBoxItem(Sender).ItemData.Detail := 'Multiplier: ' + TmpInt.ToString;
+        TListBoxItem(Sender).ItemData.Detail := 'Alias: ' + AValues[1] + ' / Multiplier: ' + TmpInt.ToString;
       end;
     end);
 end;
@@ -100,7 +107,7 @@ begin
   lbUnits.Clear;
 
   // carreguem personatges
-  if FileExists(uCharacter.cFileName) then
+  if TFile.Exists(uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -122,7 +129,7 @@ begin
       lbItem := TListBoxItem.Create(lbUnits);
       lbItem.Text := FChar.Items[i].Name;
       lbItem.TagString := FChar.Items[i].Base_Id;
-      lbItem.ItemData.Detail := 'Multiplier: ' + FChar.Items[i].Multiplier.ToString;
+      lbItem.ItemData.Detail := 'Alias: ' + FChar.Items[i].Alias + ' / Multiplier: ' + FChar.Items[i].Multiplier.ToString;
       lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
       lbItem.OnClick := ListBoxItemClick;
       lbUnits.AddObject(lbItem);
@@ -130,7 +137,7 @@ begin
   end;
 
   // carreguem naus
-  if FileExists(uShips.cFileName) then
+  if TFile.Exists(uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -152,7 +159,7 @@ begin
       lbItem := TListBoxItem.Create(lbUnits);
       lbItem.Text := FShips.Items[i].Name;
       lbItem.TagString := FShips.Items[i].Base_Id;
-      lbItem.ItemData.Detail := 'Multiplier: ' + FShips.Items[i].Multiplier.ToString;
+      lbItem.ItemData.Detail := 'Alias: ' + FShips.Items[i].Alias + ' / Multiplier: ' + FShips.Items[i].Multiplier.ToString;
       lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
       lbItem.OnClick := ListBoxItemClick;
       lbUnits.AddObject(lbItem);

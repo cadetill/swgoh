@@ -144,7 +144,7 @@ var
   PlayerInfo: TPlayerInfo;
   ModsInfo: TModsInfo;
 begin
-  if not FileExists(AllyID + '_guild.json') then
+  if not TFile.Exists(AllyID + '_guild.json') then
     Exit;
 
   L := TStringList.Create;
@@ -194,9 +194,9 @@ var
 begin
   FileName := Player.Data.Ally_code.ToString + '_mods.json';
 
-  // si no existeix o el fitxer de mods té més de 15 díes, el carreguem
+  // si no existeix o el fitxer de mods té més de 10 díes, el carreguem
   if not TFile.Exists(FileName) or
-     (TFile.Exists(FileName) and (IncDay(TFile.GetCreationTime(FileName), 10) < Now)) then
+     (TFile.Exists(FileName) and (IncDay(TFile.GetLastWriteTime(FileName), 10) < Now)) then
   begin
     Th := TThread.CreateAnonymousThread(procedure
           var

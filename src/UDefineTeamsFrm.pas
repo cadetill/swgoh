@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, FMX.SearchBox, FMX.Layouts, FMX.ListBox,
-  uTeams;
+  uTeams, uInterfaces;
 
 type
   TDefineTeamsFrm = class(TForm)
@@ -14,9 +14,16 @@ type
     SearchBox1: TSearchBox;
     bAdd: TButton;
     ListBoxItem1: TListBoxItem;
+    pChkGuild: TPanel;
+    lChkGuild: TLabel;
+    eChkGuild: TEdit;
+    bChkGuild: TButton;
     procedure bAddClick(Sender: TObject);
+    procedure bChkGuildClick(Sender: TObject);
   private
     FTeams: TTeams;
+
+    procedure OnChangeTeam(Sender: TObject);
 
     procedure GetDefinedTeams;
     procedure ListBoxItemClick(Sender: TObject);
@@ -24,6 +31,12 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    function SetCaption: string;
+    function ShowOkButton: Boolean;
+    function ShowBackButton: Boolean;
+    function AcceptForm: Boolean;
+    procedure AfterShow;
   end;
 
 var
@@ -32,12 +45,22 @@ var
 implementation
 
 uses
-  uBase, uMessage, uInterfaces, UTeamFrm,
-  FMX.DialogService;
+  uBase, uMessage, UTeamFrm, uGenFunc, UTeamCheck,
+  FMX.DialogService, System.IOUtils;
 
 {$R *.fmx}
 
 { TDefineTeamsFrm }
+
+function TDefineTeamsFrm.AcceptForm: Boolean;
+begin
+  Result := True;
+end;
+
+procedure TDefineTeamsFrm.AfterShow;
+begin
+
+end;
 
 procedure TDefineTeamsFrm.bAddClick(Sender: TObject);
 begin
@@ -45,8 +68,6 @@ begin
     procedure(const AResult: TModalResult; const AValues: array of string)
     var
       lbItem: TListBoxItem;
-      Team: TTeam;
-      Items: TArray<TTeam>;
       Button: TButton;
     begin
       if (AResult = mrOk) and (AValues[0] <> '') then
@@ -66,7 +87,7 @@ begin
 
         lbTeams.AddObject(lbItem);
 
-        FTeams.AddTeam(AValues[0]);
+        FTeams.AddTeam(AValues[0], OnChangeTeam);
 
         // guardem Json
         FTeams.SaveToFile(uTeams.cFileName);
@@ -75,6 +96,27 @@ begin
         ListBoxItemClick(lbItem);
       end;
     end);
+end;
+
+procedure TDefineTeamsFrm.bChkGuildClick(Sender: TObject);
+var
+  Intf: IMainMenu;
+begin
+  if eChkGuild.Text = '' then
+    Exit;
+
+  if Pos('http', eChkGuild.Text) <> 0 then
+    eChkGuild.Text := TGenFunc.GetField(eChkGuild.Text, 5, '/');
+
+  if Assigned(TagObject) then
+    TagObject.Free;
+
+  TagObject := TFmxObject.Create(Self);
+  TFmxObject(TagObject).TagString := eChkGuild.Text;
+
+  // si es pot, creem formulari d'assistència
+  if Supports(Owner, IMainMenu, Intf) then
+    Intf.CreateForm(TTeamCheck, TagObject);
 end;
 
 constructor TDefineTeamsFrm.Create(AOwner: TComponent);
@@ -99,13 +141,15 @@ var
   i: Integer;
   j: Integer;
   Button: TButton;
+  Fixed: string;
+  NoFix: string;
 begin
   lbTeams.Clear;
 
   if Assigned(FTeams) then
     FreeAndNil(FTeams);
 
-  if not FileExists(uTeams.cFileName) then
+  if not TFile.Exists(uTeams.cFileName) then
   begin
     FTeams := TTeams.Create;
     Exit;
@@ -123,14 +167,38 @@ begin
   // creem TListBox
   for i := 0 to FTeams.Count do
   begin
+    FTeams.Items[i].OnChange := OnChangeTeam;
+
     lbItem := TListBoxItem.Create(lbTeams);
     lbItem.Text := FTeams.Items[i].Name;
+
     lbItem.ItemData.Detail := '';
+    Fixed := '';
+    NoFix := '';
     for j := 0 to FTeams.Items[i].Count do
     begin
-      if lbItem.ItemData.Detail <> '' then lbItem.ItemData.Detail := lbItem.ItemData.Detail + ' / ';
-        lbItem.ItemData.Detail := lbItem.ItemData.Detail + FTeams.Items[i].Units[j].Name;
+      if FTeams.Items[i].Units[j].Fixed then
+      begin
+        if Fixed <> '' then Fixed := Fixed + ' / ';
+        if FTeams.Items[i].Units[j].Alias = '' then
+          Fixed := Fixed + FTeams.Items[i].Units[j].Name
+        else
+          Fixed := Fixed + FTeams.Items[i].Units[j].Alias;
+      end
+      else
+      begin
+        if NoFix <> '' then NoFix := NoFix + ' / ';
+        if FTeams.Items[i].Units[j].Alias = '' then
+          NoFix := NoFix + '*' + FTeams.Items[i].Units[j].Name
+        else
+          NoFix := NoFix + '*' + FTeams.Items[i].Units[j].Alias;
+      end;
     end;
+    lbItem.ItemData.Detail := Fixed;
+    if (lbItem.ItemData.Detail <> '') and (NoFix <> '') then
+      lbItem.ItemData.Detail := lbItem.ItemData.Detail + ' / ';
+    lbItem.ItemData.Detail := lbItem.ItemData.Detail + NoFix;
+
     lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
     lbItem.OnClick := ListBoxItemClick;
 
@@ -162,6 +230,51 @@ begin
     Intf.CreateForm(TTeamFrm, FTeams.Items[Idx]);
 end;
 
+procedure TDefineTeamsFrm.OnChangeTeam(Sender: TObject);
+var
+  Idx: Integer;
+  i: Integer;
+  Fixed: string;
+  NoFix: string;
+begin
+  FTeams.SaveToFile(uTeams.cFileName);
+
+  if not (Sender is TTeam) then
+    Exit;
+
+  Idx := FTeams.IndexOf(TTeam(Sender).Name);
+  if Idx < 0 then
+    Exit;
+
+  lbTeams.ListItems[Idx].ItemData.Text := TTeam(Sender).Name;
+  lbTeams.ListItems[Idx].ItemData.Detail := '';
+  Fixed := '';
+  NoFix := '';
+  for i := 0 to TTeam(Sender).Count do
+  begin
+    if TTeam(Sender).Units[i].Fixed then
+    begin
+      if Fixed <> '' then Fixed := Fixed + ' / ';
+      if TTeam(Sender).Units[i].Alias = '' then
+        Fixed := Fixed + TTeam(Sender).Units[i].Name
+      else
+        Fixed := Fixed + TTeam(Sender).Units[i].Alias;
+    end
+    else
+    begin
+      if NoFix <> '' then NoFix := NoFix + ' / ';
+      if TTeam(Sender).Units[i].Alias = '' then
+        NoFix := NoFix + '*' + TTeam(Sender).Units[i].Name
+      else
+        NoFix := NoFix + '*' + TTeam(Sender).Units[i].Alias;
+    end;
+  end;
+  lbTeams.ListItems[Idx].ItemData.Detail := Fixed;
+  if (lbTeams.ListItems[Idx].ItemData.Detail <> '') and (NoFix <> '') then
+    lbTeams.ListItems[Idx].ItemData.Detail := lbTeams.ListItems[Idx].ItemData.Detail + ' / ';
+  lbTeams.ListItems[Idx].ItemData.Detail := lbTeams.ListItems[Idx].ItemData.Detail + NoFix;
+end;
+
 procedure TDefineTeamsFrm.OnClickButton(Sender: TObject);
 begin
   if not (Sender is TButton) then Exit;
@@ -174,6 +287,21 @@ begin
 
       lbTeams.RemoveObject(TListBoxItem(TButton(Sender).Owner));
     end);
+end;
+
+function TDefineTeamsFrm.SetCaption: string;
+begin
+  Result := 'Teams Defined';
+end;
+
+function TDefineTeamsFrm.ShowBackButton: Boolean;
+begin
+  Result := True;
+end;
+
+function TDefineTeamsFrm.ShowOkButton: Boolean;
+begin
+  Result := False;
 end;
 
 end.

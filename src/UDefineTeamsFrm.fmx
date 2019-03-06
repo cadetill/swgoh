@@ -11,7 +11,7 @@ object DefineTeamsFrm: TDefineTeamsFrm
   object lbTeams: TListBox
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Height = 439.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     DisableFocusEffect = True
@@ -19,8 +19,8 @@ object DefineTeamsFrm: TDefineTeamsFrm
     DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 640.000000000000000000
-    Viewport.Height = 480.000000000000000000
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 413.000000000000000000
     object ListBoxItem1: TListBoxItem
       ItemData.Detail = 'detail'
       ItemData.Accessory = aDetail
@@ -48,6 +48,42 @@ object DefineTeamsFrm: TDefineTeamsFrm
         Text = 'Add'
         OnClick = bAddClick
       end
+    end
+  end
+  object pChkGuild: TPanel
+    Align = Top
+    Margins.Bottom = 1.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'pushpanel'
+    TabOrder = 1
+    object lChkGuild: TLabel
+      Align = Left
+      Size.Width = 76.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      Text = 'Guild'
+      TabOrder = 0
+    end
+    object eChkGuild: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Client
+      TabOrder = 1
+      Size.Width = 484.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object bChkGuild: TButton
+      Align = Right
+      Position.X = 560.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Check'
+      OnClick = bChkGuildClick
     end
   end
 end

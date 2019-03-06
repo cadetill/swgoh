@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.Edit, FMX.EditBox,
   FMX.NumberBox, FMX.ListBox, FMX.Objects,
-  uTeams, uInterfaces, uUnit, uAbilities;
+  uTeams, uInterfaces, uUnit, uAbilities, FMX.SearchBox;
 
 type
   TTeamFrm = class(TForm, IChildren)
@@ -35,7 +35,20 @@ type
     ListBoxItem2: TListBoxItem;
     Line2: TLine;
     ListBoxItem3: TListBoxItem;
+    Label1: TLabel;
+    pScore: TPanel;
+    lScore: TLabel;
+    eScore: TNumberBox;
+    bScore: TButton;
     procedure bAddUnitClick(Sender: TObject);
+    procedure eNameChange(Sender: TObject);
+    procedure eGearChange(Sender: TObject);
+    procedure eSpeedChange(Sender: TObject);
+    procedure eStarsChange(Sender: TObject);
+    procedure cbFixedChange(Sender: TObject);
+    procedure lbZetasChangeCheck(Sender: TObject);
+    procedure bScoreClick(Sender: TObject);
+    procedure eScoreChange(Sender: TObject);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -44,6 +57,7 @@ type
 
     procedure LoadUnitsFromFile;
     procedure OnClickButton(Sender: TObject);
+    procedure ListBoxItemClick(Sender: TObject);
   public
     function SetCaption: string;
     function ShowOkButton: Boolean;
@@ -58,6 +72,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   uCharacter, uShips, uMessage;
 
 {$R *.fmx}
@@ -65,14 +80,25 @@ uses
 { TTeamFrm }
 
 function TTeamFrm.AcceptForm: Boolean;
+var
+  i: Integer;
 begin
   Result := True;
+
+  // posem alias de les unitats
+  for i := 0 to FTeam.Count do
+    if FTeam.Units[i].Alias = '' then
+      FTeam.Units[i].Alias := FChar.Items[FChar.IndexOf(FTeam.Units[i].Base_id)].Alias;
+
+  if Assigned(FTeam.OnChange) then
+    FTeam.OnChange(FTeam);
 end;
 
 procedure TTeamFrm.AfterShow;
 var
   i: Integer;
   lbItem: TListBoxItem;
+  Button: TButton;
 begin
   LoadUnitsFromFile;
   lbZetas.Clear;
@@ -84,11 +110,21 @@ begin
   FTeam := TTeam(TagObject);
 
   eName.Text := FTeam.Name;
+  eScore.Value := FTeam.Score;
   for i := 0 to FTeam.Count do
   begin
     lbItem := TListBoxItem.Create(lbUnits);
     lbItem.Text := FTeam.Units[i].Name;
     lbItem.TagString := FTeam.Units[i].Base_id;
+    lbItem.OnClick := ListBoxItemClick;
+
+    Button := TButton.Create(lbItem);
+    Button.Align := TAlignLayout.Right;
+    Button.Width := 40;
+    Button.StyleLookup := 'trashtoolbutton';
+    Button.Parent := lbItem;
+    Button.OnClick := OnClickButton;
+
     lbUnits.AddObject(lbItem);
   end;
 end;
@@ -106,6 +142,7 @@ begin
   lbItem := TListBoxItem.Create(lbUnits);
   lbItem.Text := cbUnits.Items[cbUnits.ItemIndex];
   lbItem.TagString := TUnit(cbUnits.Items.Objects[cbUnits.ItemIndex]).Base_Id;
+  lbItem.OnClick := ListBoxItemClick;
 
   Button := TButton.Create(lbItem);
   Button.Align := TAlignLayout.Right;
@@ -121,6 +158,138 @@ begin
   cbUnits.ItemIndex := -1;
 end;
 
+procedure TTeamFrm.bScoreClick(Sender: TObject);
+begin
+  TMessage.Show(FTeam.GetStringPoints);
+end;
+
+procedure TTeamFrm.cbFixedChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Fixed := cbFixed.IsChecked;
+end;
+
+procedure TTeamFrm.eGearChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Gear := Trunc(eGear.Value);
+end;
+
+procedure TTeamFrm.eNameChange(Sender: TObject);
+begin
+  FTeam.Name := eName.Text;
+end;
+
+procedure TTeamFrm.eScoreChange(Sender: TObject);
+begin
+  FTeam.Score := Trunc(eScore.Value);
+end;
+
+procedure TTeamFrm.eSpeedChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Speed := Trunc(eSpeed.Value);
+end;
+
+procedure TTeamFrm.eStarsChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Stars := Trunc(eStars.Value);
+end;
+
+procedure TTeamFrm.lbZetasChangeCheck(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if not (Sender is TListBoxItem) then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  if TListBoxItem(Sender).IsChecked then
+    FTeam.Units[Idx].AddZeta(lbZetas.Selected.TagString)
+  else
+    FTeam.Units[Idx].DeleteZeta(lbZetas.Selected.TagString);
+end;
+
+procedure TTeamFrm.ListBoxItemClick(Sender: TObject);
+var
+  Idx: Integer;
+  Idx2: Integer;
+  lbItem: TListBoxItem;
+  i, j: Integer;
+begin
+  if not (Sender is TListBoxItem) then
+    Exit;
+
+  // carreguem Zs del personatge
+  Idx := FChar.IndexOf(TListBoxItem(Sender).TagString);
+  if Idx = -1 then
+    Exit;
+
+  Idx2 := 0;
+  lbZetas.Clear;
+  repeat
+    Idx2 := FAbi.NextAbility(FChar.Items[Idx].Base_Id, Idx2);
+    if (Idx2 <> -1) and FAbi.Items[Idx2].Is_zeta then
+    begin
+      lbItem := TListBoxItem.Create(lbZetas);
+      lbItem.Text := FAbi.Items[Idx2].Name;
+      lbItem.TagString := FAbi.Items[Idx2].Base_id;
+
+      lbZetas.AddObject(lbItem);
+    end;
+  until Idx2 = -1;
+
+  // carregem dades seleccionades prèviament
+  Idx := FTeam.IndexOf(TListBoxItem(Sender).Text);
+  if Idx = -1 then
+    Exit;
+
+  cbFixed.IsChecked := FTeam.Units[Idx].Fixed;
+  eGear.Value := FTeam.Units[Idx].Gear;
+  eSpeed.Value := FTeam.Units[Idx].Speed;
+  eStars.Value := FTeam.Units[Idx].Stars;
+
+  for i := 0 to FTeam.Units[Idx].Count do
+    for j := 0 to lbZetas.Count - 1 do
+      lbZetas.ListItems[j].IsChecked := FTeam.Units[Idx].IndexOf(lbZetas.ListItems[j].TagString) <> -1;
+end;
+
 procedure TTeamFrm.LoadUnitsFromFile;
 var
   L: TStringList;
@@ -129,7 +298,7 @@ begin
   cbUnits.Clear;
 
   // carreguem personatges
-  if FileExists(uCharacter.cFileName) then
+  if TFile.Exists(uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -144,7 +313,7 @@ begin
   end;
 
   // carreguem naus
-  if FileExists(uShips.cFileName) then
+  if TFile.Exists(uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -159,7 +328,7 @@ begin
   end;
 
   // carreguem habilitats
-  if FileExists(uAbilities.cFileName) then
+  if TFile.Exists(uAbilities.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -178,7 +347,7 @@ begin
   TMessage.MsjSiNo('Are you sure to want to delete the Item "%s"?', [TListBoxItem(TButton(Sender).Owner).Text],
     procedure
     begin
-      FTeam.DeleteUnit(TListBoxItem(TButton(Sender).Owner).TagString);
+      FTeam.DeleteUnit(TListBoxItem(TButton(Sender).Owner).Text);
 
       lbUnits.RemoveObject(TListBoxItem(TButton(Sender).Owner));
     end);
@@ -186,7 +355,7 @@ end;
 
 function TTeamFrm.SetCaption: string;
 begin
-  Result := '';
+  Result := 'Team Definition';
 end;
 
 function TTeamFrm.ShowBackButton: Boolean;

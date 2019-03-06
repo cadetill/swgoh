@@ -43,6 +43,7 @@ object TeamFrm: TTeamFrm
         Size.Width = 554.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
+        OnChange = eNameChange
       end
     end
     object pUnits: TPanel
@@ -51,7 +52,7 @@ object TeamFrm: TTeamFrm
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 69.000000000000000000
+      Position.Y = 114.000000000000000000
       Size.Width = 630.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
@@ -80,9 +81,9 @@ object TeamFrm: TTeamFrm
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 109.000000000000000000
+      Position.Y = 154.000000000000000000
       Size.Width = 630.000000000000000000
-      Size.Height = 119.000000000000000000
+      Size.Height = 150.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       DisableFocusEffect = True
@@ -91,7 +92,7 @@ object TeamFrm: TTeamFrm
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       Viewport.Width = 626.000000000000000000
-      Viewport.Height = 115.000000000000000000
+      Viewport.Height = 146.000000000000000000
       object ListBoxItem3: TListBoxItem
         Size.Width = 626.000000000000000000
         Size.Height = 30.000000000000000000
@@ -107,7 +108,7 @@ object TeamFrm: TTeamFrm
       Margins.Top = 10.000000000000000000
       Margins.Right = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 238.000000000000000000
+      Position.Y = 314.000000000000000000
       Size.Width = 610.000000000000000000
       Size.Height = 14.000000000000000000
       Size.PlatformDefault = False
@@ -117,7 +118,7 @@ object TeamFrm: TTeamFrm
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 252.000000000000000000
+      Position.Y = 345.000000000000000000
       Size.Width = 630.000000000000000000
       Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
@@ -128,6 +129,7 @@ object TeamFrm: TTeamFrm
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       ShowCheckboxes = True
+      OnChangeCheck = lbZetasChangeCheck
       Viewport.Width = 626.000000000000000000
       Viewport.Height = 60.000000000000000000
       object ListBoxItem1: TListBoxItem
@@ -150,19 +152,20 @@ object TeamFrm: TTeamFrm
       Align = Top
       Margins.Left = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 316.000000000000000000
+      Position.Y = 409.000000000000000000
       Size.Width = 635.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
       Text = 'Fixed Unit'
+      OnChange = cbFixedChange
     end
     object pGear: TPanel
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 356.000000000000000000
+      Position.Y = 449.000000000000000000
       Size.Width = 630.000000000000000000
       Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
@@ -181,9 +184,14 @@ object TeamFrm: TTeamFrm
         Align = Client
         TabOrder = 1
         Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 12.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
         Size.Width = 565.000000000000000000
         Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
+        OnChange = eGearChange
       end
     end
     object pSpeed: TPanel
@@ -192,7 +200,7 @@ object TeamFrm: TTeamFrm
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 406.000000000000000000
+      Position.Y = 499.000000000000000000
       Size.Width = 630.000000000000000000
       Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
@@ -210,9 +218,14 @@ object TeamFrm: TTeamFrm
         Align = Client
         TabOrder = 2
         Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 400.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
         Size.Width = 565.000000000000000000
         Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
+        OnChange = eSpeedChange
       end
     end
     object pStars: TPanel
@@ -221,7 +234,7 @@ object TeamFrm: TTeamFrm
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 456.000000000000000000
+      Position.Y = 549.000000000000000000
       Size.Width = 630.000000000000000000
       Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
@@ -239,9 +252,14 @@ object TeamFrm: TTeamFrm
         Align = Client
         TabOrder = 2
         Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 7.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
         Size.Width = 565.000000000000000000
         Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
+        OnChange = eStarsChange
       end
     end
     object Line2: TLine
@@ -251,10 +269,66 @@ object TeamFrm: TTeamFrm
       Margins.Top = 10.000000000000000000
       Margins.Right = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 55.000000000000000000
+      Position.Y = 100.000000000000000000
       Size.Width = 610.000000000000000000
       Size.Height = 9.000000000000000000
       Size.PlatformDefault = False
+    end
+    object Label1: TLabel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 328.000000000000000000
+      Size.Width = 630.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Zetas List'
+      TabOrder = 10
+    end
+    object pScore: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 50.000000000000000000
+      Size.Width = 630.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'pushpanel'
+      TabOrder = 11
+      object lScore: TLabel
+        Align = Left
+        Size.Width = 145.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Recommended Score'
+        TabOrder = 0
+      end
+      object eScore: TNumberBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 1
+        Cursor = crIBeam
+        DecimalDigits = 0
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
+        Size.Width = 445.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = eScoreChange
+      end
+      object bScore: TButton
+        Align = Right
+        Position.X = 590.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Help'
+        OnClick = bScoreClick
+      end
     end
   end
 end

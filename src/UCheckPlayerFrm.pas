@@ -35,6 +35,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   uCharacter, uShips, uRESTMdl, uPlayer, uMods, uGenFunc;
 
 {$R *.fmx}
@@ -97,7 +98,7 @@ begin
   P := nil;
 
   // carreguem player
-  if FileExists(ePlayerId.Text + '.json') then
+  if TFile.Exists(ePlayerId.Text + '.json') then
   begin
     L := TStringList.Create;
     try
@@ -144,7 +145,7 @@ var
   L: TStringList;
 begin
   // carreguem personatges
-  if FileExists(uCharacter.cFileName) then
+  if TFile.Exists(uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -156,7 +157,7 @@ begin
   end;
 
   // carreguem naus
-  if FileExists(uShips.cFileName) then
+  if TFile.Exists(uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -168,7 +169,7 @@ begin
   end;
 
   // carreguem habilitats
-  if FileExists(uAbilities.cFileName) then
+  if TFile.Exists(uAbilities.cFileName) then
   begin
     L := TStringList.Create;
     try
