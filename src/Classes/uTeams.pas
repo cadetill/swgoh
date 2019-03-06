@@ -3,6 +3,7 @@ unit uTeams;
 interface
 
 uses
+  System.Classes, REST.Json.Types,
   uBase;
 
 const
@@ -12,31 +13,53 @@ type
   TUnitTeam = class(TBase)
   private
     FBase_id: string;
-    FFixed: string;
-    FGear: string;
-    FSpeed: string;
-    FStars: string;
+    FFixed: Boolean;
+    FGear: Integer;
+    FSpeed: Integer;
+    FStars: Integer;
     FZetas: TArray<string>;
     FName: string;
+    FAlias: string;
+    function GetCount: Integer;
   public
+    function IndexOf(Base_id: string): Integer;
+    function AddZeta(Base_id: string): Integer;
+    procedure DeleteZeta(Base_id: string);
+
     class function FromJsonString(AJsonString: string): TUnitTeam;
 
     property Base_id: string read FBase_id write FBase_id;
     property Name: string read FName write FName;
-    property Fixed: string read FFixed write FFixed;
-    property Gear: string read FGear write FGear;
-    property Speed: string read FSpeed write FSpeed;
-    property Stars: string read FStars write FStars;
-    property Zetas: TArray<String> read FZetas write FZetas;
+    property Alias: string read FAlias write FAlias;
+    property Fixed: Boolean read FFixed write FFixed;
+    property Gear: Integer read FGear write FGear;
+    property Speed: Integer read FSpeed write FSpeed;
+    property Stars: Integer read FStars write FStars;
+    property Zetas: TArray<string> read FZetas write FZetas;
+    property Count: Integer read GetCount;
   end;
 
   TTeam = class(TBase)
   private
     FName: string;
     FUnits: TArray<TUnitTeam>;
+    [JSONMarshalledAttribute(False)]
+    FOnChange: TNotifyEvent;
+    [JSONMarshalledAttribute(False)]
+    FTag: Integer;
+    FScore: Integer;
+
     function GetCount: Integer;
   public
+    constructor Create(OnChangeEvent: TNotifyEvent); virtual;
     destructor Destroy; override;
+
+    function GetStringPoints: string;
+    function GetPointsG12: Integer;
+    function GetPointsG11: Integer;
+    function GetPointsG10: Integer;
+    function GetPointsZeta: Integer;
+    function GetPointsSpeed: Integer;
 
     function IndexOf(Name: string): Integer;
     function AddUnit(BaseId, Name: string): TUnitTeam;
@@ -45,8 +68,11 @@ type
     class function FromJsonString(AJsonString: string): TTeam;
 
     property Name: string read FName write FName;
+    property Score: Integer read FScore write FScore;
     property Units: TArray<TUnitTeam> read FUnits write FUnits;
     property Count: Integer read GetCount;
+    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+    property Tag: Integer read FTag write FTag;
   end;
 
   TTeams = class(TBase)
@@ -57,7 +83,7 @@ type
     destructor Destroy; override;
 
     function IndexOf(Name: string): Integer;
-    function AddTeam(Name: string): TTeam;
+    function AddTeam(Name: string; OnChangeEvent: TNotifyEvent): TTeam;
     procedure DeleteTeam(Name: string);
 
     class function FromJsonString(AJsonString: string): TTeams;
@@ -73,20 +99,17 @@ uses
 
 { TTeams }
 
-function TTeams.AddTeam(Name: string): TTeam;
-var
-  Team: TTeam;
+function TTeams.AddTeam(Name: string; OnChangeEvent: TNotifyEvent): TTeam;
 begin
-  Team := TTeam.Create;
-  try
-    Team.Name := Name;
-    Result := Team;
+  Result := nil;
+  if IndexOf(Name) <> -1 then
+    Exit;
 
-    SetLength(FItems, Length(FItems)+1);
-    FItems[High(FItems)] := Team;
-  finally
-    FreeAndNil(Team);
-  end;
+  Result := TTeam.Create(OnChangeEvent);
+  Result.Name := Name;
+
+  SetLength(FItems, Length(FItems)+1);
+  FItems[High(FItems)] := Result;
 end;
 
 procedure TTeams.DeleteTeam(Name: string);
@@ -148,20 +171,22 @@ end;
 { TTeam }
 
 function TTeam.AddUnit(BaseId, Name: string): TUnitTeam;
-var
-  UnitT: TUnitTeam;
 begin
-  UnitT := TUnitTeam.Create;
-  try
-    UnitT.Base_id := BaseId;
-    UnitT.Name := Name;
-    Result := UnitT;
+  Result := nil;
+  if IndexOf(Name) <> -1 then
+    Exit;
 
-    SetLength(FUnits, Length(FUnits)+1);
-    FUnits[High(FUnits)] := UnitT;
-  finally
-    FreeAndNil(UnitT);
-  end;
+  Result := TUnitTeam.Create;
+  Result.Base_id := BaseId;
+  Result.Name := Name;
+
+  SetLength(FUnits, Length(FUnits)+1);
+  FUnits[High(FUnits)] := Result;
+end;
+
+constructor TTeam.Create(OnChangeEvent: TNotifyEvent);
+begin
+  FOnChange := OnChangeEvent;
 end;
 
 procedure TTeam.DeleteUnit(Name: string);
@@ -207,6 +232,42 @@ begin
   Result := High(FUnits);
 end;
 
+function TTeam.GetPointsG10: Integer;
+begin
+  Result := 1;
+end;
+
+function TTeam.GetPointsG11: Integer;
+begin
+  Result := 2;
+end;
+
+function TTeam.GetPointsG12: Integer;
+begin
+  Result := 3;
+end;
+
+function TTeam.GetPointsSpeed: Integer;
+begin
+  Result := 2;
+end;
+
+function TTeam.GetPointsZeta: Integer;
+begin
+  Result := 2;
+end;
+
+function TTeam.GetStringPoints: string;
+const
+  Text = '%d points g XII'#13'%d points g XI'#13'%d point g X'#13'%d points for Z'#13'%d points for speed';
+begin
+  Result := Format(Text, [GetPointsG12,
+                          GetPointsG11,
+                          GetPointsG10,
+                          GetPointsZeta,
+                          GetPointsSpeed]);
+end;
+
 function TTeam.IndexOf(Name: string): Integer;
 var
   i: Integer;
@@ -222,9 +283,61 @@ end;
 
 { TUnitTeam }
 
+function TUnitTeam.AddZeta(Base_id: string): Integer;
+begin
+  Result := IndexOf(Base_id);
+  if Result <> -1 then
+    Exit;
+
+  SetLength(FZetas, Length(FZetas)+1);
+  FZetas[High(FZetas)] := Base_id;
+  Result := High(FZetas);
+end;
+
+procedure TUnitTeam.DeleteZeta(Base_id: string);
+var
+  Idx: Integer;
+  ALength: Integer;
+  i: Integer;
+begin
+  Idx := IndexOf(Base_id);
+  if Idx = -1 then
+    Exit;
+
+  FZetas[Idx] := '';
+  ALength := High(FZetas);
+  if ALength = 0 then
+    SetLength(FZetas, 0)
+  else
+  begin
+    if Idx < ALength then
+      for i := Idx + 1 to ALength do
+        FZetas[i - 1] := FZetas[i];
+    SetLength(FZetas, ALength);
+  end;
+end;
+
 class function TUnitTeam.FromJsonString(AJsonString: string): TUnitTeam;
 begin
   Result := TJson.JsonToObject<TUnitTeam>(AJsonString);
+end;
+
+function TUnitTeam.GetCount: Integer;
+begin
+  Result := High(FZetas);
+end;
+
+function TUnitTeam.IndexOf(Base_id: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to Count do
+    if SameText(FZetas[i], Base_id) then
+    begin
+      Result := i;
+      Break;
+    end;
 end;
 
 end.

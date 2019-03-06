@@ -20,7 +20,7 @@ type
 implementation
 
 uses
-  Rest.Json, System.Classes, System.SysUtils;
+  Rest.Json, System.Classes, System.SysUtils, System.IOUtils;
 
 { TShips }
 
@@ -34,7 +34,7 @@ begin
   inherited;
 
   // si el fitxer no existeix, sortim
-  if not FileExists(FileName) then
+  if not TFile.Exists(FileName) then
     Exit;
 
   // carreguem fitxer existent

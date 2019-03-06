@@ -42,6 +42,7 @@ type
     procedure Compare(FileName: string); override;
     procedure AssignNoDefValues(Origin, Dest: TAbility);
     function IndexOf(BaseId: string): Integer;
+    function NextAbility(CharacterBaseId: string; ActualPos: Integer = 0): Integer;
 
     class function FromJsonString(AJsonString: string): TAbilities;
 
@@ -52,7 +53,7 @@ type
 implementation
 
 uses
-  Rest.Json, System.Classes, System.SysUtils;
+  Rest.Json, System.Classes, System.SysUtils, System.IOUtils;
 
 { TAbility }
 
@@ -78,7 +79,7 @@ begin
   inherited;
 
   // si el fitxer no existeix, sortim
-  if not FileExists(FileName) then
+  if not TFile.Exists(FileName) then
     Exit;
 
   // carreguem fitxer existent
@@ -126,6 +127,20 @@ begin
   Result := 0;
   for i := 1 to Count do
     if SameText(FItems[i].Base_Id, BaseId) then
+    begin
+      Result := i;
+      Break;
+    end;
+end;
+
+function TAbilities.NextAbility(CharacterBaseId: string;
+  ActualPos: Integer): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := ActualPos+1 to Count do
+    if SameText(FItems[i].Character_base_id, CharacterBaseId) then
     begin
       Result := i;
       Break;

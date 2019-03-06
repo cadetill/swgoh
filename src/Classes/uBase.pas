@@ -16,7 +16,7 @@ type
 implementation
 
 uses
-  Rest.Json, System.Classes, System.SysUtils;
+  Rest.Json, REST.Json.Types, System.Classes, System.SysUtils;
 
 { TBase }
 

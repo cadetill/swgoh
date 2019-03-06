@@ -110,6 +110,8 @@ type
     constructor Create; virtual;
     destructor Destroy; override;
 
+    function IndexOf(BaseId: string): Integer;
+
     class function FromJsonstring(AJsonstring: string): TPlayer;
 
     property Data: TInfoPlayer read FData write FData;
@@ -152,6 +154,19 @@ end;
 function TPlayer.GetCount: Integer;
 begin
   Result := High(FUnits);
+end;
+
+function TPlayer.IndexOf(BaseId: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to Count do
+    if SameText(FUnits[i].Data.Base_Id, BaseId) then
+    begin
+      Result := i;
+      Break;
+    end;
 end;
 
 { TInfoPlayer }
