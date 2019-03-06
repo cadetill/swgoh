@@ -44,6 +44,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   uGenFunc, uMessage, uCharacter, uShips;
 
 {$R *.fmx}
@@ -88,7 +89,7 @@ var
   L: TStringList;
 begin
   // carreguem personatges
-  if FileExists(uCharacter.cFileName) then
+  if TFile.Exists(uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -100,7 +101,7 @@ begin
   end;
 
   // carreguem naus
-  if FileExists(uShips.cFileName) then
+  if TFile.Exists(uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
@@ -112,7 +113,7 @@ begin
   end;
 
   // carreguem habilitats
-  if FileExists(uAbilities.cFileName) then
+  if TFile.Exists(uAbilities.cFileName) then
   begin
     L := TStringList.Create;
     try
