@@ -10,8 +10,8 @@ const
   cUrlCharacters = 'https://swgoh.gg/api/characters/';
   cUrlShips = 'https://swgoh.gg/api/ships/';
   cUrlAbilities = 'https://swgoh.gg/api/abilities/';
-  cUrlGuild = 'https://swgoh.gg/api/guild/%s/';
-  cUrlPlayer = 'https://swgoh.gg/api/player/%s/';
+  cUrlGuild = 'https://swgoh.gg/api/guild/%s/?include_arena=1&t=whatever';
+  cUrlPlayer = 'https://swgoh.gg/api/player/%s/?t=whatever';
   cUrlMods = 'https://swgoh.gg/api/players/%s/mods/';
   cUrlGear = 'https://swgoh.gg/api/gear/';
 
