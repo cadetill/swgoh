@@ -26,7 +26,8 @@ uses
   uMods in 'src\Classes\uMods.pas',
   UCheckGuildsFrm in 'src\UCheckGuildsFrm.pas' {CheckGuildsFrm},
   UBaseCheckFrm in 'src\Bases\UBaseCheckFrm.pas' {BaseCheckFrm},
-  uGear in 'src\Classes\uGear.pas';
+  uGear in 'src\Classes\uGear.pas',
+  UTeamCheck in 'src\UTeamCheck.pas' {TeamCheck};
 
 {$R *.res}
 
@@ -34,5 +35,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TMainFrm, MainFrm);
   Application.CreateForm(TBaseCheckFrm, BaseCheckFrm);
+  Application.CreateForm(TTeamCheck, TeamCheck);
   Application.Run;
 end.
