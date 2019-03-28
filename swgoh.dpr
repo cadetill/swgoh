@@ -27,14 +27,13 @@ uses
   UCheckGuildsFrm in 'src\UCheckGuildsFrm.pas' {CheckGuildsFrm},
   UBaseCheckFrm in 'src\Bases\UBaseCheckFrm.pas' {BaseCheckFrm},
   uGear in 'src\Classes\uGear.pas',
-  UTeamCheck in 'src\UTeamCheck.pas' {TeamCheck};
+  UCheckTeamsFrm in 'src\UCheckTeamsFrm.pas' {CheckTeamsFrm},
+  UCompPlayersFrm in 'src\UCompPlayersFrm.pas' {CompPlayersFrm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TMainFrm, MainFrm);
-  Application.CreateForm(TBaseCheckFrm, BaseCheckFrm);
-  Application.CreateForm(TTeamCheck, TeamCheck);
   Application.Run;
 end.
