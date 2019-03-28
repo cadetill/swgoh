@@ -64,8 +64,8 @@ object BaseCheckFrm: TBaseCheckFrm
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 630.000000000000000000
-    Viewport.Height = 95.000000000000000000
+    Viewport.Width = 626.000000000000000000
+    Viewport.Height = 91.000000000000000000
     object ListBoxItem1: TListBoxItem
       Size.Width = 626.000000000000000000
       Size.Height = 30.000000000000000000
@@ -108,8 +108,8 @@ object BaseCheckFrm: TBaseCheckFrm
     Size.Height = 294.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
-    Viewport.Width = 630.000000000000000000
-    Viewport.Height = 294.000000000000000000
+    Viewport.Width = 626.000000000000000000
+    Viewport.Height = 290.000000000000000000
   end
   object lSteps: TLabel
     Align = Bottom

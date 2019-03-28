@@ -29,7 +29,7 @@ type
     FAbi: TAbilities;
 
     procedure LoadUnitsFromFile;
-    procedure OnClickButton(Sender: TObject);
+    procedure OnClickButton(Sender: TObject); virtual;
   public
     function SetCaption: string; virtual;
     function ShowOkButton: Boolean; virtual;
