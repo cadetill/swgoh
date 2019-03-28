@@ -11,5 +11,9 @@ In this program, you will see how to consume a REST webservice and how to units 
 
 Build with RAD Studio 10.3
 
+Compiled:
+- Windows 32 bits
+- Windows 34 bits
+
 Tested in 
 - Windows 10 64 bits
