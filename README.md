@@ -8,3 +8,8 @@ In this program, you will see how to consume a REST webservice and how to units 
   - System.JSON.Serializers 
   - System.JSON.Types
   - REST.Json
+
+Build with RAD Studio 10.3
+
+Tested in 
+- Windows 10 64 bits
