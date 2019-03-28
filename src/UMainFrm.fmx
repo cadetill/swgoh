@@ -81,7 +81,7 @@ object MainFrm: TMainFrm
       Size.Width = 250.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 6
       Text = 'Get Units From Web'
       OnClick = bGetUnitsWebClick
     end
@@ -91,7 +91,7 @@ object MainFrm: TMainFrm
       Size.Width = 250.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 5
       Text = 'Set Values To Sum'
       OnClick = bSetToSumClick
     end
@@ -101,27 +101,27 @@ object MainFrm: TMainFrm
       Size.Width = 250.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 4
       Text = 'Define Teams'
       OnClick = bDefineTeamsClick
     end
     object bCheckPlayer: TButton
+      Align = Top
+      Position.Y = 240.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Check Player'
+      OnClick = bCheckPlayerClick
+    end
+    object bComparePlayers: TButton
       Align = Top
       Position.Y = 180.000000000000000000
       Size.Width = 250.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
-      Text = 'Check Player'
-      OnClick = bCheckPlayerClick
-    end
-    object bComparePlayers: TButton
-      Align = Top
-      Position.Y = 240.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
       Text = 'Compare Players'
       OnClick = bComparePlayersClick
     end
@@ -131,9 +131,19 @@ object MainFrm: TMainFrm
       Size.Width = 250.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 1
       Text = 'Check Guilds'
       OnClick = bCheckGuildsClick
+    end
+    object bCheckTeams: TButton
+      Align = Top
+      Position.Y = 360.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Check Teams'
+      OnClick = bCheckTeamsClick
     end
   end
 end

@@ -7,13 +7,15 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.EditBox, FMX.NumberBox, FMX.ScrollBox,
   FMX.Memo,
-  uInterfaces, uUnit, uAbilities;
+  uInterfaces, uUnit, uAbilities, FMX.ListBox;
 
 type
   TCheckPlayerFrm = class(TForm, IChildren)
     lPlayerID: TLabel;
     ePlayerId: TEdit;
     mData: TMemo;
+    cbFormat: TComboBox;
+    lFormat: TLabel;
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -51,6 +53,9 @@ begin
   if ePlayerId.Text = '' then
     Exit;
 
+  if Pos('http', ePlayerId.Text) <> 0 then
+    ePlayerId.Text := TGenFunc.GetField(ePlayerId.Text, 5, '/');
+
   if Supports(Owner, IMainMenu, Intf)  then
     Intf.ShowAni(True);
 
@@ -85,6 +90,9 @@ end;
 
 procedure TCheckPlayerFrm.AfterShow;
 begin
+  if cbFormat.ItemIndex = -1 then
+    cbFormat.ItemIndex := 0;
+
   LoadUnitsFromFile;
 end;
 
@@ -117,27 +125,78 @@ begin
 
   // mostrem dades generals
   mData.Lines.Clear;
-  mData.Lines.Add('Power: ' + FormatFloat('#,##0', PlayerInfo.Power));
-  mData.Lines.Add('');
-  mData.Lines.Add('GP: ' + FormatFloat('#,##0', P.Data.Galactic_power));
-  mData.Lines.Add('GP Char.: ' + FormatFloat('#,##0', P.Data.Character_galactic_power));
-  mData.Lines.Add('GP Ships: ' + FormatFloat('#,##0', P.Data.Ship_galactic_power));
-  mData.Lines.Add('Guild: ' + P.Data.Guild_name);
-  mData.Lines.Add('Name: ' + P.Data.Name);
-  mData.Lines.Add('Gear12: ' + FormatFloat('#,##0', PlayerInfo.Gear12));
-  mData.Lines.Add('Gear11: ' + FormatFloat('#,##0', PlayerInfo.Gear11));
-  mData.Lines.Add('Gear10: ' + FormatFloat('#,##0', PlayerInfo.Gear10));
-  mData.Lines.Add('Gear9: ' + FormatFloat('#,##0', PlayerInfo.Gear9));
-  mData.Lines.Add('Gear8: ' + FormatFloat('#,##0', PlayerInfo.Gear8));
-  mData.Lines.Add('Zetas: ' + FormatFloat('#,##0', PlayerInfo.Zetas));
-  mData.Lines.Add('Char. Rank: ' + FormatFloat('#,##0', PlayerInfo.CharRank));
-  mData.Lines.Add('Ships Rank: ' + FormatFloat('#,##0', PlayerInfo.ShipRank));
-  mData.Lines.Add('');
-  mData.Lines.Add('Mods +20: ' + FormatFloat('#,##0', ModsInfo.Plus20));
-  mData.Lines.Add('Mods +15: ' + FormatFloat('#,##0', ModsInfo.Plus15));
-  mData.Lines.Add('Mods +10: ' + FormatFloat('#,##0', ModsInfo.Plus10));
-  mData.Lines.Add('Speed Arrows: ' + FormatFloat('#,##0', ModsInfo.Arrows));
-  mData.Lines.Add('Mods 6*: ' + FormatFloat('#,##0', ModsInfo.Mods6));
+  case cbFormat.ItemIndex of
+    0:
+    begin
+      mData.Lines.Add('Power: ' + FormatFloat('#,##0', PlayerInfo.Power));
+      mData.Lines.Add('');
+      mData.Lines.Add('GP: ' + FormatFloat('#,##0', P.Data.Galactic_power));
+      mData.Lines.Add('GP Char.: ' + FormatFloat('#,##0', P.Data.Character_galactic_power));
+      mData.Lines.Add('GP Ships: ' + FormatFloat('#,##0', P.Data.Ship_galactic_power));
+      mData.Lines.Add('Guild: ' + P.Data.Guild_name);
+      mData.Lines.Add('Name: ' + P.Data.Name);
+      mData.Lines.Add('Gear12: ' + FormatFloat('#,##0', PlayerInfo.Gear12));
+      mData.Lines.Add('Gear11: ' + FormatFloat('#,##0', PlayerInfo.Gear11));
+      mData.Lines.Add('Gear10: ' + FormatFloat('#,##0', PlayerInfo.Gear10));
+      mData.Lines.Add('Gear9: ' + FormatFloat('#,##0', PlayerInfo.Gear9));
+      mData.Lines.Add('Gear8: ' + FormatFloat('#,##0', PlayerInfo.Gear8));
+      mData.Lines.Add('Zetas: ' + FormatFloat('#,##0', PlayerInfo.Zetas));
+      mData.Lines.Add('Char. Rank: ' + FormatFloat('#,##0', PlayerInfo.CharRank));
+      mData.Lines.Add('Ships Rank: ' + FormatFloat('#,##0', PlayerInfo.ShipRank));
+      mData.Lines.Add('');
+      mData.Lines.Add('Mods +20: ' + FormatFloat('#,##0', ModsInfo.Plus20));
+      mData.Lines.Add('Mods +15: ' + FormatFloat('#,##0', ModsInfo.Plus15));
+      mData.Lines.Add('Mods +10: ' + FormatFloat('#,##0', ModsInfo.Plus10));
+      mData.Lines.Add('Speed Arrows: ' + FormatFloat('#,##0', ModsInfo.Arrows));
+      mData.Lines.Add('Mods 6*: ' + FormatFloat('#,##0', ModsInfo.Mods6));
+    end;
+    1:
+      mData.Lines.Add(Format('"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s"', [
+                                  P.Data.Name,
+                                  P.Data.Ally_code.ToString,
+                                  P.Data.Guild_name,
+                                  FormatFloat('#,##0', PlayerInfo.Power),
+                                  FormatFloat('#,##0', P.Data.Galactic_power),
+                                  FormatFloat('#,##0', P.Data.Character_galactic_power),
+                                  FormatFloat('#,##0', P.Data.Ship_galactic_power),
+                                  FormatFloat('#,##0', PlayerInfo.Gear12),
+                                  FormatFloat('#,##0', PlayerInfo.Gear11),
+                                  FormatFloat('#,##0', PlayerInfo.Gear10),
+                                  FormatFloat('#,##0', PlayerInfo.Gear9),
+                                  FormatFloat('#,##0', PlayerInfo.Gear8),
+                                  FormatFloat('#,##0', PlayerInfo.Zetas),
+                                  FormatFloat('#,##0', PlayerInfo.CharRank),
+                                  FormatFloat('#,##0', PlayerInfo.ShipRank),
+                                  FormatFloat('#,##0', ModsInfo.Plus20),
+                                  FormatFloat('#,##0', ModsInfo.Plus15),
+                                  FormatFloat('#,##0', ModsInfo.Plus10),
+                                  FormatFloat('#,##0', ModsInfo.Arrows),
+                                  FormatFloat('#,##0', ModsInfo.Mods6)
+                                 ]));
+    2:
+      mData.Lines.Add(Format('"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"', [
+                                  P.Data.Name,
+                                  P.Data.Ally_code.ToString,
+                                  P.Data.Guild_name,
+                                  FormatFloat('#,##0', PlayerInfo.Power),
+                                  FormatFloat('#,##0', P.Data.Galactic_power),
+                                  FormatFloat('#,##0', P.Data.Character_galactic_power),
+                                  FormatFloat('#,##0', P.Data.Ship_galactic_power),
+                                  FormatFloat('#,##0', PlayerInfo.Gear12),
+                                  FormatFloat('#,##0', PlayerInfo.Gear11),
+                                  FormatFloat('#,##0', PlayerInfo.Gear10),
+                                  FormatFloat('#,##0', PlayerInfo.Gear9),
+                                  FormatFloat('#,##0', PlayerInfo.Gear8),
+                                  FormatFloat('#,##0', PlayerInfo.Zetas),
+                                  FormatFloat('#,##0', PlayerInfo.CharRank),
+                                  FormatFloat('#,##0', PlayerInfo.ShipRank),
+                                  FormatFloat('#,##0', ModsInfo.Plus20),
+                                  FormatFloat('#,##0', ModsInfo.Plus15),
+                                  FormatFloat('#,##0', ModsInfo.Plus10),
+                                  FormatFloat('#,##0', ModsInfo.Arrows),
+                                  FormatFloat('#,##0', ModsInfo.Mods6)
+                                 ]));
+  end;
 end;
 
 procedure TCheckPlayerFrm.LoadUnitsFromFile;

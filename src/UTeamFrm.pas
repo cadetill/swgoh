@@ -85,10 +85,9 @@ var
 begin
   Result := True;
 
-  // posem alias de les unitats
+  // actualitzem o posem alias de les unitats
   for i := 0 to FTeam.Count do
-    if FTeam.Units[i].Alias = '' then
-      FTeam.Units[i].Alias := FChar.Items[FChar.IndexOf(FTeam.Units[i].Base_id)].Alias;
+    FTeam.Units[i].Alias := FChar.Items[FChar.IndexOf(FTeam.Units[i].Base_id)].Alias;
 
   if Assigned(FTeam.OnChange) then
     FTeam.OnChange(FTeam);

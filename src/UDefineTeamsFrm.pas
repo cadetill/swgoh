@@ -9,23 +9,17 @@ uses
   uTeams, uInterfaces;
 
 type
-  TDefineTeamsFrm = class(TForm)
+  TDefineTeamsFrm = class(TForm, IChildren)
     lbTeams: TListBox;
     SearchBox1: TSearchBox;
     bAdd: TButton;
     ListBoxItem1: TListBoxItem;
-    pChkGuild: TPanel;
-    lChkGuild: TLabel;
-    eChkGuild: TEdit;
-    bChkGuild: TButton;
     procedure bAddClick(Sender: TObject);
-    procedure bChkGuildClick(Sender: TObject);
   private
     FTeams: TTeams;
 
     procedure OnChangeTeam(Sender: TObject);
 
-    procedure GetDefinedTeams;
     procedure ListBoxItemClick(Sender: TObject);
     procedure OnClickButton(Sender: TObject);
   public
@@ -45,7 +39,7 @@ var
 implementation
 
 uses
-  uBase, uMessage, UTeamFrm, uGenFunc, UTeamCheck,
+  uBase, uMessage, UTeamFrm, uGenFunc, UCheckTeamsFrm,
   FMX.DialogService, System.IOUtils;
 
 {$R *.fmx}
@@ -59,7 +53,7 @@ end;
 
 procedure TDefineTeamsFrm.AfterShow;
 begin
-
+  TGenFunc.GetDefinedTeams(lbTeams, FTeams, OnChangeTeam, ListBoxItemClick, OnClickButton);
 end;
 
 procedure TDefineTeamsFrm.bAddClick(Sender: TObject);
@@ -98,32 +92,11 @@ begin
     end);
 end;
 
-procedure TDefineTeamsFrm.bChkGuildClick(Sender: TObject);
-var
-  Intf: IMainMenu;
-begin
-  if eChkGuild.Text = '' then
-    Exit;
-
-  if Pos('http', eChkGuild.Text) <> 0 then
-    eChkGuild.Text := TGenFunc.GetField(eChkGuild.Text, 5, '/');
-
-  if Assigned(TagObject) then
-    TagObject.Free;
-
-  TagObject := TFmxObject.Create(Self);
-  TFmxObject(TagObject).TagString := eChkGuild.Text;
-
-  // si es pot, creem formulari d'assistència
-  if Supports(Owner, IMainMenu, Intf) then
-    Intf.CreateForm(TTeamCheck, TagObject);
-end;
-
 constructor TDefineTeamsFrm.Create(AOwner: TComponent);
 begin
   inherited;
 
-  GetDefinedTeams;
+  FTeams := TTeams.Create;
 end;
 
 destructor TDefineTeamsFrm.Destroy;
@@ -132,85 +105,6 @@ begin
     FreeAndNil(FTeams);
 
   inherited;
-end;
-
-procedure TDefineTeamsFrm.GetDefinedTeams;
-var
-  L: TStringList;
-  lbItem: TListBoxItem;
-  i: Integer;
-  j: Integer;
-  Button: TButton;
-  Fixed: string;
-  NoFix: string;
-begin
-  lbTeams.Clear;
-
-  if Assigned(FTeams) then
-    FreeAndNil(FTeams);
-
-  if not TFile.Exists(uTeams.cFileName) then
-  begin
-    FTeams := TTeams.Create;
-    Exit;
-  end;
-
-  // carreguem Json
-  L := TStringList.Create;
-  try
-    L.LoadFromFile(uTeams.cFileName);
-    FTeams := TTeams.FromJsonString(L.Text);
-  finally
-    FreeAndNil(L);
-  end;
-
-  // creem TListBox
-  for i := 0 to FTeams.Count do
-  begin
-    FTeams.Items[i].OnChange := OnChangeTeam;
-
-    lbItem := TListBoxItem.Create(lbTeams);
-    lbItem.Text := FTeams.Items[i].Name;
-
-    lbItem.ItemData.Detail := '';
-    Fixed := '';
-    NoFix := '';
-    for j := 0 to FTeams.Items[i].Count do
-    begin
-      if FTeams.Items[i].Units[j].Fixed then
-      begin
-        if Fixed <> '' then Fixed := Fixed + ' / ';
-        if FTeams.Items[i].Units[j].Alias = '' then
-          Fixed := Fixed + FTeams.Items[i].Units[j].Name
-        else
-          Fixed := Fixed + FTeams.Items[i].Units[j].Alias;
-      end
-      else
-      begin
-        if NoFix <> '' then NoFix := NoFix + ' / ';
-        if FTeams.Items[i].Units[j].Alias = '' then
-          NoFix := NoFix + '*' + FTeams.Items[i].Units[j].Name
-        else
-          NoFix := NoFix + '*' + FTeams.Items[i].Units[j].Alias;
-      end;
-    end;
-    lbItem.ItemData.Detail := Fixed;
-    if (lbItem.ItemData.Detail <> '') and (NoFix <> '') then
-      lbItem.ItemData.Detail := lbItem.ItemData.Detail + ' / ';
-    lbItem.ItemData.Detail := lbItem.ItemData.Detail + NoFix;
-
-    lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
-    lbItem.OnClick := ListBoxItemClick;
-
-    Button := TButton.Create(lbItem);
-    Button.Align := TAlignLayout.Right;
-    Button.Width := 40;
-    Button.StyleLookup := 'trashtoolbutton';
-    Button.Parent := lbItem;
-    Button.OnClick := OnClickButton;
-
-    lbTeams.AddObject(lbItem);
-  end;
 end;
 
 procedure TDefineTeamsFrm.ListBoxItemClick(Sender: TObject);
@@ -233,9 +127,6 @@ end;
 procedure TDefineTeamsFrm.OnChangeTeam(Sender: TObject);
 var
   Idx: Integer;
-  i: Integer;
-  Fixed: string;
-  NoFix: string;
 begin
   FTeams.SaveToFile(uTeams.cFileName);
 
@@ -246,33 +137,9 @@ begin
   if Idx < 0 then
     Exit;
 
-  lbTeams.ListItems[Idx].ItemData.Text := TTeam(Sender).Name;
-  lbTeams.ListItems[Idx].ItemData.Detail := '';
-  Fixed := '';
-  NoFix := '';
-  for i := 0 to TTeam(Sender).Count do
-  begin
-    if TTeam(Sender).Units[i].Fixed then
-    begin
-      if Fixed <> '' then Fixed := Fixed + ' / ';
-      if TTeam(Sender).Units[i].Alias = '' then
-        Fixed := Fixed + TTeam(Sender).Units[i].Name
-      else
-        Fixed := Fixed + TTeam(Sender).Units[i].Alias;
-    end
-    else
-    begin
-      if NoFix <> '' then NoFix := NoFix + ' / ';
-      if TTeam(Sender).Units[i].Alias = '' then
-        NoFix := NoFix + '*' + TTeam(Sender).Units[i].Name
-      else
-        NoFix := NoFix + '*' + TTeam(Sender).Units[i].Alias;
-    end;
-  end;
-  lbTeams.ListItems[Idx].ItemData.Detail := Fixed;
-  if (lbTeams.ListItems[Idx].ItemData.Detail <> '') and (NoFix <> '') then
-    lbTeams.ListItems[Idx].ItemData.Detail := lbTeams.ListItems[Idx].ItemData.Detail + ' / ';
-  lbTeams.ListItems[Idx].ItemData.Detail := lbTeams.ListItems[Idx].ItemData.Detail + NoFix;
+  TGenFunc.GetDefinedTeams(lbTeams, FTeams, OnChangeTeam, ListBoxItemClick, OnClickButton);
+
+  lbTeams.ItemIndex := Idx;
 end;
 
 procedure TDefineTeamsFrm.OnClickButton(Sender: TObject);

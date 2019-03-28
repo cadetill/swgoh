@@ -1,0 +1,13 @@
+inherited CompPlayersFrm: TCompPlayersFrm
+  DesignerMasterStyle = 0
+  inherited lbID: TListBox
+    Viewport.Width = 626.000000000000000000
+    Viewport.Height = 91.000000000000000000
+  end
+  inherited mData: TMemo
+    StyledSettings = [Size, Style, FontColor]
+    TextSettings.Font.Family = 'Courier New'
+    Viewport.Width = 630.000000000000000000
+    Viewport.Height = 294.000000000000000000
+  end
+end

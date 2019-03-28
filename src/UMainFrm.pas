@@ -33,6 +33,7 @@ type
     bCheckGuilds: TButton;
     lHeader: TLabel;
     bOk: TButton;
+    bCheckTeams: TButton;
     procedure bBackClick(Sender: TObject);
     procedure bGetUnitsWebClick(Sender: TObject);
     procedure bSetToSumClick(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure bOkClick(Sender: TObject);
     procedure bCheckGuildsClick(Sender: TObject);
     procedure bComparePlayersClick(Sender: TObject);
+    procedure bCheckTeamsClick(Sender: TObject);
   private
     FFrmList: TObjectList<TCustomForm>;
 
@@ -62,6 +64,7 @@ implementation
 
 uses
   uRESTMdl, UHomeFrm, UToSumFrm, UDefineTeamsFrm, UCheckPlayerFrm, UCheckGuildsFrm,
+  UCheckTeamsFrm, UCompPlayersFrm,
   System.JSON.Serializers;
 
 {$R *.fmx}
@@ -84,9 +87,14 @@ begin
   CreateForm(TCheckPlayerFrm, nil);
 end;
 
+procedure TMainFrm.bCheckTeamsClick(Sender: TObject);
+begin
+  CreateForm(TCheckTeamsFrm, nil);
+end;
+
 procedure TMainFrm.bComparePlayersClick(Sender: TObject);
 begin
-//
+  CreateForm(TCompPlayersFrm, nil);
 end;
 
 procedure TMainFrm.bDefineTeamsClick(Sender: TObject);

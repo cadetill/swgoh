@@ -90,9 +90,12 @@ begin
       begin
         if TryStrToInt(AValues[0], TmpInt) then
           List.Items[Pos].Multiplier := TmpInt;
-        List.Items[Pos].Alias := AValues[1];
+        if SameText(List.Items[Pos].Name, AValues[1]) then
+          List.Items[Pos].Alias := ''
+        else
+          List.Items[Pos].Alias := AValues[1];
         List.SaveToFile(FileName);
-        TListBoxItem(Sender).ItemData.Detail := 'Alias: ' + AValues[1] + ' / Multiplier: ' + TmpInt.ToString;
+        TListBoxItem(Sender).ItemData.Detail := 'Alias: ' + List.Items[Pos].Alias + ' / Multiplier: ' + List.Items[Pos].Multiplier.ToString;
       end;
     end);
 end;
