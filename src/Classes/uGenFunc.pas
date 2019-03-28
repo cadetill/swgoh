@@ -3,7 +3,9 @@ unit uGenFunc;
 interface
 
 uses
-  uPlayer, uUnit;
+  uPlayer, uUnit, uTeams,
+  FMX.ListBox,
+  System.Classes;
 
 type
   TPlayerInfo = record
@@ -33,13 +35,15 @@ type
     class function CheckPlayer(Player: TPlayer; Char: TUnitList): TPlayerInfo; static;
     class function CheckMods(PlayerId: string): TModsInfo; static;
     class procedure QuickSort(var A: array of Integer; iLo, iHi: Integer); static;
+    class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent); static;
   end;
 
 implementation
 
 uses
   uIniFiles, uMods,
-  System.IOUtils, System.SysUtils, System.Classes;
+  System.IOUtils, System.SysUtils,
+  FMX.StdCtrls, FMX.Types;
 
 { TGenFunc }
 
@@ -49,6 +53,13 @@ var
   M: TMods;
   i, j: Integer;
 begin
+  // inicialitzem valors
+  Result.Arrows := 0;
+  Result.Plus20 := 0;
+  Result.Plus15 := 0;
+  Result.Plus10 := 0;
+  Result.Mods6 := 0;
+
   // carreguem mods
   if not TFile.Exists(PlayerId + '_mods.json') then
     Exit;
@@ -61,12 +72,7 @@ begin
     FreeAndNil(L);
   end;
 
-  Result.Arrows := 0;
-  Result.Plus20 := 0;
-  Result.Plus15 := 0;
-  Result.Plus10 := 0;
-  Result.Mods6 := 0;
-
+  // fem control de mods
   for i := 0 to M.Count do
   begin
     if M.Mods[i].Rarity = 6 then
@@ -186,6 +192,88 @@ begin
     151..200: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '200_151', 0);
     101..150: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '150_101', 0);
     0..100: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '100_0', 0);
+  end;
+end;
+
+class procedure TGenFunc.GetDefinedTeams(LB: TListBox; var Teams: TTeams;
+  OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent);
+var
+  L: TStringList;
+  lbItem: TListBoxItem;
+  i: Integer;
+  j: Integer;
+  Button: TButton;
+  Fixed: string;
+  NoFix: string;
+begin
+  LB.Clear;
+
+  if not Assigned(Teams) then
+    Exit;
+
+  Teams.Clear;
+
+  if not TFile.Exists(uTeams.cFileName) then
+    Exit;
+
+  // carreguem Json
+  L := TStringList.Create;
+  try
+    L.LoadFromFile(uTeams.cFileName);
+    Teams := TTeams.FromJsonString(L.Text);
+  finally
+    FreeAndNil(L);
+  end;
+
+  // creem TListBox
+  for i := 0 to Teams.Count do
+  begin
+    Teams.Items[i].OnChange := OnChangeTeam;
+
+    lbItem := TListBoxItem.Create(LB);
+    lbItem.Text := Teams.Items[i].Name;
+
+    lbItem.ItemData.Detail := '';
+    Fixed := '';
+    NoFix := '';
+    for j := 0 to Teams.Items[i].Count do
+    begin
+      if Teams.Items[i].Units[j].Fixed then
+      begin
+        if Fixed <> '' then Fixed := Fixed + ' / ';
+        if Teams.Items[i].Units[j].Alias = '' then
+          Fixed := Fixed + Teams.Items[i].Units[j].Name
+        else
+          Fixed := Fixed + Teams.Items[i].Units[j].Alias;
+      end
+      else
+      begin
+        if NoFix <> '' then NoFix := NoFix + ' / ';
+        if Teams.Items[i].Units[j].Alias = '' then
+          NoFix := NoFix + '*' + Teams.Items[i].Units[j].Name
+        else
+          NoFix := NoFix + '*' + Teams.Items[i].Units[j].Alias;
+      end;
+    end;
+    lbItem.ItemData.Detail := Fixed;
+    if (lbItem.ItemData.Detail <> '') and (NoFix <> '') then
+      lbItem.ItemData.Detail := lbItem.ItemData.Detail + ' / ';
+    lbItem.ItemData.Detail := lbItem.ItemData.Detail + NoFix;
+
+    if not LB.ShowCheckboxes then
+    begin
+      lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
+      lbItem.OnClick := ListBoxItemClick;
+
+      Button := TButton.Create(lbItem);
+      Button.Align := TAlignLayout.Right;
+      Button.Width := 40;
+      Button.StyleLookup := 'trashtoolbutton';
+      Button.Parent := lbItem;
+      Button.OnClick := OnClickButton;
+    end;
+
+    LB.AddObject(lbItem);
   end;
 end;
 

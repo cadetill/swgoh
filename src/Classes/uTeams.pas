@@ -85,6 +85,7 @@ type
     function IndexOf(Name: string): Integer;
     function AddTeam(Name: string; OnChangeEvent: TNotifyEvent): TTeam;
     procedure DeleteTeam(Name: string);
+    procedure Clear;
 
     class function FromJsonString(AJsonString: string): TTeams;
 
@@ -110,6 +111,15 @@ begin
 
   SetLength(FItems, Length(FItems)+1);
   FItems[High(FItems)] := Result;
+end;
+
+procedure TTeams.Clear;
+var
+  i: Integer;
+begin
+  for i := 0 to Count do
+    FItems[i].Free;
+  SetLength(FItems, 0);
 end;
 
 procedure TTeams.DeleteTeam(Name: string);

@@ -26,7 +26,7 @@ uses
 
 procedure TCharacters.Compare(FileName: string);
 var
-  List: TUnitList;
+  OldList: TUnitList;
   L: TStringList;
   i: Integer;
   Idx: Integer;
@@ -41,17 +41,17 @@ begin
   L := TStringList.Create;
   try
     L.LoadFromFile(FileName);
-    List := TCharacters.FromJsonString(L.Text);
+    OldList := TCharacters.FromJsonString(L.Text);
   finally
     FreeAndNil(L);
   end;
 
   // recorrem fitxer existent actualitzant camps propis al nou
-  for i := 0 to List.Count do
+  for i := 0 to Count do
   begin
-    Idx := Self.IndexOf(List.Items[i].Base_Id);
-    if Idx > 0 then // si el trobem
-      Self.AssignNoDefValues(List.Items[i], Self.Items[i]);
+    Idx := OldList.IndexOf(Items[i].Base_Id);
+    if Idx <> -1 then // si el trobem
+      Self.AssignNoDefValues(OldList.Items[Idx], Self.Items[i]);
   end;
 end;
 
