@@ -16,6 +16,8 @@ type
     mData: TMemo;
     cbFormat: TComboBox;
     lFormat: TLabel;
+    bToClbd: TButton;
+    procedure bToClbdClick(Sender: TObject);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -94,6 +96,11 @@ begin
     cbFormat.ItemIndex := 0;
 
   LoadUnitsFromFile;
+end;
+
+procedure TCheckPlayerFrm.bToClbdClick(Sender: TObject);
+begin
+  TGenFunc.CopyToClipboard(mData.Lines.Text);
 end;
 
 procedure TCheckPlayerFrm.CheckPlayer;

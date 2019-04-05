@@ -17,12 +17,12 @@ object CheckPlayerFrm: TCheckPlayerFrm
     Size.Height = 27.000000000000000000
     Size.PlatformDefault = False
     Text = 'Player ID'
-    TabOrder = 1
+    TabOrder = 2
   end
   object ePlayerId: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     Align = Top
-    TabOrder = 3
+    TabOrder = 4
     KeyboardType = NumberPad
     Position.X = 10.000000000000000000
     Position.Y = 27.000000000000000000
@@ -40,13 +40,13 @@ object CheckPlayerFrm: TCheckPlayerFrm
     Margins.Left = 10.000000000000000000
     Margins.Top = 20.000000000000000000
     Margins.Right = 10.000000000000000000
-    Margins.Bottom = 20.000000000000000000
+    Margins.Bottom = 5.000000000000000000
     Size.Width = 620.000000000000000000
-    Size.Height = 321.000000000000000000
+    Size.Height = 304.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
-    Viewport.Width = 616.000000000000000000
-    Viewport.Height = 317.000000000000000000
+    TabOrder = 6
+    Viewport.Width = 620.000000000000000000
+    Viewport.Height = 304.000000000000000000
   end
   object lFormat: TLabel
     Align = Top
@@ -75,6 +75,17 @@ object CheckPlayerFrm: TCheckPlayerFrm
     Size.Width = 620.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 2
+    TabOrder = 3
+  end
+  object bToClbd: TButton
+    Align = Bottom
+    CanFocus = False
+    Position.Y = 448.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Copy Teams to Clipboard'
+    OnClick = bToClbdClick
   end
 end

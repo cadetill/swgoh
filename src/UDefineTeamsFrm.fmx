@@ -11,7 +11,7 @@ object DefineTeamsFrm: TDefineTeamsFrm
   object lbTeams: TListBox
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Height = 448.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     DisableFocusEffect = True
@@ -19,8 +19,8 @@ object DefineTeamsFrm: TDefineTeamsFrm
     DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 640.000000000000000000
-    Viewport.Height = 480.000000000000000000
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 422.000000000000000000
     object ListBoxItem1: TListBoxItem
       ItemData.Detail = 'detail'
       ItemData.Accessory = aDetail
@@ -49,5 +49,16 @@ object DefineTeamsFrm: TDefineTeamsFrm
         OnClick = bAddClick
       end
     end
+  end
+  object bToClbd: TButton
+    Align = Bottom
+    CanFocus = False
+    Position.Y = 448.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Copy Teams to Clipboard'
+    OnClick = bToClbdClick
   end
 end

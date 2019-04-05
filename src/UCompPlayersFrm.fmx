@@ -8,6 +8,9 @@ inherited CompPlayersFrm: TCompPlayersFrm
     StyledSettings = [Size, Style, FontColor]
     TextSettings.Font.Family = 'Courier New'
     Viewport.Width = 630.000000000000000000
-    Viewport.Height = 294.000000000000000000
+    Viewport.Height = 262.000000000000000000
+  end
+  inherited bToClbd: TButton
+    OnClick = nil
   end
 end

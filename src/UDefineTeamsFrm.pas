@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, FMX.SearchBox, FMX.Layouts, FMX.ListBox,
-  uTeams, uInterfaces;
+  uTeams, uInterfaces, uAbilities;
 
 type
   TDefineTeamsFrm = class(TForm, IChildren)
@@ -14,9 +14,12 @@ type
     SearchBox1: TSearchBox;
     bAdd: TButton;
     ListBoxItem1: TListBoxItem;
+    bToClbd: TButton;
     procedure bAddClick(Sender: TObject);
+    procedure bToClbdClick(Sender: TObject);
   private
     FTeams: TTeams;
+    FAbi: TAbilities;
 
     procedure OnChangeTeam(Sender: TObject);
 
@@ -40,7 +43,8 @@ implementation
 
 uses
   uBase, uMessage, UTeamFrm, uGenFunc, UCheckTeamsFrm,
-  FMX.DialogService, System.IOUtils;
+  FMX.DialogService,
+  System.IOUtils;
 
 {$R *.fmx}
 
@@ -52,8 +56,22 @@ begin
 end;
 
 procedure TDefineTeamsFrm.AfterShow;
+var
+  L: TStringList;
 begin
   TGenFunc.GetDefinedTeams(lbTeams, FTeams, OnChangeTeam, ListBoxItemClick, OnClickButton);
+
+  // carreguem habilitats
+  if TFile.Exists(uAbilities.cFileName) then
+  begin
+    L := TStringList.Create;
+    try
+      L.LoadFromFile(uAbilities.cFileName);
+      FAbi := TAbilities.FromJsonString(L.Text);
+    finally
+      FreeAndNil(L);
+    end;
+  end;
 end;
 
 procedure TDefineTeamsFrm.bAddClick(Sender: TObject);
@@ -90,6 +108,51 @@ begin
         ListBoxItemClick(lbItem);
       end;
     end);
+end;
+
+procedure TDefineTeamsFrm.bToClbdClick(Sender: TObject);
+var
+  i,j,k: Integer;
+  L: TStringList;
+  TmpStr: string;
+  NameAb: string;
+  Idx: Integer;
+begin
+  L := TStringList.Create;
+  try
+    for i := 0 to FTeams.Count do
+    begin
+      L.Add('Team: ' + FTeams.Items[i].Name);
+      for j := 0 to FTeams.Items[i].Count do
+      begin
+        TmpStr := '';
+        for k := 0 to FTeams.Items[i].Units[j].Count do
+        begin
+          if TmpStr <> '' then
+            TmpStr := TmpStr + ' ; '
+          else
+            TmpStr := ' -> zetas needed: ';
+
+          Idx := FAbi.IndexOf(FTeams.Items[i].Units[j].Zetas[k]);
+          if Idx <> -1 then
+            NameAb := FAbi.Items[Idx].Name
+          else
+            NameAb := FTeams.Items[i].Units[j].Zetas[k];
+
+          TmpStr := TmpStr + NameAb;
+        end;
+
+        if FTeams.Items[i].Units[j].Fixed then
+          L.Add('  - ' + FTeams.Items[i].Units[j].Name + TmpStr)
+        else
+          L.Add('  - (*)' + FTeams.Items[i].Units[j].Name + TmpStr);
+      end;
+    end;
+
+    TGenFunc.CopyToClipboard(L.Text);
+  finally
+    FreeAndNil(L);
+  end;
 end;
 
 constructor TDefineTeamsFrm.Create(AOwner: TComponent);

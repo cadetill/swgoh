@@ -19,6 +19,11 @@ type
     eChkGuild: TEdit;
     lbTeams: TListBox;
     ListBoxItem1: TListBoxItem;
+    lSteps: TLabel;
+    lFormat: TLabel;
+    cbFormat: TComboBox;
+    bToClbd: TButton;
+    procedure bToClbdClick(Sender: TObject);
   private
     FTeams: TTeams;
 
@@ -50,7 +55,7 @@ uses
 
 function TCheckTeamsFrm.AcceptForm: Boolean;
 var
-  L: TStringList;
+//  L: TStringList;
   Intf: IMainMenu;
 begin
   Result := False;
@@ -69,11 +74,13 @@ begin
     Intf.ShowAni(True);
 
   // mirem si existeix Json de Teams
-  if not TFile.Exists(uTeams.cFileName) then
-  begin
-    FTeams := TTeams.Create;
-    Exit;
-  end;
+//  if not TFile.Exists(uTeams.cFileName) then
+//  begin
+//    FTeams := TTeams.Create;
+//    Exit;
+//  end;
+
+  lSteps.Text := 'Loading Data....';
 
   TThread.CreateAnonymousThread(procedure
   var
@@ -81,13 +88,13 @@ begin
     FileName: string;
   begin
     // carreguem Json d'equips definits
-    L := TStringList.Create;
-    try
-      L.LoadFromFile(uTeams.cFileName);
-      FTeams := TTeams.FromJsonString(L.Text);
-    finally
-      FreeAndNil(L);
-    end;
+//    L := TStringList.Create;
+//    try
+//      L.LoadFromFile(uTeams.cFileName);
+//      FTeams := TTeams.FromJsonString(L.Text);
+//    finally
+//      FreeAndNil(L);
+//    end;
 
     FileName := eChkGuild.Text + '_guild.json';
     eName.Text := eChkGuild.Text;
@@ -115,6 +122,7 @@ begin
     TThread.Synchronize(TThread.CurrentThread,
       procedure
       begin
+        lSteps.Text := '';
         if Supports(Owner, IMainMenu, Intf) then
           Intf.ShowAni(False);
       end);
@@ -124,8 +132,15 @@ end;
 
 procedure TCheckTeamsFrm.AfterShow;
 begin
+  lSteps.Text := '';
   eName.Text := '';
+  cbFormat.ItemIndex := 1;
   TGenFunc.GetDefinedTeams(lbTeams, FTeams, nil, nil, nil);
+end;
+
+procedure TCheckTeamsFrm.bToClbdClick(Sender: TObject);
+begin
+  TGenFunc.CopyToClipboard(mData.Lines.Text);
 end;
 
 procedure TCheckTeamsFrm.CheckPlayerTeams(Player: TPlayer);
@@ -163,7 +178,10 @@ begin
 
       if Idx = -1 then
       begin
-        TmpS := TmpS + ';0';
+        if cbFormat.ItemIndex = 0 then
+          TmpS := TmpS + ';0'
+        else
+          TmpS := TmpS + #9 + '0';
         Continue;
       end;
 
@@ -190,7 +208,10 @@ begin
       if FTeams.Items[i].Units[j].Speed > 0 then
         Speed := ' / ' + Player.Units[Idx].Data.Stats.S5.ToString;
 
-      TmpS := TmpS + ';' + TmpI.ToString + Speed;
+      if cbFormat.ItemIndex = 0 then
+        TmpS := TmpS + ';' + TmpI.ToString + Speed
+      else
+        TmpS := TmpS + #9 + TmpI.ToString + Speed;
 
       if FTeams.Items[i].Units[j].Fixed then
         Fixed[j] := TmpI
@@ -223,7 +244,10 @@ begin
       end;
     end;
 
-    Line := Line + ';' + SumTeam.ToString + TmpS;
+    if cbFormat.ItemIndex = 0 then
+      Line := Line + ';' + SumTeam.ToString + TmpS
+    else
+      Line := Line + #9 + SumTeam.ToString + TmpS;
   end;
   mData.Lines.Add(Line);
 end;
@@ -236,13 +260,14 @@ var
   TmpS: string;
   TmpI: Integer;
   Speed: string;
+  Idx: Integer;
 begin
-  if not TFile.Exists(TFmxObject(TagObject).TagString + '_guild.json') then
+  if not TFile.Exists(eChkGuild.Text + '_guild.json') then
     Exit;
 
   L := TStringList.Create;
   try
-    L.LoadFromFile(TFmxObject(TagObject).TagString + '_guild.json');
+    L.LoadFromFile(eChkGuild.Text + '_guild.json');
     Guild := TGuild.FromJsonString(L.Text);
   finally
     FreeAndNil(L);
@@ -252,9 +277,22 @@ begin
 
   TmpS := 'Player';
   // recorrem tots els equips definits
-  for i := 0 to FTeams.Count do
+  for i := 0 to lbTeams.Count - 1 do
   begin
-    if TmpS <> '' then TmpS := TmpS + ';';
+    if not lbTeams.ItemByIndex(i).IsChecked then
+      Continue;
+    Idx := FTeams.IndexOf(lbTeams.ItemByIndex(i).Text);
+    if Idx = -1 then
+      Continue;
+
+    lSteps.Text := 'Checking Team ' + FTeams.Items[i].Name;
+    if TmpS <> '' then
+    begin
+      if cbFormat.ItemIndex = 0 then
+        TmpS := TmpS + ';'
+      else
+        TmpS := TmpS + #9;
+    end;
     TmpS := TmpS + FTeams.Items[i].Name + ' (' + FTeams.Items[i].Score.ToString + ')';
 
     // recorrem els toons de l'equip
@@ -268,7 +306,14 @@ begin
       if FTeams.Items[i].Units[j].Speed > 0 then
         Speed := ' / ' + FTeams.Items[i].Units[j].Speed.ToString;
 
-      if TmpS <> '' then TmpS := TmpS + ';';
+      if TmpS <> '' then
+      begin
+        if cbFormat.ItemIndex = 0 then
+          TmpS := TmpS + ';'
+        else
+          TmpS := TmpS + #9;
+      end;
+
       if FTeams.Items[i].Units[j].Fixed then
       begin
         if FTeams.Items[i].Units[j].Alias = '' then

@@ -17,11 +17,11 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Margins.Right = 5.000000000000000000
     Margins.Bottom = 5.000000000000000000
     Size.Width = 630.000000000000000000
-    Size.Height = 258.000000000000000000
+    Size.Height = 135.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 3
+    TabOrder = 6
     Viewport.Width = 626.000000000000000000
-    Viewport.Height = 254.000000000000000000
+    Viewport.Height = 131.000000000000000000
   end
   object pName: TPanel
     Align = Top
@@ -29,12 +29,12 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Margins.Top = 5.000000000000000000
     Margins.Right = 5.000000000000000000
     Position.X = 5.000000000000000000
-    Position.Y = 230.000000000000000000
+    Position.Y = 292.000000000000000000
     Size.Width = 630.000000000000000000
     Size.Height = 40.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
-    TabOrder = 1
+    TabOrder = 3
     object lName: TLabel
       Align = Left
       Size.Width = 105.000000000000000000
@@ -54,6 +54,34 @@ object CheckTeamsFrm: TCheckTeamsFrm
       TabOrder = 1
     end
   end
+  object lFormat: TLabel
+    Align = Top
+    Margins.Left = 10.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Position.X = 10.000000000000000000
+    Position.Y = 230.000000000000000000
+    Size.Width = 620.000000000000000000
+    Size.Height = 27.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Format'
+    TabOrder = 0
+  end
+  object cbFormat: TComboBox
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Top
+    Items.Strings = (
+      'Csv'
+      'Tab separator')
+    Margins.Left = 10.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Position.X = 10.000000000000000000
+    Position.Y = 257.000000000000000000
+    Size.Width = 620.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+  end
   object pChkGuild: TPanel
     Align = Top
     Margins.Bottom = 1.000000000000000000
@@ -61,7 +89,7 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Size.Height = 40.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
-    TabOrder = 2
+    TabOrder = 4
     object lChkGuild: TLabel
       Align = Left
       Size.Width = 76.000000000000000000
@@ -89,7 +117,7 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Size.Width = 630.000000000000000000
     Size.Height = 184.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 0
+    TabOrder = 2
     DisableFocusEffect = True
     ItemHeight = 50.000000000000000000
     DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
@@ -107,5 +135,26 @@ object CheckTeamsFrm: TCheckTeamsFrm
       TabOrder = 0
       Text = 'ListBoxItem1'
     end
+  end
+  object lSteps: TLabel
+    Align = Bottom
+    Position.Y = 504.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 29.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = 'lSteps'
+    TabOrder = 7
+  end
+  object bToClbd: TButton
+    Align = Bottom
+    CanFocus = False
+    Position.Y = 472.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Copy Teams to Clipboard'
+    OnClick = bToClbdClick
   end
 end
