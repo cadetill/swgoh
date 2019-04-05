@@ -36,14 +36,15 @@ type
     class function CheckMods(PlayerId: string): TModsInfo; static;
     class procedure QuickSort(var A: array of Integer; iLo, iHi: Integer); static;
     class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent); static;
+    class procedure CopyToClipboard(Text: string); static;
   end;
 
 implementation
 
 uses
-  uIniFiles, uMods,
+  uIniFiles, uMods, uMessage,
   System.IOUtils, System.SysUtils,
-  FMX.StdCtrls, FMX.Types;
+  FMX.StdCtrls, FMX.Types, FMX.Platform;
 
 { TGenFunc }
 
@@ -195,6 +196,18 @@ begin
   end;
 end;
 
+class procedure TGenFunc.CopyToClipboard(Text: string);
+var
+  Svc: IFMXClipboardService;
+begin
+  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
+  begin
+    Svc.SetClipboard(Text);
+
+    TMessage.Show('Text copied to ClipBoard');
+  end;
+end;
+
 class procedure TGenFunc.GetDefinedTeams(LB: TListBox; var Teams: TTeams;
   OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent);
 var
@@ -232,6 +245,7 @@ begin
 
     lbItem := TListBoxItem.Create(LB);
     lbItem.Text := Teams.Items[i].Name;
+    lbItem.IsChecked := True;
 
     lbItem.ItemData.Detail := '';
     Fixed := '';
