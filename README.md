@@ -9,7 +9,7 @@ In this program, you will see how to consume a REST webservice and how to use un
   - System.JSON.Types
   - REST.Json
   
-You can also see how to send taxt to clipboard.
+You can also see how to send text to clipboard.
 
 ---
 
