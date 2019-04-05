@@ -58,7 +58,7 @@ object BaseCheckFrm: TBaseCheckFrm
     Size.Width = 630.000000000000000000
     Size.Height = 95.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 2
     DisableFocusEffect = True
     ItemHeight = 30.000000000000000000
     DefaultItemStyles.ItemStyle = ''
@@ -105,11 +105,11 @@ object BaseCheckFrm: TBaseCheckFrm
     Margins.Right = 5.000000000000000000
     Margins.Bottom = 5.000000000000000000
     Size.Width = 630.000000000000000000
-    Size.Height = 294.000000000000000000
+    Size.Height = 262.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 3
+    TabOrder = 4
     Viewport.Width = 626.000000000000000000
-    Viewport.Height = 290.000000000000000000
+    Viewport.Height = 258.000000000000000000
   end
   object lSteps: TLabel
     Align = Bottom
@@ -119,6 +119,17 @@ object BaseCheckFrm: TBaseCheckFrm
     Size.PlatformDefault = False
     TextSettings.HorzAlign = Center
     Text = 'lSteps'
-    TabOrder = 4
+    TabOrder = 5
+  end
+  object bToClbd: TButton
+    Align = Bottom
+    CanFocus = False
+    Position.Y = 431.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Copy Teams to Clipboard'
+    OnClick = bToClbdClick
   end
 end

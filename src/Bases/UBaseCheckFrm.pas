@@ -21,7 +21,9 @@ type
     lID: TLabel;
     eID: TEdit;
     bAdd: TButton;
+    bToClbd: TButton;
     procedure bAddClick(Sender: TObject);
+    procedure bToClbdClick(Sender: TObject);
   private
   protected
     FChar: TUnitList;
@@ -82,6 +84,11 @@ begin
   lbID.AddObject(lbItem);
 
   eID.Text := '';
+end;
+
+procedure TBaseCheckFrm.bToClbdClick(Sender: TObject);
+begin
+  TGenFunc.CopyToClipboard(mData.Lines.Text);
 end;
 
 procedure TBaseCheckFrm.LoadUnitsFromFile;
