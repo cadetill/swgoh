@@ -33,7 +33,7 @@ var
 implementation
 
 uses
-  uBase, uPlayer, uGuild, uAbilities, uCharacter, uShips, uMods, uGear;
+  uBase, uPlayer, uGuild, uAbilities, uCharacter, uShips, uMods, uGear, uGenFunc;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -83,22 +83,22 @@ begin
     tcAbilities:
       begin
         Url := cUrlAbilities;
-        FileName := uAbilities.cFileName;
+        FileName := TGenFunc.GetBaseFolder + uAbilities.cFileName;
       end;
     tcCharacters:
       begin
         Url := cUrlCharacters;
-        FileName := uCharacter.cFileName;
+        FileName := TGenFunc.GetBaseFolder + uCharacter.cFileName;
       end;
     tcShips:
       begin
         Url := cUrlShips;
-        FileName := uShips.cFileName;
+        FileName := TGenFunc.GetBaseFolder + uShips.cFileName;
       end;
     tcGear:
       begin
         Url := cUrlGear;
-        FileName := uGear.cFileName;
+        FileName := TGenFunc.GetBaseFolder + uGear.cFileName;
       end;
   end;
 
