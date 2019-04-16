@@ -14,11 +14,13 @@ object DefineTeamsFrm: TDefineTeamsFrm
     Size.Height = 448.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
+    AllowDrag = True
     DisableFocusEffect = True
     ItemHeight = 50.000000000000000000
     DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnDragChange = lbTeamsDragChange
     Viewport.Width = 636.000000000000000000
     Viewport.Height = 422.000000000000000000
     object ListBoxItem1: TListBoxItem
@@ -29,6 +31,26 @@ object DefineTeamsFrm: TDefineTeamsFrm
       Size.PlatformDefault = False
       TabOrder = 0
       Text = 'ListBoxItem1'
+      object Button1: TButton
+        Align = Right
+        Position.X = 476.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'composetoolbutton'
+        TabOrder = 0
+        Text = 'Button1'
+      end
+      object Button2: TButton
+        Align = Right
+        Position.X = 556.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'trashtoolbutton'
+        TabOrder = 1
+        Text = 'Button2'
+      end
     end
     object SearchBox1: TSearchBox
       Touch.InteractiveGestures = [LongTap, DoubleTap]

@@ -55,7 +55,6 @@ uses
 
 function TCheckTeamsFrm.AcceptForm: Boolean;
 var
-//  L: TStringList;
   Intf: IMainMenu;
 begin
   Result := False;
@@ -73,13 +72,6 @@ begin
   if Supports(Owner, IMainMenu, Intf)  then
     Intf.ShowAni(True);
 
-  // mirem si existeix Json de Teams
-//  if not TFile.Exists(uTeams.cFileName) then
-//  begin
-//    FTeams := TTeams.Create;
-//    Exit;
-//  end;
-
   lSteps.Text := 'Loading Data....';
 
   TThread.CreateAnonymousThread(procedure
@@ -87,15 +79,6 @@ begin
     Mdl: TRESTMdl;
     FileName: string;
   begin
-    // carreguem Json d'equips definits
-//    L := TStringList.Create;
-//    try
-//      L.LoadFromFile(uTeams.cFileName);
-//      FTeams := TTeams.FromJsonString(L.Text);
-//    finally
-//      FreeAndNil(L);
-//    end;
-
     FileName := eChkGuild.Text + '_guild.json';
     eName.Text := eChkGuild.Text;
 
@@ -151,6 +134,7 @@ var
   Line: string;
   TmpI: Integer;
   SumTeam: Integer;
+  SumFixed: Integer;
   Fixed: array of Integer;
   NonFixed: array of Integer;
   Speed: string;
@@ -162,6 +146,7 @@ begin
   begin
     TmpS := '';
     SumTeam := 0;
+    SumFixed := 0;
     SetLength(Fixed, FTeams.Items[i].Count + 1);
     SetLength(NonFixed, FTeams.Items[i].Count + 1);
     for k := 0 to High(Fixed) do
@@ -233,6 +218,8 @@ begin
       if TmpI = 5 then
         Break;
     end;
+    SumFixed := SumTeam;
+
     for j := High(NonFixed) downto 0 do
     begin
       if TmpI = 5 then
@@ -243,11 +230,10 @@ begin
         Inc(TmpI);
       end;
     end;
-
     if cbFormat.ItemIndex = 0 then
-      Line := Line + ';' + SumTeam.ToString + TmpS
+      Line := Line + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS
     else
-      Line := Line + #9 + SumTeam.ToString + TmpS;
+      Line := Line + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpS;
   end;
   mData.Lines.Add(Line);
 end;
@@ -259,8 +245,10 @@ var
   i,j,k: Integer;
   TmpS: string;
   TmpI: Integer;
+  TmpTeam: string;
   Speed: string;
   Idx: Integer;
+  SumFixed: Integer;
 begin
   if not TFile.Exists(eChkGuild.Text + '_guild.json') then
     Exit;
@@ -286,15 +274,9 @@ begin
       Continue;
 
     lSteps.Text := 'Checking Team ' + FTeams.Items[i].Name;
-    if TmpS <> '' then
-    begin
-      if cbFormat.ItemIndex = 0 then
-        TmpS := TmpS + ';'
-      else
-        TmpS := TmpS + #9;
-    end;
-    TmpS := TmpS + FTeams.Items[i].Name + ' (' + FTeams.Items[i].Score.ToString + ')';
 
+    SumFixed := 0;
+    TmpTeam := '';
     // recorrem els toons de l'equip
     for j := 0 to FTeams.Items[i].Count do
     begin
@@ -306,29 +288,50 @@ begin
       if FTeams.Items[i].Units[j].Speed > 0 then
         Speed := ' / ' + FTeams.Items[i].Units[j].Speed.ToString;
 
-      if TmpS <> '' then
+      if TmpTeam <> '' then
       begin
         if cbFormat.ItemIndex = 0 then
-          TmpS := TmpS + ';'
+          TmpTeam := TmpTeam + ';'
         else
-          TmpS := TmpS + #9;
+          TmpTeam := TmpTeam + #9;
       end;
 
       if FTeams.Items[i].Units[j].Fixed then
       begin
+        SumFixed := SumFixed + TmpI;
         if FTeams.Items[i].Units[j].Alias = '' then
-          TmpS := TmpS + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+          TmpTeam := TmpTeam + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
         else
-          TmpS := TmpS + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+          TmpTeam := TmpTeam + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
       end
       else
       begin
         if FTeams.Items[i].Units[j].Alias = '' then
-          TmpS := TmpS + '*' + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+          TmpTeam := TmpTeam + '*' + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
         else
-          TmpS := TmpS + '*' + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+          TmpTeam := TmpTeam + '*' + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
       end;
     end;
+
+    if TmpS <> '' then
+    begin
+      if cbFormat.ItemIndex = 0 then
+        TmpS := TmpS + ';'
+      else
+        TmpS := TmpS + #9;
+    end;
+    TmpS := TmpS + FTeams.Items[i].Name + ' (' + FTeams.Items[i].Score.ToString + ')';
+
+    if cbFormat.ItemIndex = 0 then
+      TmpS := TmpS + ';'
+    else
+      TmpS := TmpS + #9;
+    TmpS := TmpS + 'F.(' + SumFixed.ToString + ')';
+    if cbFormat.ItemIndex = 0 then
+      TmpS := TmpS + ';'
+    else
+      TmpS := TmpS + #9;
+    TmpS := TmpS + TmpTeam;
   end;
 
   mData.Lines.Add(TmpS);

@@ -33,7 +33,7 @@ implementation
 
 uses
   FMX.DialogService, System.IOUtils,
-  uCharacter, uShips;
+  uCharacter, uShips, uGenFunc;
 
 {$R *.fmx}
 
@@ -62,7 +62,7 @@ begin
   if Pos <> -1 then
   begin
     List := FChar;
-    FileName := uCharacter.cFileName;
+    FileName := TGenFunc.GetBaseFolder + uCharacter.cFileName;
   end
   else
   begin
@@ -70,7 +70,7 @@ begin
     if Pos <> -1 then
     begin
       List := FShips;
-      FileName := uShips.cFileName;
+      FileName := TGenFunc.GetBaseFolder + uShips.cFileName;
     end
   end;
 
@@ -110,11 +110,11 @@ begin
   lbUnits.Clear;
 
   // carreguem personatges
-  if TFile.Exists(uCharacter.cFileName) then
+  if TFile.Exists(TGenFunc.GetBaseFolder + uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
-      L.LoadFromFile(uCharacter.cFileName);
+      L.LoadFromFile(TGenFunc.GetBaseFolder + uCharacter.cFileName);
       FChar := TCharacters.FromJsonString(L.Text);
     finally
       FreeAndNil(L);
@@ -140,11 +140,11 @@ begin
   end;
 
   // carreguem naus
-  if TFile.Exists(uShips.cFileName) then
+  if TFile.Exists(TGenFunc.GetBaseFolder + uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
-      L.LoadFromFile(uShips.cFileName);
+      L.LoadFromFile(TGenFunc.GetBaseFolder + uShips.cFileName);
       FShips := TShips.FromJsonString(L.Text);
     finally
       FreeAndNil(L);

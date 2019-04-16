@@ -18,8 +18,8 @@ object HomeFrm: THomeFrm
     DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 636.000000000000000000
-    Viewport.Height = 454.000000000000000000
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 480.000000000000000000
     object ListBoxGroupHeader1: TListBoxGroupHeader
       TextSettings.FontColor = claChocolate
       TextSettings.HorzAlign = Center

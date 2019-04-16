@@ -86,11 +86,13 @@ object TeamFrm: TTeamFrm
       Size.Height = 150.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
+      AllowDrag = True
       DisableFocusEffect = True
       ItemHeight = 30.000000000000000000
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
+      OnDragChange = lbUnitsDragChange
       Viewport.Width = 626.000000000000000000
       Viewport.Height = 146.000000000000000000
       object ListBoxItem3: TListBoxItem

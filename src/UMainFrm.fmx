@@ -75,6 +75,7 @@ object MainFrm: TMainFrm
     Size.Width = 250.000000000000000000
     Size.Height = 432.000000000000000000
     Size.PlatformDefault = False
+    Visible = False
     TabOrder = 1
     object bGetUnitsWeb: TButton
       Align = Top

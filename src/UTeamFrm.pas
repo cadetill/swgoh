@@ -49,6 +49,8 @@ type
     procedure lbZetasChangeCheck(Sender: TObject);
     procedure bScoreClick(Sender: TObject);
     procedure eScoreChange(Sender: TObject);
+    procedure lbUnitsDragChange(SourceItem, DestItem: TListBoxItem;
+      var Allow: Boolean);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -73,7 +75,7 @@ implementation
 
 uses
   System.IOUtils,
-  uCharacter, uShips, uMessage;
+  uCharacter, uShips, uMessage, uGenFunc;
 
 {$R *.fmx}
 
@@ -228,6 +230,12 @@ begin
   FTeam.Units[Idx].Stars := Trunc(eStars.Value);
 end;
 
+procedure TTeamFrm.lbUnitsDragChange(SourceItem, DestItem: TListBoxItem;
+  var Allow: Boolean);
+begin
+  Allow := FTeam.Move(SourceItem.Text, DestItem.Text);
+end;
+
 procedure TTeamFrm.lbZetasChangeCheck(Sender: TObject);
 var
   Idx: Integer;
@@ -297,11 +305,11 @@ begin
   cbUnits.Clear;
 
   // carreguem personatges
-  if TFile.Exists(uCharacter.cFileName) then
+  if TFile.Exists(TGenFunc.GetBaseFolder + uCharacter.cFileName) then
   begin
     L := TStringList.Create;
     try
-      L.LoadFromFile(uCharacter.cFileName);
+      L.LoadFromFile(TGenFunc.GetBaseFolder + uCharacter.cFileName);
       FChar := TCharacters.FromJsonString(L.Text);
     finally
       FreeAndNil(L);
@@ -312,11 +320,11 @@ begin
   end;
 
   // carreguem naus
-  if TFile.Exists(uShips.cFileName) then
+  if TFile.Exists(TGenFunc.GetBaseFolder + uShips.cFileName) then
   begin
     L := TStringList.Create;
     try
-      L.LoadFromFile(uShips.cFileName);
+      L.LoadFromFile(TGenFunc.GetBaseFolder + uShips.cFileName);
       FShips := TShips.FromJsonString(L.Text);
     finally
       FreeAndNil(L);
@@ -327,11 +335,11 @@ begin
   end;
 
   // carreguem habilitats
-  if TFile.Exists(uAbilities.cFileName) then
+  if TFile.Exists(TGenFunc.GetBaseFolder + uAbilities.cFileName) then
   begin
     L := TStringList.Create;
     try
-      L.LoadFromFile(uAbilities.cFileName);
+      L.LoadFromFile(TGenFunc.GetBaseFolder + uAbilities.cFileName);
       FAbi := TAbilities.FromJsonString(L.Text);
     finally
       FreeAndNil(L);
