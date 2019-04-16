@@ -63,6 +63,8 @@ type
 
     function IndexOf(Name: string): Integer;
     function AddUnit(BaseId, Name: string): TUnitTeam;
+    function Move(From, Dest: Integer): Boolean; overload;
+    function Move(From, Dest: string): Boolean; overload;
     procedure DeleteUnit(Name: string);
 
     class function FromJsonString(AJsonString: string): TTeam;
@@ -84,6 +86,8 @@ type
 
     function IndexOf(Name: string): Integer;
     function AddTeam(Name: string; OnChangeEvent: TNotifyEvent): TTeam;
+    function Move(From, Dest: Integer): Boolean; overload;
+    function Move(From, Dest: string): Boolean; overload;
     procedure DeleteTeam(Name: string);
     procedure Clear;
 
@@ -176,6 +180,44 @@ begin
       Result := i;
       Break;
     end;
+end;
+
+function TTeams.Move(From, Dest: string): Boolean;
+var
+  IdxFrom: Integer;
+  IdxDest: Integer;
+begin
+  IdxFrom := IndexOf(From);
+  IdxDest := IndexOf(Dest);
+  Result := Move(IdxFrom, IdxDest);
+end;
+
+function TTeams.Move(From, Dest: Integer): Boolean;
+var
+  Team: TTeam;
+  i: Integer;
+begin
+  Result := False;
+  if (From < 0) or (From > Count) then
+    Exit;
+  if (Dest < 0) or (Dest > Count) then
+    Exit;
+  if Dest = From then
+    Exit;
+
+  Team := FItems[From];
+  if From < Dest then
+  begin
+    for i := From + 1 to Dest do
+      FItems[i-1] := FItems[i];
+  end
+  else
+  begin
+    for i := From - 1 downto Dest do
+      FItems[i+1] := FItems[i];
+  end;
+  FItems[Dest] := Team;
+  Result := True;
 end;
 
 { TTeam }
@@ -289,6 +331,44 @@ begin
       Result := i;
       Break;
     end;
+end;
+
+function TTeam.Move(From, Dest: string): Boolean;
+var
+  IdxFrom: Integer;
+  IdxDest: Integer;
+begin
+  IdxFrom := IndexOf(From);
+  IdxDest := IndexOf(Dest);
+  Result := Move(IdxFrom, IdxDest);
+end;
+
+function TTeam.Move(From, Dest: Integer): Boolean;
+var
+  Units: TUnitTeam;
+  i: Integer;
+begin
+  Result := False;
+  if (From < 0) or (From > Count) then
+    Exit;
+  if (Dest < 0) or (Dest > Count) then
+    Exit;
+  if Dest = From then
+    Exit;
+
+  Units := FUnits[From];
+  if From < Dest then
+  begin
+    for i := From + 1 to Dest do
+      FUnits[i-1] := FUnits[i];
+  end
+  else
+  begin
+    for i := From - 1 downto Dest do
+      FUnits[i+1] := FUnits[i];
+  end;
+  FUnits[Dest] := Units;
+  Result := True;
 end;
 
 { TUnitTeam }

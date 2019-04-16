@@ -35,8 +35,9 @@ type
     class function CheckPlayer(Player: TPlayer; Char: TUnitList): TPlayerInfo; static;
     class function CheckMods(PlayerId: string): TModsInfo; static;
     class procedure QuickSort(var A: array of Integer; iLo, iHi: Integer); static;
-    class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent); static;
+    class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, OnClickBEdit, OnClickBDel: TNotifyEvent); static;
     class procedure CopyToClipboard(Text: string); static;
+    class function GetBaseFolder: string; static;
   end;
 
 implementation
@@ -208,14 +209,30 @@ begin
   end;
 end;
 
+class function TGenFunc.GetBaseFolder: string;
+begin
+  {$IFDEF MSWINDOWS}
+  Result := IncludeTrailingPathDelimiter(TPath.GetDirectoryName(ParamStr(0)));
+  {$ELSE}
+    {$IFDEF ANDROID}
+  Result := TPath.Combine(TPath.GetDocumentsPath, IncludeTrailingPathDelimiter('SWGOHApp'));
+    {$ELSE}
+  Result := TPath.Combine(TPath.GetSharedDownloadsPath, IncludeTrailingPathDelimiter('SWGOHApp'));
+    {$ENDIF}
+  {$ENDIF}
+  if not TDirectory.Exists(TPath.GetDirectoryName(Result)) then
+    TDirectory.CreateDirectory(TPath.GetDirectoryName(Result))
+end;
+
 class procedure TGenFunc.GetDefinedTeams(LB: TListBox; var Teams: TTeams;
-  OnChangeTeam, ListBoxItemClick, OnClickButton: TNotifyEvent);
+  OnChangeTeam, OnClickBEdit, OnClickBDel: TNotifyEvent);
 var
   L: TStringList;
   lbItem: TListBoxItem;
   i: Integer;
   j: Integer;
-  Button: TButton;
+  BDel: TButton;
+  BEdit: TButton;
   Fixed: string;
   NoFix: string;
 begin
@@ -226,13 +243,13 @@ begin
 
   Teams.Clear;
 
-  if not TFile.Exists(uTeams.cFileName) then
+  if not TFile.Exists(TGenFunc.GetBaseFolder + uTeams.cFileName) then
     Exit;
 
   // carreguem Json
   L := TStringList.Create;
   try
-    L.LoadFromFile(uTeams.cFileName);
+    L.LoadFromFile(TGenFunc.GetBaseFolder + uTeams.cFileName);
     Teams := TTeams.FromJsonString(L.Text);
   finally
     FreeAndNil(L);
@@ -276,15 +293,19 @@ begin
 
     if not LB.ShowCheckboxes then
     begin
-      lbItem.ItemData.Accessory := TListBoxItemData.TAccessory.aDetail;
-      lbItem.OnClick := ListBoxItemClick;
+      BDel := TButton.Create(lbItem);
+      BDel.Align := TAlignLayout.Right;
+      BDel.Width := 40;
+      BDel.StyleLookup := 'trashtoolbutton';
+      BDel.Parent := lbItem;
+      BDel.OnClick := OnClickBDel;
 
-      Button := TButton.Create(lbItem);
-      Button.Align := TAlignLayout.Right;
-      Button.Width := 40;
-      Button.StyleLookup := 'trashtoolbutton';
-      Button.Parent := lbItem;
-      Button.OnClick := OnClickButton;
+      BEdit := TButton.Create(lbItem);
+      BEdit.Align := TAlignLayout.Right;
+      BEdit.Width := 40;
+      BEdit.StyleLookup := 'composetoolbutton';
+      BEdit.Parent := lbItem;
+      BEdit.OnClick := OnClickBEdit;
     end;
 
     LB.AddObject(lbItem);
@@ -316,17 +337,7 @@ end;
 
 class function TGenFunc.GetIniName: string;
 begin
-  {$IFDEF MSWINDOWS}
-  Result := IncludeTrailingPathDelimiter(TPath.GetDirectoryName(ParamStr(0))) + 'Config.ini';
-  {$ELSE}
-    {$IFDEF ANDROID}
-  Result := TPath.Combine(TPath.GetDocumentsPath, IncludeTrailingPathDelimiter('SWGOHApp') + 'Config.ini');
-    {$ELSE}
-  Result := TPath.Combine(TPath.GetSharedDownloadsPath, IncludeTrailingPathDelimiter('SWGOHApp') + 'Config.ini');
-    {$ENDIF}
-  {$ENDIF}
-  if not TDirectory.Exists(TPath.GetDirectoryName(Result)) then
-    TDirectory.CreateDirectory(TPath.GetDirectoryName(Result))
+  Result := TGenFunc.GetBaseFolder + 'Config.ini';
 end;
 
 class procedure TGenFunc.QuickSort(var A: array of Integer; iLo, iHi: Integer);
