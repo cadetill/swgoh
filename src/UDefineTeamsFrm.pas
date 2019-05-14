@@ -239,7 +239,7 @@ end;
 
 function TDefineTeamsFrm.SetCaption: string;
 begin
-  Result := 'Teams Defined';
+  Result := 'Defined Teams';
 end;
 
 function TDefineTeamsFrm.ShowBackButton: Boolean;

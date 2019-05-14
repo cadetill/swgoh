@@ -8,21 +8,6 @@ object CheckTeamsFrm: TCheckTeamsFrm
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMasterStyle = 0
-  object mData: TMemo
-    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-    DataDetectorTypes = []
-    ReadOnly = True
-    Align = Client
-    Margins.Left = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
-    Margins.Bottom = 5.000000000000000000
-    Size.Width = 630.000000000000000000
-    Size.Height = 135.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 6
-    Viewport.Width = 626.000000000000000000
-    Viewport.Height = 131.000000000000000000
-  end
   object pName: TPanel
     Align = Top
     Margins.Left = 5.000000000000000000
@@ -118,6 +103,7 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Size.Height = 184.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
+    AllowDrag = True
     DisableFocusEffect = True
     ItemHeight = 50.000000000000000000
     DefaultItemStyles.ItemStyle = 'listboxitembottomdetail'
@@ -144,7 +130,7 @@ object CheckTeamsFrm: TCheckTeamsFrm
     Size.PlatformDefault = False
     TextSettings.HorzAlign = Center
     Text = 'lSteps'
-    TabOrder = 7
+    TabOrder = 6
   end
   object bToClbd: TButton
     Align = Bottom
@@ -156,5 +142,46 @@ object CheckTeamsFrm: TCheckTeamsFrm
     TabOrder = 1
     Text = 'Copy Teams to Clipboard'
     OnClick = bToClbdClick
+  end
+  object tcData: TTabControl
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 140.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 8
+    TabPosition = PlatformDefault
+    Sizes = (
+      640s
+      114s)
+    object TabItem1: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 70.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'All Teams'
+      ExplicitSize.cx = 70.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object mData: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        ReadOnly = True
+        Align = Client
+        Margins.Left = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Size.Width = 630.000000000000000000
+        Size.Height = 109.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 626.000000000000000000
+        Viewport.Height = 105.000000000000000000
+      end
+    end
   end
 end

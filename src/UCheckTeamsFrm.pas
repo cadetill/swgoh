@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  uInterfaces, uTeams, uGuild, uPlayer, FMX.ListBox, FMX.Layouts;
+  uInterfaces, uTeams, uGuild, uPlayer, FMX.ListBox, FMX.Layouts, FMX.TabControl;
 
 type
   TCheckTeamsFrm = class(TForm, IChildren)
@@ -23,10 +23,13 @@ type
     lFormat: TLabel;
     cbFormat: TComboBox;
     bToClbd: TButton;
+    tcData: TTabControl;
+    TabItem1: TTabItem;
     procedure bToClbdClick(Sender: TObject);
   private
     FTeams: TTeams;
 
+    procedure DeleteAllTabs;
     procedure CheckTeams;
     procedure CheckPlayerTeams(Player: TPlayer);
   public
@@ -71,6 +74,9 @@ begin
   // mostrem animació
   if Supports(Owner, IMainMenu, Intf)  then
     Intf.ShowAni(True);
+
+  // esborrem totes les pestanyes excepte la primera
+  DeleteAllTabs;
 
   lSteps.Text := 'Loading Data....';
 
@@ -123,14 +129,19 @@ end;
 
 procedure TCheckTeamsFrm.bToClbdClick(Sender: TObject);
 begin
-  TGenFunc.CopyToClipboard(mData.Lines.Text);
+  if tcData.ActiveTab.Index = 0 then
+    TGenFunc.CopyToClipboard(mData.Lines.Text)
+  else
+    TGenFunc.CopyToClipboard(TMemo(tcData.ActiveTab.FindComponent('m' + tcData.ActiveTab.Tag.ToString)).Lines.Text);
 end;
 
 procedure TCheckTeamsFrm.CheckPlayerTeams(Player: TPlayer);
 var
   i,j,k: Integer;
   Idx: Integer;
+  Idx1: Integer;
   TmpS: string;
+  TmpStr: string;
   Line: string;
   TmpI: Integer;
   SumTeam: Integer;
@@ -138,17 +149,24 @@ var
   Fixed: array of Integer;
   NonFixed: array of Integer;
   Speed: string;
+  Comp: TComponent;
 begin
   Line := Player.Data.Name;
 
-  // recorrem els diferents equips
-  for i := 0 to FTeams.Count do
+  // recorrem tots els equips definits
+  for i := 0 to lbTeams.Count - 1 do
   begin
+    if not lbTeams.ItemByIndex(i).IsChecked then
+      Continue;
+    Idx := FTeams.IndexOf(lbTeams.ItemByIndex(i).Text);
+    if Idx = -1 then
+      Continue;
+
     TmpS := '';
     SumTeam := 0;
     SumFixed := 0;
-    SetLength(Fixed, FTeams.Items[i].Count + 1);
-    SetLength(NonFixed, FTeams.Items[i].Count + 1);
+    SetLength(Fixed, FTeams.Items[Idx].Count + 1);
+    SetLength(NonFixed, FTeams.Items[Idx].Count + 1);
     for k := 0 to High(Fixed) do
     begin
       Fixed[k] := 0;
@@ -156,12 +174,12 @@ begin
     end;
 
     // per cada un dels equips, recorrem les unitats
-    for j := 0 to FTeams.Items[i].Count do
+    for j := 0 to FTeams.Items[Idx].Count do
     begin
       TmpI := 0;
-      Idx := Player.IndexOf(FTeams.Items[i].Units[j].Base_id);
+      Idx1 := Player.IndexOf(FTeams.Items[Idx].Units[j].Base_id);
 
-      if Idx = -1 then
+      if Idx1 = -1 then
       begin
         if cbFormat.ItemIndex = 0 then
           TmpS := TmpS + ';0'
@@ -171,34 +189,34 @@ begin
       end;
 
       // donem valor al gear
-      case Player.Units[Idx].Data.Gear_level of
-        12: TmpI := FTeams.Items[i].GetPointsG12;
-        11: TmpI := FTeams.Items[i].GetPointsG11;
-        10: TmpI := FTeams.Items[i].GetPointsG10;
+      case Player.Units[Idx1].Data.Gear_level of
+        12: TmpI := FTeams.Items[Idx].GetPointsG12;
+        11: TmpI := FTeams.Items[Idx].GetPointsG11;
+        10: TmpI := FTeams.Items[Idx].GetPointsG10;
         else TmpI := 0;
       end;
 
       // mirem les Zs
-      for k := 0 to FTeams.Items[i].Units[j].Count do
+      for k := 0 to FTeams.Items[Idx].Units[j].Count do
       begin
-        if Player.Units[Idx].Data.IndexOfZ(FTeams.Items[i].Units[j].Zetas[K]) <> -1 then
-          TmpI := TmpI + FTeams.Items[i].GetPointsZeta;
+        if Player.Units[Idx1].Data.IndexOfZ(FTeams.Items[Idx].Units[j].Zetas[K]) <> -1 then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsZeta;
       end;
 
       // mirem la velocitat
-      if Player.Units[Idx].Data.Stats.S5 >= (FTeams.Items[i].Units[j].Speed - 5) then
-        TmpI := TmpI + FTeams.Items[i].GetPointsSpeed;
+      if (FTeams.Items[Idx].Units[j].Speed <> 0) and (Player.Units[Idx1].Data.Stats.S5 >= (FTeams.Items[Idx].Units[j].Speed - 5)) then
+        TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed;
 
       Speed := '';
-      if FTeams.Items[i].Units[j].Speed > 0 then
-        Speed := ' / ' + Player.Units[Idx].Data.Stats.S5.ToString;
+      if FTeams.Items[Idx].Units[j].Speed > 0 then
+        Speed := ' / ' + Player.Units[Idx1].Data.Stats.S5.ToString;
 
       if cbFormat.ItemIndex = 0 then
         TmpS := TmpS + ';' + TmpI.ToString + Speed
       else
         TmpS := TmpS + #9 + TmpI.ToString + Speed;
 
-      if FTeams.Items[i].Units[j].Fixed then
+      if FTeams.Items[Idx].Units[j].Fixed then
         Fixed[j] := TmpI
       else
         NonFixed[j] := TmpI;
@@ -206,6 +224,8 @@ begin
 
     TGenFunc.QuickSort(Fixed, Low(Fixed), High(Fixed));
     TGenFunc.QuickSort(NonFixed, Low(NonFixed), High(NonFixed));
+
+    TmpStr := Player.Data.Name;
 
     TmpI := 0;
     for j := High(Fixed) downto 0 do
@@ -231,9 +251,19 @@ begin
       end;
     end;
     if cbFormat.ItemIndex = 0 then
-      Line := Line + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS
+    begin
+      Line := Line + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS;
+      TmpStr := TmpStr + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS;
+    end
     else
+    begin
       Line := Line + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpS;
+      TmpStr := TmpStr + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpS;
+    end;
+
+    Comp := tcData.FindComponent('t' + Idx.ToString).FindComponent('m' + Idx.ToString);
+    if Comp is TMemo then
+      TMemo(Comp).Lines.Add(TmpStr);
   end;
   mData.Lines.Add(Line);
 end;
@@ -246,9 +276,12 @@ var
   TmpS: string;
   TmpI: Integer;
   TmpTeam: string;
+  TmpStr: string;
   Speed: string;
   Idx: Integer;
   SumFixed: Integer;
+  Tab: TTabItem;
+  Memo: TMemo;
 begin
   if not TFile.Exists(eChkGuild.Text + '_guild.json') then
     Exit;
@@ -273,20 +306,34 @@ begin
     if Idx = -1 then
       Continue;
 
-    lSteps.Text := 'Checking Team ' + FTeams.Items[i].Name;
+    Tab := TTabItem.Create(tcData);
+    Tab.Parent := tcData;
+    Tab.Text := FTeams.Items[i].Name;
+    Tab.Name := 't' + Idx.ToString;
+    Tab.Tag := Idx;
+
+    Memo := TMemo.Create(Tab);
+    Memo.Parent := Tab;
+    Memo.Align := TAlignLayout.Client;
+    Memo.Text := '';
+    Memo.Name := 'm' + Idx.ToString;
+
+    lSteps.Text := 'Checking Team ' + FTeams.Items[Idx].Name;
 
     SumFixed := 0;
     TmpTeam := '';
     // recorrem els toons de l'equip
-    for j := 0 to FTeams.Items[i].Count do
+    for j := 0 to FTeams.Items[Idx].Count do
     begin
-      TmpI := FTeams.Items[i].GetPointsG12 + FTeams.Items[i].GetPointsSpeed;
-      for k := 0 to FTeams.Items[i].Units[j].Count do
-        TmpI := TmpI + FTeams.Items[i].GetPointsZeta;
+      TmpI := FTeams.Items[Idx].GetPointsG12;
+      if FTeams.Items[Idx].Units[j].Speed > 0 then
+        TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed;
+      for k := 0 to FTeams.Items[Idx].Units[j].Count do
+        TmpI := TmpI + FTeams.Items[Idx].GetPointsZeta;
 
       Speed := '';
-      if FTeams.Items[i].Units[j].Speed > 0 then
-        Speed := ' / ' + FTeams.Items[i].Units[j].Speed.ToString;
+      if FTeams.Items[Idx].Units[j].Speed > 0 then
+        Speed := ' / ' + FTeams.Items[Idx].Units[j].Speed.ToString;
 
       if TmpTeam <> '' then
       begin
@@ -296,42 +343,65 @@ begin
           TmpTeam := TmpTeam + #9;
       end;
 
-      if FTeams.Items[i].Units[j].Fixed then
+      if FTeams.Items[Idx].Units[j].Fixed then
       begin
         SumFixed := SumFixed + TmpI;
-        if FTeams.Items[i].Units[j].Alias = '' then
-          TmpTeam := TmpTeam + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+        if FTeams.Items[Idx].Units[j].Alias = '' then
+          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
         else
-          TmpTeam := TmpTeam + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
       end
       else
       begin
-        if FTeams.Items[i].Units[j].Alias = '' then
-          TmpTeam := TmpTeam + '*' + FTeams.Items[i].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+        if FTeams.Items[Idx].Units[j].Alias = '' then
+          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
         else
-          TmpTeam := TmpTeam + '*' + FTeams.Items[i].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
       end;
     end;
+
+    TmpStr := 'Player';
 
     if TmpS <> '' then
     begin
       if cbFormat.ItemIndex = 0 then
-        TmpS := TmpS + ';'
+      begin
+        TmpS := TmpS + ';';
+        TmpStr := TmpStr + ';';
+      end
       else
+      begin
         TmpS := TmpS + #9;
+        TmpStr := TmpStr + #9;
+      end;
     end;
-    TmpS := TmpS + FTeams.Items[i].Name + ' (' + FTeams.Items[i].Score.ToString + ')';
+    TmpS := TmpS + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + ')';
+    TmpStr := TmpStr + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + ')';
 
     if cbFormat.ItemIndex = 0 then
-      TmpS := TmpS + ';'
+    begin
+      TmpS := TmpS + ';';
+      TmpStr := TmpStr + ';';
+    end
     else
+    begin
       TmpS := TmpS + #9;
+      TmpStr := TmpStr + #9;
+    end;
     TmpS := TmpS + 'F.(' + SumFixed.ToString + ')';
+    TmpStr := TmpStr + 'F.(' + SumFixed.ToString + ')';
     if cbFormat.ItemIndex = 0 then
-      TmpS := TmpS + ';'
+    begin
+      TmpS := TmpS + ';';
+      TmpStr := TmpStr + ';';
+    end
     else
+    begin
       TmpS := TmpS + #9;
+      TmpStr := TmpStr + #9;
+    end;
     TmpS := TmpS + TmpTeam;
+    Memo.Lines.Add(TmpStr + TmpTeam);
   end;
 
   mData.Lines.Add(TmpS);
@@ -346,6 +416,14 @@ begin
   inherited;
 
   FTeams := TTeams.Create;
+end;
+
+procedure TCheckTeamsFrm.DeleteAllTabs;
+var
+  i: Integer;
+begin
+  for i := tcData.TabCount - 1 downto 1 do
+    tcData.Tabs[i].Free;
 end;
 
 destructor TCheckTeamsFrm.Destroy;

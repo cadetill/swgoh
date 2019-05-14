@@ -11,7 +11,7 @@ object HomeFrm: THomeFrm
   object lbUnits: TListBox
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Height = 448.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     DisableFocusEffect = True
@@ -19,7 +19,7 @@ object HomeFrm: THomeFrm
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     Viewport.Width = 640.000000000000000000
-    Viewport.Height = 480.000000000000000000
+    Viewport.Height = 448.000000000000000000
     object ListBoxGroupHeader1: TListBoxGroupHeader
       TextSettings.FontColor = claChocolate
       TextSettings.HorzAlign = Center
@@ -52,5 +52,16 @@ object HomeFrm: THomeFrm
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
     end
+  end
+  object bToClbd: TButton
+    Align = Bottom
+    CanFocus = False
+    Position.Y = 448.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Copy to Clipboard'
+    OnClick = bToClbdClick
   end
 end

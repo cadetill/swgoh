@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.Edit, FMX.SearchBox, FMX.Layouts, FMX.ListBox,
-  uUnit;
+  uUnit, FMX.StdCtrls;
 
 type
   THomeFrm = class(TForm)
@@ -15,6 +15,8 @@ type
     ListBoxGroupHeader1: TListBoxGroupHeader;
     ListBoxItem1: TListBoxItem;
     ListBoxItem2: TListBoxItem;
+    bToClbd: TButton;
+    procedure bToClbdClick(Sender: TObject);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -38,6 +40,22 @@ uses
 {$R *.fmx}
 
 { THomeFrm }
+
+procedure THomeFrm.bToClbdClick(Sender: TObject);
+var
+  i: Integer;
+  L: TStringList;
+begin
+  L := TStringList.Create;
+  try
+    for i := 0 to FChar.Count do
+      L.Add(FChar.Items[i].Name + #9 + FChar.Items[i].Multiplier.ToString);
+
+    TGenFunc.CopyToClipboard(L.Text);
+  finally
+    FreeAndNil(L);
+  end;
+end;
 
 constructor THomeFrm.Create(AOwner: TComponent);
 begin
