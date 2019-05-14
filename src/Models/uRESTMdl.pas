@@ -33,6 +33,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   uBase, uPlayer, uGuild, uAbilities, uCharacter, uShips, uMods, uGear, uGenFunc;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
@@ -72,6 +73,8 @@ begin
           Exit;
         Url := Format(cUrlGuild, [ExtraData]);
         FileName := ExtraData + '_guild.json';
+        if TFile.Exists(FileName) then
+          TFile.Delete(FileName);
       end;
     tcMods:
       begin
