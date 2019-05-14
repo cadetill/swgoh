@@ -286,17 +286,17 @@ end;
 
 function TTeam.GetPointsG10: Integer;
 begin
-  Result := 1;
+  Result := 0;
 end;
 
 function TTeam.GetPointsG11: Integer;
 begin
-  Result := 2;
+  Result := 1;
 end;
 
 function TTeam.GetPointsG12: Integer;
 begin
-  Result := 3;
+  Result := 2;
 end;
 
 function TTeam.GetPointsSpeed: Integer;
