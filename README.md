@@ -32,7 +32,7 @@ Build with RAD Studio 10.3
 
 Compiled:
 - Windows 32 bits
-- Windows 34 bits
+- Windows 64 bits
 
 Tested in 
 - Windows 10 64 bits
