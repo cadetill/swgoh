@@ -1,0 +1,130 @@
+x10 (3)
+Revan
+Traya
+DRevan
+
+x8 (23)
+HK
+C3PO
+Thrawn
+Enfys Nest
+Nihilus
+Sion
+Chewbacca
+Bastila
+GMYoda
+Bossk
+Kru
+Ezra
+hYoda
+Jolee
+Vandor Chewbacca
+DS Bastila
+Jango
+Embo
+Chirrut
+Baze
+Ventress
+MTalzin
+Zombie
+
+x5 (44)
+Soldado Sith
+Carth
+Juhani
+Ordo
+Vao
+Grievous
+B2
+B1
+GK
+RJT
+BB8
+R2
+Palpatine
+Vader
+CLS
+Han
+Qira
+L3
+Zaalbar
+Sonda
+Veers
+Starck
+DeathTrooper
+ShoreTrooper
+RangeTr
+MagmaTr
+Jyn
+Daka
+Boba
+Dengar
+Finn
+Old Ben
+Hera
+Sabine
+Chopper
+Kannan
+Oficial FO
+Verdugo
+Soldado FO
+Rex
+Wampa
+SunFac
+Espia
+Soldado Geo
+
+x2 (34)
+Joven Han
+Joven Lando
+Tarkin
+Dooku
+Maul
+Piloto Tie
+SnowTr
+Kylo Ren
+Greedo
+Cad Bane
+Aurra
+Ig88
+Ackbar
+Biggs
+Cassian
+K2SO
+Zeb
+Poe
+Soldado Resist
+Holdo
+Rey
+Visas
+Barris
+Windu
+Anakin
+Fives
+Sargento Clon
+Chirpa
+Wicket
+Logray
+Paploo
+Elder
+Aayla
+Qui gon
+
+x1 (17)
+Savage
+Asesina Sith
+Guardia Real
+StormTrooper
+Piloto Tie FO
+Zam Wesell
+Ashoka Fulcrum
+Capt. Han
+Leia
+Wedge
+ROLO
+Talia
+Acólita
+Espíritu
+Darth Sidious
+Plo Koon
+T3
