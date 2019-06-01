@@ -1,57 +1,67 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckTeamsFrm.pas',0,1,208,29,217,0,0,,{1,317,1}{2,165,1}
-File_1=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uCharacter.pas',0,1,1,29,12,0,0,,
-File_2=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uTeams.pas',0,1,52,14,52,0,0,,
-File_3=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas',0,1,179,14,194,0,0,,{1,164,1}{2,36,14}
-File_4=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,8265,1,8294,0,0,,{1,8949,1}
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\SOURCE\RTL\SYS\System.pas',0,1,10462,1,10486,0,0,,
-File_6=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckPlayerFrm.pas',0,1,76,1,95,0,0,,
-File_7=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineGearFrm.pas',0,1,56,1,75,0,0,,
-File_8=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGuildsFrm.pas',0,1,1,1,1,0,0,,{2
-File_9=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineTeamsFrm.pas',0,1,62,38,49,0,0,,
-File_10=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGenFunc.pas',0,1,212,1,221,0,0,,
-File_11=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\source\Indy10\Protocols\IdSSLOpenSSL.pas',0,1,1,1,1,0,0,,
-File_12=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uAbilities.pas',0,1,123,1,127,0,0,,
-File_13=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uPlayer.pas',0,1,1,1,1,0,0,,
-File_14=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uMods.pas',0,1,1,1,1,0,0,,
+File_0=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckPlayerFrm.pas',0,1,76,1,95,0,0,,
+File_1=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineGearFrm.pas',0,1,56,1,75,0,0,,
+File_2=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uCharacter.pas',0,1,1,1,1,0,0,,
+File_3=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGuildsFrm.pas',0,1,1,1,1,0,0,,{2
+File_4=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckTeamsFrm.pas',0,1,1,1,1,0,0,,{1
+File_5=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineTeamsFrm.pas',0,1,62,38,49,0,0,,
+File_6=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGenFunc.pas',0,1,212,1,221,0,0,,
+File_7=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\source\Indy10\Protocols\IdSSLOpenSSL.pas',0,1,1,1,1,0,0,,
+File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\SOURCE\RTL\SYS\System.pas',0,1,24829,1,24853,0,0,,
+File_9=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uAbilities.pas',0,1,123,1,127,0,0,,
+File_10=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uPlayer.pas',0,1,1,1,1,0,0,,
+File_11=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uMods.pas',0,1,1,1,1,0,0,,
+File_12=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\source\fmx\FMX.ListBox.pas',0,1,2626,1,2654,0,0,,
+File_13=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,972,3,996,0,0,,{1
+File_14=TSourceModule,'c:\program files (x86)\embarcadero\studio\19.0\source\rtl\common\System.IOUtils.pas',0,1,3664,14,3674,0,0,,
 
 [Modules]
-Module0=D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas
-Module1=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas
-Module2=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas
-Module3=default.htm
-Module4=D:\Documents\Dropbox\Programacio\SWGOH\src\UHomeFrm.pas
-Module5=documentation.htm
-Count=6
+Module0=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas
+Module1=default.htm
+Module2=D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas
+Module3=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uTeams.pas
+Module4=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas
+Module5=D:\Documents\Dropbox\Programacio\SWGOH\src\UHomeFrm.pas
+Module6=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas
+Module7=documentation.htm
+Count=8
 EditWindowCount=1
 
-[D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas]
-ModuleType=TSourceModule
-
 [D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas]
-ModuleType=TSourceModule
-
-[D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas]
 ModuleType=TSourceModule
 
 [default.htm]
 ModuleType=TURLModule
 
+[D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas]
+ModuleType=TSourceModule
+
+[D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uTeams.pas]
+ModuleType=TSourceModule
+
+[D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas]
+ModuleType=TSourceModule
+
 [D:\Documents\Dropbox\Programacio\SWGOH\src\UHomeFrm.pas]
+ModuleType=TSourceModule
+
+[D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas]
 ModuleType=TSourceModule
 
 [documentation.htm]
 ModuleType=TURLModule
 
 [EditWindow0]
-ViewCount=6
-CurrentEditView=D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas
+ViewCount=8
+CurrentEditView=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
 View5=5
+View6=6
+View7=7
 PercentageSizes=1
 Create=1
 Visible=1
@@ -70,13 +80,13 @@ BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
 LeftPanelSize=1896
 LeftPanelClients=PropertyInspector,DockSite3
-LeftPanelData=00000800010100000000081000000000000001680700000000000001000000005C0E000009000000446F636B53697465330100000000801C00001100000050726F7065727479496E73706563746F72FFFFFFFF
+LeftPanelData=00000800010100000000781300000000000001680700000000000001000000005C0E000009000000446F636B536974653301000000009D2200001100000050726F7065727479496E73706563746F72FFFFFFFF
 RightPanelSize=2000
 RightPanelClients=DockSite2,DockSite4
-RightPanelData=00000800010100000000081000000000000001D00700000000000001000000004412000009000000446F636B53697465320100000000801C000009000000446F636B5369746534FFFFFFFF
-BottomPanelSize=1509
-BottomPanelClients=MessageView,DockSite1
-BottomPanelData=0000080001020100000009000000446F636B5369746531724500000000000002E5050000000000000100000000724500000F0000004D65737361676556696577466F726DFFFFFFFF
+RightPanelData=00000800010100000000781300000000000001D00700000000000001000000004412000009000000446F636B536974653201000000009D22000009000000446F636B5369746534FFFFFFFF
+BottomPanelSize=0
+BottomPanelClients=DockSite1,MessageView
+BottomPanelData=0000080001020200000009000000446F636B53697465310F0000004D65737361676556696577466F726D1534000000000000022606000000000000FFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779F1D00000000000002F206000000000000FFFFFFFF
@@ -92,37 +102,59 @@ WelcomePageURL=bds:/documentation.htm
 [View2]
 CustomEditViewType=TEditView
 Module=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas
-CursorX=14
-CursorY=260
-TopLine=242
+CursorX=27
+CursorY=99
+TopLine=97
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\UMainFrm.pas
+EditViewName=Borland.FormDesignerView
 
 [View3]
 CustomEditViewType=TEditView
 Module=D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas
-CursorX=1
-CursorY=102
-TopLine=90
+CursorX=33
+CursorY=83
+TopLine=57
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas
+EditViewName=Borland.FormDesignerView
 
 [View4]
 CustomEditViewType=TEditView
 Module=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas
-CursorX=1
-CursorY=132
-TopLine=106
+CursorX=41
+CursorY=40
+TopLine=24
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uGear.pas
 
 [View5]
+CustomEditViewType=TEditView
+Module=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uTeams.pas
+CursorX=3
+CursorY=359
+TopLine=340
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uTeams.pas
+
+[View6]
+CustomEditViewType=TEditView
+Module=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas
+CursorX=23
+CursorY=333
+TopLine=318
+LeftCol=1
+Elisions=
+Bookmarks={1,164,1}{2,36,14}
+EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\Classes\uUnit.pas
+
+[View7]
 CustomEditViewType=TEditView
 Module=D:\Documents\Dropbox\Programacio\SWGOH\src\UHomeFrm.pas
 CursorX=31
@@ -137,8 +169,7 @@ EditViewName=D:\Documents\Dropbox\Programacio\SWGOH\src\UHomeFrm.pas
 Count=0
 
 [Watches]
-Count=1
-Watch0='FGear.Items[IdxG]',256,0,18,1,0,'Watches',1
+Count=0
 
 [WatchWindow]
 WatchColumnWidth=120
@@ -227,18 +258,18 @@ StayOnTop=0
 [MessageView]
 PercentageSizes=1
 Create=1
-Visible=1
+Visible=0
 Docked=1
 State=0
 Left=0
 Top=18
-Width=10000
-Height=1394
+Width=2771
+Height=1413
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=10000
-ClientHeight=1394
-TBDockHeight=1394
+ClientWidth=2771
+ClientHeight=1413
+TBDockHeight=1413
 LRDockWidth=2771
 Dockable=1
 StayOnTop=0
@@ -252,11 +283,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=2548
+Height=4173
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=2548
+ClientHeight=4173
 TBDockHeight=7154
 LRDockWidth=2000
 Dockable=1
@@ -289,14 +320,14 @@ Docked=0
 State=0
 Left=0
 Top=0
-Width=1375
-Height=4933
+Width=1932
+Height=7029
 MaxLeft=-5
 MaxTop=-10
-ClientWidth=1292
-ClientHeight=4558
-TBDockHeight=4933
-LRDockWidth=1375
+ClientWidth=1849
+ClientHeight=6654
+TBDockHeight=7029
+LRDockWidth=1932
 Dockable=1
 StayOnTop=0
 
@@ -309,16 +340,16 @@ State=0
 Left=0
 Top=415
 Width=1896
-Height=3587
+Height=5212
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
-ClientHeight=3587
-TBDockHeight=9010
+ClientHeight=5212
+TBDockHeight=9029
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
-SplitPos=111
+SplitPos=116
 
 [ClassBrowserTool]
 PercentageSizes=1
@@ -386,11 +417,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=5962
 LRDockWidth=2510
 Dockable=1
@@ -545,11 +576,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1000
+Height=1240
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1000
+ClientHeight=1240
 TBDockHeight=2317
 LRDockWidth=2823
 Dockable=1
@@ -610,11 +641,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=4885
 LRDockWidth=7151
 Dockable=1
@@ -788,11 +819,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=4885
 LRDockWidth=5307
 Dockable=1
@@ -884,7 +915,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=4644
-TBDockHeight=9010
+TBDockHeight=9029
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
@@ -908,7 +939,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
 ClientHeight=3606
-TBDockHeight=9010
+TBDockHeight=9029
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
@@ -927,12 +958,12 @@ State=0
 Left=0
 Top=523
 Width=2000
-Height=2548
+Height=4173
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=2548
-TBDockHeight=9010
+ClientHeight=4173
+TBDockHeight=9029
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0

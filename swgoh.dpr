@@ -28,7 +28,9 @@ uses
   UBaseCheckFrm in 'src\Bases\UBaseCheckFrm.pas' {BaseCheckFrm},
   uGear in 'src\Classes\uGear.pas',
   UCheckTeamsFrm in 'src\UCheckTeamsFrm.pas' {CheckTeamsFrm},
-  UCompPlayersFrm in 'src\UCompPlayersFrm.pas' {CompPlayersFrm};
+  UCompPlayersFrm in 'src\UCompPlayersFrm.pas' {CompPlayersFrm},
+  UDefineGearFrm in 'src\UDefineGearFrm.pas' {DefineGearFrm},
+  UCheckGearFrm in 'src\UCheckGearFrm.pas' {CheckGearFrm};
 
 {$R *.res}
 
