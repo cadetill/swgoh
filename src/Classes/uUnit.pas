@@ -30,11 +30,16 @@ type
   private
     FGear: TArray<string>;
     FTier: Extended;
+
+    function GetCount: Integer;
   public
+    function IndexOf(BaseId: string): Integer;
+
     class function FromJsonString(AJsonString: string): TGear_levels;
 
     property Gear: TArray<string> read FGear write FGear;
     property Tier: Extended read FTier write FTier;
+    property Count: Integer read GetCount;
   end;
 
   TGear = class(TBase)
@@ -321,6 +326,24 @@ end;
 class function TGear_levels.FromJsonString(AJsonString: string): TGear_levels;
 begin
   Result := TJson.JsonToObject<TGear_levels>(AJsonString);
+end;
+
+function TGear_levels.GetCount: Integer;
+begin
+  Result := High(FGear);
+end;
+
+function TGear_levels.IndexOf(BaseId: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to Count do
+    if SameText(FGear[i], BaseId) then
+    begin
+      Result := i;
+      Break;
+    end;
 end;
 
 { TGear }

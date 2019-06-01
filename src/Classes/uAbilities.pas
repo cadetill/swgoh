@@ -124,8 +124,8 @@ function TAbilities.IndexOf(BaseId: string): Integer;
 var
   i: Integer;
 begin
-  Result := 0;
-  for i := 1 to Count do
+  Result := -1;
+  for i := 0 to Count do
     if SameText(FItems[i].Base_Id, BaseId) then
     begin
       Result := i;

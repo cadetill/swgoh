@@ -38,6 +38,8 @@ type
     class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, OnClickBEdit, OnClickBDel: TNotifyEvent); static;
     class procedure CopyToClipboard(Text: string); static;
     class function GetBaseFolder: string; static;
+    class function GetImgFolder: string; static;
+    class procedure DownloadImgFromWeb(Url, FileName: string); static;
   end;
 
 implementation
@@ -45,6 +47,7 @@ implementation
 uses
   uIniFiles, uMods, uMessage,
   System.IOUtils, System.SysUtils,
+  IdHTTP, IdSSLOpenSSL,
   FMX.StdCtrls, FMX.Types, FMX.Platform;
 
 { TGenFunc }
@@ -209,6 +212,44 @@ begin
   end;
 end;
 
+class procedure TGenFunc.DownloadImgFromWeb(Url, FileName: string);
+var
+  ImgHTTP: TIdHTTP;
+//  SSLHandler: TIdSSLIOHandlerSocketOpenSSL;
+  MS: TMemoryStream;
+begin
+  ImgHTTP := nil;
+//  SSLHandler := nil;
+  MS := nil;
+
+  try
+    MS := TMemoryStream.Create;
+    ImgHTTP := TIdHTTP.Create(nil);
+    ImgHTTP.ReadTimeout := 180000;//set read timeout to 3 minutes
+    ImgHTTP.Request.ContentType := 'text/xml;charset=UTF-8';
+    ImgHTTP.Request.Accept := 'text/xml';
+    ImgHTTP.Request.AcceptEncoding := 'gzip,deflate';
+    ImgHTTP.HTTPOptions := [];
+
+{
+    SSLHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    SSLHandler.SSLOptions.SSLVersions := [sslvTLSv1_1, sslvTLSv1_2];
+    ImgHTTP.IOHandler := SSLHandler;
+}
+    try
+      ImgHTTP.Get(Url, MS);
+      MS.SaveToFile(FileName);
+    except
+      on E: EIdHTTPProtocolException do
+        MS.Clear;
+    end;
+  finally
+    FreeAndNil(MS);
+//    FreeAndNil(SSLHandler);
+    FreeAndNil(ImgHTTP);
+  end;
+end;
+
 class function TGenFunc.GetBaseFolder: string;
 begin
   {$IFDEF MSWINDOWS}
@@ -333,6 +374,11 @@ begin
     loopCount := loopCount + 1;
   end;
   Result := sField;
+end;
+
+class function TGenFunc.GetImgFolder: string;
+begin
+  Result := IncludeTrailingPathDelimiter(TGenFunc.GetBaseFolder + 'Images');
 end;
 
 class function TGenFunc.GetIniName: string;

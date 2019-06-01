@@ -32,6 +32,8 @@ type
     FTier: Extended;
     FUrl: string;
     FAlias: string;
+    FToCheck: Boolean;
+
     function GetCount: Integer;
   public
     destructor Destroy; override;
@@ -48,6 +50,7 @@ type
     property Tier: Extended read FTier write FTier;
     property Url: string read FUrl write FUrl;
     property Alias: string read FAlias write FAlias;
+    property ToCheck: Boolean read FToCheck write FToCheck;
     property Count: Integer read GetCount;
   end;
 
@@ -97,8 +100,8 @@ function TGear.IndexOf(BaseId: string): Integer;
 var
   i: Integer;
 begin
-  Result := 0;
-  for i := 1 to Count do
+  Result := -1;
+  for i := 0 to Count do
     if SameText(FItems[i].Base_Id, BaseId) then
     begin
       Result := i;
