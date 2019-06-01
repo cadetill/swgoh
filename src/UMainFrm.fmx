@@ -2,7 +2,7 @@ object MainFrm: TMainFrm
   Left = 0
   Top = 0
   Caption = 'Form2'
-  ClientHeight = 480
+  ClientHeight = 544
   ClientWidth = 640
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,7 +11,7 @@ object MainFrm: TMainFrm
   object pContent: TPanel
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 432.000000000000000000
+    Size.Height = 496.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
   end
@@ -73,78 +73,194 @@ object MainFrm: TMainFrm
     MasterButton = bMultiView
     Mode = Drawer
     Size.Width = 250.000000000000000000
-    Size.Height = 432.000000000000000000
+    Size.Height = 496.000000000000000000
     Size.PlatformDefault = False
-    Visible = False
     TabOrder = 1
-    object bGetUnitsWeb: TButton
-      Align = Top
+    object lbMenu: TListBox
+      Align = Client
       Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 6
-      Text = 'Get Units From Web'
-      OnClick = bGetUnitsWebClick
-    end
-    object bSetToSum: TButton
-      Align = Top
-      Position.Y = 60.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 5
-      Text = 'Set Values To Sum'
-      OnClick = bSetToSumClick
-    end
-    object bDefineTeams: TButton
-      Align = Top
-      Position.Y = 120.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 4
-      Text = 'Define Teams'
-      OnClick = bDefineTeamsClick
-    end
-    object bCheckPlayer: TButton
-      Align = Top
-      Position.Y = 240.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 3
-      Text = 'Check Player'
-      OnClick = bCheckPlayerClick
-    end
-    object bComparePlayers: TButton
-      Align = Top
-      Position.Y = 180.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 2
-      Text = 'Compare Players'
-      OnClick = bComparePlayersClick
-    end
-    object bCheckGuilds: TButton
-      Align = Top
-      Position.Y = 300.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      Text = 'Check Guilds'
-      OnClick = bCheckGuildsClick
-    end
-    object bCheckTeams: TButton
-      Align = Top
-      Position.Y = 360.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 60.000000000000000000
+      Size.Height = 496.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      Text = 'Check Teams'
-      OnClick = bCheckTeamsClick
+      DisableFocusEffect = True
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      Viewport.Width = 250.000000000000000000
+      Viewport.Height = 496.000000000000000000
+      object lbiGetInfo: TListBoxGroupHeader
+        TextSettings.HorzAlign = Center
+        StyledSettings = [Family, Size, Style, FontColor]
+        Size.Width = 230.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Text = 'Getting Information'
+      end
+      object lbiGetDataWeb: TListBoxItem
+        Position.Y = 30.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object bGetDataWeb: TButton
+          Align = Client
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Get Data From Web'
+          OnClick = bGetDataWebClick
+        end
+      end
+      object lbiConfig: TListBoxGroupHeader
+        TextSettings.HorzAlign = Center
+        StyledSettings = [Family, Size, Style, FontColor]
+        Position.Y = 90.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 8
+        Text = 'Configuration'
+      end
+      object lbiSetToSum: TListBoxItem
+        Position.Y = 120.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object bSetToSum: TButton
+          Align = Client
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Set Values To Sum'
+          OnClick = bSetToSumClick
+        end
+      end
+      object lbiDefineTeams: TListBoxItem
+        Position.Y = 180.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        object bDefineTeams: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Define Teams'
+          OnClick = bDefineTeamsClick
+        end
+      end
+      object lbiDefineGear: TListBoxItem
+        Position.Y = 240.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 10
+        object bDefineGear: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Define Gear'
+          OnClick = bDefineGearClick
+        end
+      end
+      object lbiChecks: TListBoxGroupHeader
+        TextSettings.HorzAlign = Center
+        StyledSettings = [Family, Size, Style, FontColor]
+        Position.Y = 300.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 9
+        Text = 'Checks'
+      end
+      object lbiComparePlayers: TListBoxItem
+        Position.Y = 330.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        object bComparePlayers: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Compare Players'
+          OnClick = bComparePlayersClick
+        end
+      end
+      object lbiCheckPlayer: TListBoxItem
+        Position.Y = 390.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 4
+        object bCheckPlayer: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Check Player'
+          OnClick = bCheckPlayerClick
+        end
+      end
+      object lbiCheckGuilds: TListBoxItem
+        Position.Y = 450.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        object bCheckGuilds: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Check Guilds'
+          OnClick = bCheckGuildsClick
+        end
+      end
+      object lbiCheckTeams: TListBoxItem
+        Position.Y = 510.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 6
+        object bCheckTeams: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Check Teams'
+          OnClick = bCheckTeamsClick
+        end
+      end
+      object lbiCheckGear: TListBoxItem
+        Position.Y = 570.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 11
+        object bCheckGear: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Check Gear'
+          OnClick = bCheckGearClick
+        end
+      end
     end
   end
 end

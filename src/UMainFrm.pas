@@ -20,7 +20,7 @@ type
 
   TMainFrm = class(TForm, IMainMenu)
     mvMenu: TMultiView;
-    bGetUnitsWeb: TButton;
+    bGetDataWeb: TButton;
     pContent: TPanel;
     tbHeader: TToolBar;
     bBack: TButton;
@@ -34,8 +34,23 @@ type
     lHeader: TLabel;
     bOk: TButton;
     bCheckTeams: TButton;
+    lbMenu: TListBox;
+    lbiGetDataWeb: TListBoxItem;
+    lbiSetToSum: TListBoxItem;
+    lbiDefineTeams: TListBoxItem;
+    lbiComparePlayers: TListBoxItem;
+    lbiCheckPlayer: TListBoxItem;
+    lbiCheckGuilds: TListBoxItem;
+    lbiCheckTeams: TListBoxItem;
+    lbiGetInfo: TListBoxGroupHeader;
+    lbiConfig: TListBoxGroupHeader;
+    lbiChecks: TListBoxGroupHeader;
+    lbiDefineGear: TListBoxItem;
+    bDefineGear: TButton;
+    lbiCheckGear: TListBoxItem;
+    bCheckGear: TButton;
     procedure bBackClick(Sender: TObject);
-    procedure bGetUnitsWebClick(Sender: TObject);
+    procedure bGetDataWebClick(Sender: TObject);
     procedure bSetToSumClick(Sender: TObject);
     procedure bDefineTeamsClick(Sender: TObject);
     procedure bCheckPlayerClick(Sender: TObject);
@@ -43,6 +58,8 @@ type
     procedure bCheckGuildsClick(Sender: TObject);
     procedure bComparePlayersClick(Sender: TObject);
     procedure bCheckTeamsClick(Sender: TObject);
+    procedure bDefineGearClick(Sender: TObject);
+    procedure bCheckGearClick(Sender: TObject);
   private
     FFrmList: TObjectList<TCustomForm>;
 
@@ -64,7 +81,7 @@ implementation
 
 uses
   uRESTMdl, UHomeFrm, UToSumFrm, UDefineTeamsFrm, UCheckPlayerFrm, UCheckGuildsFrm,
-  UCheckTeamsFrm, UCompPlayersFrm,
+  UCheckTeamsFrm, UCompPlayersFrm, UDefineGearFrm, UCheckGearFrm,
   System.JSON.Serializers;
 
 {$R *.fmx}
@@ -75,6 +92,11 @@ begin
     PopForm
   else
     Close;
+end;
+
+procedure TMainFrm.bCheckGearClick(Sender: TObject);
+begin
+  CreateForm(TCheckGearFrm, nil);
 end;
 
 procedure TMainFrm.bCheckGuildsClick(Sender: TObject);
@@ -97,12 +119,17 @@ begin
   CreateForm(TCompPlayersFrm, nil);
 end;
 
+procedure TMainFrm.bDefineGearClick(Sender: TObject);
+begin
+  CreateForm(TDefineGearFrm, nil);
+end;
+
 procedure TMainFrm.bDefineTeamsClick(Sender: TObject);
 begin
   CreateForm(TDefineTeamsFrm, nil);
 end;
 
-procedure TMainFrm.bGetUnitsWebClick(Sender: TObject);
+procedure TMainFrm.bGetDataWebClick(Sender: TObject);
 begin
   mvMenu.HideMaster;
   ShowAni(True);

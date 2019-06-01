@@ -1,0 +1,74 @@
+object DefineGearFrm: TDefineGearFrm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lbGears: TListBox
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 448.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 422.000000000000000000
+    object ListBoxItem1: TListBoxItem
+      ItemData.Detail = 'detail'
+      ItemData.Accessory = aDetail
+      TabOrder = 0
+      Text = 'test'
+    end
+    object ListBoxItem2: TListBoxItem
+      ItemData.Detail = 'demo 2'
+      ItemData.Accessory = aCheckmark
+      Position.Y = 19.000000000000000000
+      TabOrder = 1
+      Text = 'test 2'
+    end
+    object SearchBox1: TSearchBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 0
+      Size.Width = 636.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object Panel1: TPanel
+    Align = Bottom
+    Position.Y = 448.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object bToClbd: TButton
+      Align = Client
+      CanFocus = False
+      Margins.Right = 5.000000000000000000
+      Size.Width = 635.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Copy to Clipboard'
+    end
+    object cbShowImages: TCheckBox
+      Align = Right
+      Position.X = 520.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Show Images'
+      Visible = False
+      OnClick = cbShowImagesClick
+    end
+  end
+end

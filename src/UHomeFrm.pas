@@ -99,7 +99,7 @@ begin
     TmpS := List.Items[Pos].Name
   else
     TmpS := List.Items[Pos].Alias;
-  TDialogService.InputQuery('Set Multiplier', ['Multiplier', 'Alias'], [List.Items[Pos].Multiplier.ToString, TmpS],
+  TDialogService.InputQuery('Configuration', ['Multiplier', 'Alias'], [List.Items[Pos].Multiplier.ToString, TmpS],
     procedure(const AResult: TModalResult; const AValues: array of string)
     var
       TmpInt: Integer;
