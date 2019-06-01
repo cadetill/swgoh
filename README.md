@@ -14,17 +14,6 @@ In this program, you will see:
 
 ---
 
-Build with RAD Studio 10.3
-
-Compiled:
-- Windows 32 bits
-- Windows 34 bits
-
-Tested in 
-- Windows 10 64 bits
-
----
-
 # Features
 
 You can:
@@ -36,3 +25,15 @@ You can:
 - Check a whole guild
 - Check defined teams from a guild
 - Check defined gear from a character
+
+---
+
+Build with RAD Studio 10.3
+
+Compiled:
+- Windows 32 bits
+- Windows 34 bits
+
+Tested in 
+- Windows 10 64 bits
+
