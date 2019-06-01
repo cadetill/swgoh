@@ -22,3 +22,17 @@ Compiled:
 
 Tested in 
 - Windows 10 64 bits
+
+---
+
+# Features
+
+You can:
+- Get data from web (get Ships, Characters, Gears and Abilities info)
+- Define teams to control (characters, zetas, speed, gear, stars,...)
+- Define gear to check on toons (to know what gear this toon need)
+- Compare two players
+- Check a single player to get their stats
+- Check a whole guild
+- Check defined teams from a guild
+- Check defined gear from a character
