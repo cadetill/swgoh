@@ -16,13 +16,15 @@ const
   cUrlGear = 'https://swgoh.gg/api/gear/';
 
 type
-  TTypeClass = (tcUnits, tcPlayer, tcGuild, tcAbilities, tcCharacters, tcShips, tcMods, tcGear);
+  TTypeClass = (tcUnits, tcPlayer, tcGuild, tcAbilities, tcCharacters, tcShips,
+    tcMods, tcGear, tcURL);
 
   TRESTMdl = class(TDataModule)
     RESTClient1: TRESTClient;
     RESTRequest1: TRESTRequest;
     RESTResponse1: TRESTResponse;
   private
+    function GetHTML(Url: string; out HTML: string): Boolean;
   public
     function LoadData(TypeClass: TTypeClass; ExtraData: string = ''): string;
   end;
@@ -33,12 +35,40 @@ var
 implementation
 
 uses
-  System.IOUtils,
+  System.IOUtils, System.Net.HttpClientComponent, System.Net.HttpClient,
   uBase, uPlayer, uGuild, uAbilities, uCharacter, uShips, uMods, uGear, uGenFunc;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
+
 {$R *.dfm}
+
 { TRESTMdl }
+
+function TRESTMdl.GetHTML(Url: string; out HTML: string): Boolean;
+var
+  Client: TNetHTTPClient;
+  Request: TNetHTTPRequest;
+  Resp: IHTTPResponse;
+begin
+  HTML := '';
+  Client := nil;
+  Request := nil;
+  try
+    Client := TNetHTTPClient.Create(nil);
+    Request := TNetHTTPRequest.Create(nil);
+
+    Request.Client := Client;
+    Request.URL := Url;
+    Request.MethodString := 'GET';
+    Resp := Request.Execute;
+    Result := Resp.StatusCode = 200;
+    if Result then
+      HTML := Resp.ContentAsString;
+  finally
+    FreeAndNil(Client);
+    FreeAndNil(Request);
+  end;
+end;
 
 function TRESTMdl.LoadData(TypeClass: TTypeClass; ExtraData: string): string;
 var
@@ -102,6 +132,14 @@ begin
       begin
         Url := cUrlGear;
         FileName := TGenFunc.GetBaseFolder + uGear.cFileName;
+      end;
+    tcURL:
+      begin
+        if ExtraData = '' then
+          Exit;
+        if not GetHTML(ExtraData, Result) then
+          Result := '-1';
+        Exit;
       end;
   end;
 

@@ -7,7 +7,6 @@ object RESTMdl: TRESTMdl
     AcceptCharset = 'UTF-8, *;q=0.8'
     BaseURL = 'https://swgoh.gg/api/characters'
     Params = <>
-    HandleRedirects = True
     RaiseExceptionOn500 = False
     Left = 87
     Top = 8
