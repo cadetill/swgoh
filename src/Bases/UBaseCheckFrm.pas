@@ -68,11 +68,12 @@ begin
   if eID.Text = '' then
     Exit;
 
-  if Pos('http', eID.Text) <> 0 then
-    eID.Text := TGenFunc.GetField(eID.Text, 5, '/');
+  if Pos('http', eID.Text) = 0 then
+    Exit;
 
   lbItem := TListBoxItem.Create(lbID);
-  lbItem.Text := eID.Text;
+  lbItem.Text := TGenFunc.GetField(eID.Text, 5, '/');
+  lbItem.TagString := eID.Text;
 
   Button := TButton.Create(lbItem);
   Button.Align := TAlignLayout.Right;
