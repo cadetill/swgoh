@@ -1,10 +1,10 @@
 inherited CheckGuildsFrm: TCheckGuildsFrm
   DesignerMasterStyle = 0
   inherited pId: TPanel
-    TabOrder = 1
+    TabOrder = 2
   end
   inherited lbID: TListBox
-    TabOrder = 2
+    TabOrder = 3
     Viewport.Width = 626.000000000000000000
     Viewport.Height = 91.000000000000000000
   end
@@ -12,13 +12,13 @@ inherited CheckGuildsFrm: TCheckGuildsFrm
     Position.Y = 217.000000000000000000
   end
   inherited mData: TMemo
-    Size.Height = 232.000000000000000000
+    Size.Height = 200.000000000000000000
     TabOrder = 6
     Viewport.Width = 630.000000000000000000
-    Viewport.Height = 232.000000000000000000
+    Viewport.Height = 200.000000000000000000
   end
   inherited lSteps: TLabel
-    TabOrder = 11
+    TabOrder = 18
   end
   object lFormat: TLabel
     Align = Top
@@ -39,6 +39,7 @@ inherited CheckGuildsFrm: TCheckGuildsFrm
     Items.Strings = (
       'Csv'
       'Tab separator')
+    ItemIndex = 1
     Margins.Left = 10.000000000000000000
     Margins.Right = 10.000000000000000000
     Position.X = 10.000000000000000000

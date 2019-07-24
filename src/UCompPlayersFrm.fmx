@@ -10,7 +10,4 @@ inherited CompPlayersFrm: TCompPlayersFrm
     Viewport.Width = 630.000000000000000000
     Viewport.Height = 262.000000000000000000
   end
-  inherited bToClbd: TButton
-    OnClick = nil
-  end
 end

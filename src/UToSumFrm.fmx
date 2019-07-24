@@ -2,518 +2,1070 @@ object ToSumFrm: TToSumFrm
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 584
-  ClientWidth = 640
+  ClientHeight = 788
+  ClientWidth = 666
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMasterStyle = 0
-  object GridPanelLayout1: TGridPanelLayout
+  object tcToSum: TTabControl
     Align = Client
-    Size.Width = 640.000000000000000000
-    Size.Height = 584.000000000000000000
+    Size.Width = 666.000000000000000000
+    Size.Height = 788.000000000000000000
     Size.PlatformDefault = False
+    TabIndex = 0
     TabOrder = 0
-    ColumnCollection = <
-      item
-        Value = 40.846824408468240000
-      end
-      item
-        Value = 59.153175591531760000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 10.000000000000000000
-      end>
-    ControlCollection = <
-      item
-        Column = 0
-        Control = lGearXII
-        Row = 0
-      end
-      item
-        Column = 1
-        Control = eGearXII
-        Row = 0
-      end
-      item
-        Column = 0
-        Control = lGearXI
-        Row = 2
-      end
-      item
-        Column = 1
-        Control = eGearXI
-        Row = 2
-      end
-      item
-        Column = 0
-        Control = lGearX
-        Row = 4
-      end
-      item
-        Column = 1
-        Control = eGearX
-        Row = 4
-      end
-      item
-        Column = 0
-        Control = lGearIX
-        Row = 6
-      end
-      item
-        Column = 1
-        Control = eGearIX
-        Row = 6
-      end
-      item
-        Column = 1
-        Control = eGearVIII
-        Row = 8
-      end
-      item
-        Column = 0
-        Control = lGearVIII
-        Row = 8
-      end
-      item
-        Column = 0
-        Control = lZetas
-        Row = 10
-      end
-      item
-        Column = 1
-        Control = eZetas
-        Row = 10
-      end
-      item
-        Column = 1
-        Control = e900_701
-        Row = 12
-      end
-      item
-        Column = 0
-        Control = l900_701
-        Row = 12
-      end
-      item
-        Column = 1
-        Control = e700_551
-        Row = 14
-      end
-      item
-        Column = 0
-        Control = l700_551
-        Row = 14
-      end
-      item
-        Column = 1
-        Control = e550_301
-        Row = 16
-      end
-      item
-        Column = 0
-        Control = l550_301
-        Row = 16
-      end
-      item
-        Column = 1
-        Control = e300_201
-        Row = 18
-      end
-      item
-        Column = 0
-        Control = l300_201
-        Row = 18
-      end
-      item
-        Column = 1
-        Control = e200_151
-        Row = 20
-      end
-      item
-        Column = 0
-        Control = l200_151
-        Row = 20
-      end
-      item
-        Column = 1
-        Control = e150_101
-        Row = 22
-      end
-      item
-        Column = 0
-        Control = l150_101
-        Row = 22
-      end
-      item
-        Column = 0
-        Control = l100
-        Row = 24
-      end
-      item
-        Column = 1
-        Control = e100
-        Row = 24
-      end>
-    RowCollection = <
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end
-      item
-        SizeStyle = Auto
-        Value = 100.000000000000000000
-      end
-      item
-        SizeStyle = Absolute
-        Value = 5.000000000000000000
-      end>
-    object lGearXII: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
+    TabPosition = PlatformDefault
+    Sizes = (
+      666s
+      762s
+      666s
+      762s
+      666s
+      762s)
+    object tiPlayers: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 78.000000000000000000
+      Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Gear XII'
-      TabOrder = 12
-    end
-    object eGearXII: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 25
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eGearXIIChange
-    end
-    object lGearXI: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Gear XI'
-      TabOrder = 11
-    end
-    object eGearXI: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 13
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eGearXIChange
-    end
-    object lGearX: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Gear X'
-      TabOrder = 10
-    end
-    object eGearX: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 24
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eGearXChange
-    end
-    object lGearIX: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Gear IX'
-      TabOrder = 9
-    end
-    object eGearIX: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 23
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eGearIXChange
-    end
-    object eGearVIII: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 22
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eGearVIIIChange
-    end
-    object lGearVIII: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Gear VIII'
-      TabOrder = 8
-    end
-    object lZetas: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'Zetas'
-      TabOrder = 7
-    end
-    object eZetas: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 21
-      Cursor = crIBeam
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = eZetasChange
-    end
-    object e900_701: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 20
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e900_701Change
-    end
-    object l900_701: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 900 to 701 cristals'
-      TabOrder = 6
-    end
-    object e700_551: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 19
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e700_551Change
-    end
-    object l700_551: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 700 to 551 cristals'
-      TabOrder = 5
-    end
-    object e550_301: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 18
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e550_301Change
-    end
-    object l550_301: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 550 to 301 cristals'
-      TabOrder = 4
-    end
-    object e300_201: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 17
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e300_201Change
-    end
-    object l300_201: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 300 to 201 cristals'
-      TabOrder = 3
-    end
-    object e200_151: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 16
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e200_151Change
-    end
-    object l200_151: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 200 to 151 cristals'
-      TabOrder = 2
-    end
-    object e150_101: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 15
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = e150_101Change
-    end
-    object l150_101: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 150 to 101 cristals'
-      TabOrder = 1
-    end
-    object l100: TLabel
-      Align = Client
-      Size.Width = 257.334991455078100000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'From 100 to 0 cristals'
+      StyleLookup = ''
       TabOrder = 0
+      Text = 'For Players'
+      ExplicitSize.cx = 78.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object pPlayers: TPanel
+        Align = Client
+        Size.Width = 666.000000000000000000
+        Size.Height = 762.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object sbPlayers: TScrollBox
+          Align = Client
+          Size.Width = 666.000000000000000000
+          Size.Height = 762.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Viewport.Width = 666.000000000000000000
+          Viewport.Height = 762.000000000000000000
+          object pGearXII: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 55.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 1
+            object lGearXII: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear XII'
+              TabOrder = 0
+            end
+            object eGearXII: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearXIIChange
+            end
+          end
+          object pGearXI: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 105.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 2
+            object lGearXI: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear XI'
+              TabOrder = 0
+            end
+            object eGearXI: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearXIChange
+            end
+          end
+          object pGearX: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 155.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 3
+            object lGearX: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear X'
+              TabOrder = 0
+            end
+            object eGearX: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearXChange
+            end
+          end
+          object pGearIX: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 205.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 4
+            object lGearIX: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear IX'
+              TabOrder = 0
+            end
+            object eGearIX: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearIXChange
+            end
+          end
+          object pGearVIII: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 255.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 5
+            object lGearVIII: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear VIII'
+              TabOrder = 0
+            end
+            object eGearVIII: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearVIIIChange
+            end
+          end
+          object pZetas: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 305.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 6
+            object lZetas: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Zetas'
+              TabOrder = 0
+            end
+            object eZetas: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eZetasChange
+            end
+          end
+          object p900_701: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 355.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 7
+            object l900_701: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 900 to 701 cristals'
+              TabOrder = 0
+            end
+            object e900_701: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e900_701Change
+            end
+          end
+          object p700_551: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 405.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 8
+            object l700_551: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 700 to 551 cristals'
+              TabOrder = 0
+            end
+            object e700_551: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e700_551Change
+            end
+          end
+          object p550_301: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 455.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 9
+            object l550_301: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 550 to 301 cristals'
+              TabOrder = 0
+            end
+            object e550_301: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e550_301Change
+            end
+          end
+          object p300_201: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 505.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 10
+            object l300_201: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 300 to 201 cristals'
+              TabOrder = 0
+            end
+            object e300_201: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e300_201Change
+            end
+          end
+          object p200_151: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 555.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 11
+            object l200_151: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 200 to 151 cristals'
+              TabOrder = 0
+            end
+            object e200_151: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e200_151Change
+            end
+          end
+          object p150_101: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 605.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 12
+            object l150_101: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 150 to 101 cristals'
+              TabOrder = 0
+            end
+            object e150_101: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e150_101Change
+            end
+          end
+          object p100: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 655.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 13
+            object l100: TLabel
+              Align = Left
+              Size.Width = 153.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'From 100 to 0 cristals'
+              TabOrder = 0
+            end
+            object e100: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              ValueType = Float
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 503.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = e100Change
+            end
+          end
+          object pGearXIII: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 5.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 0
+            object lGearXIII: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear XIII'
+              TabOrder = 0
+            end
+            object eGearXIII: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Max = 9999999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eGearXIIIChange
+            end
+          end
+        end
+      end
     end
-    object e100: TNumberBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Client
-      TabOrder = 14
-      Cursor = crIBeam
-      ValueType = Float
-      Size.Width = 372.665008544921900000
-      Size.Height = 22.000000000000000000
+    object tiTeams: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 74.000000000000000000
+      Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
-      OnChange = e100Change
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'For Teams'
+      ExplicitSize.cx = 74.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object pTeams: TPanel
+        Align = Client
+        Size.Width = 666.000000000000000000
+        Size.Height = 762.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object sbTeams: TScrollBox
+          Align = Client
+          Size.Width = 666.000000000000000000
+          Size.Height = 762.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Viewport.Width = 666.000000000000000000
+          Viewport.Height = 762.000000000000000000
+          object pTGear: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 87.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 2
+            object lTGear: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Gear'
+              TabOrder = 0
+            end
+            object eTGearOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTGearOkChange
+            end
+            object eTGearKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTGearKoChange
+            end
+          end
+          object pTZetas: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 387.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 8
+            object lTZetas: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Zeta'
+              TabOrder = 0
+            end
+            object eTZetasOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTZetasOkChange
+            end
+            object eTZetasKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTZetasKoChange
+            end
+          end
+          object pTSpeed: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 137.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 3
+            object lTSpeed: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Speed'
+              TabOrder = 0
+            end
+            object eTSpeedOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTSpeedOkChange
+            end
+            object eTSpeedKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTSpeedKoChange
+            end
+          end
+          object pTitle: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 5.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 20.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 0
+            object lTitle: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 20.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+            end
+            object lTitleOK: TLabel
+              Align = Left
+              StyledSettings = [Family, Size, FontColor]
+              Position.X = 65.000000000000000000
+              Size.Width = 280.000000000000000000
+              Size.Height = 20.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.HorzAlign = Center
+              Text = 'If OK'
+              TabOrder = 2
+            end
+            object lTitleKO: TLabel
+              Align = Client
+              StyledSettings = [Family, Size, FontColor]
+              Margins.Left = 5.000000000000000000
+              Size.Width = 306.000000000000000000
+              Size.Height = 20.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.HorzAlign = Center
+              Text = 'If Not OK'
+              TabOrder = 1
+            end
+          end
+          object lnTitle: TLine
+            Align = Top
+            LineType = Bottom
+            Position.Y = 25.000000000000000000
+            Size.Width = 666.000000000000000000
+            Size.Height = 7.000000000000000000
+            Size.PlatformDefault = False
+          end
+          object pTTenacity: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 237.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 5
+            object lTTenacity: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Tenacity'
+              TabOrder = 0
+            end
+            object eTTenacityOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTTenacityOkChange
+            end
+            object eTTenacityKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTTenacityKoChange
+            end
+          end
+          object pTFDam: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 287.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 6
+            object lTFDam: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'F.Damage'
+              TabOrder = 0
+            end
+            object eTFDamOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTFDamOkChange
+            end
+            object eTFDamKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTFDamKoChange
+            end
+          end
+          object pTSDam: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 337.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 7
+            object lTSDam: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'S.Damage'
+              TabOrder = 0
+            end
+            object eTSDamOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTSDamOkChange
+            end
+            object eTSDamKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTSDamKoChange
+            end
+          end
+          object pTHealth: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 187.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 4
+            object lTHealth: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Health'
+              TabOrder = 0
+            end
+            object eTHealthOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTHealthOkChange
+            end
+            object eTHealthKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTHealthKoChange
+            end
+          end
+          object pPG: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 37.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 1
+            object lPG: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'PG'
+              TabOrder = 0
+            end
+            object eTPGOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTPGOkChange
+            end
+            object eTPGKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTPGKoChange
+            end
+          end
+        end
+      end
+    end
+    object tiGear: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 45.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Gear'
+      ExplicitSize.cx = 45.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object pGear: TPanel
+        Align = Client
+        Size.Width = 666.000000000000000000
+        Size.Height = 762.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object sbGear: TScrollBox
+          Align = Client
+          Size.Width = 666.000000000000000000
+          Size.Height = 762.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Viewport.Width = 666.000000000000000000
+          Viewport.Height = 762.000000000000000000
+          object pMaxGear: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 5.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 0
+            object lMaxGear: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Max Gear'
+              TabOrder = 0
+            end
+            object eMaxGear: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -100.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 591.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eMaxGearChange
+            end
+          end
+        end
+      end
     end
   end
 end

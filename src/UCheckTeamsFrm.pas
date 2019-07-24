@@ -5,8 +5,9 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
-  FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  uInterfaces, uTeams, uGuild, uPlayer, FMX.ListBox, FMX.Layouts, FMX.TabControl;
+  FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.ListBox,
+  FMX.Layouts, FMX.TabControl,
+  uInterfaces, uTeams, uGuild, uPlayer, uUnit;
 
 type
   TCheckTeamsFrm = class(TForm, IChildren)
@@ -50,7 +51,7 @@ implementation
 
 uses
   System.IOUtils, System.DateUtils, Generics.Collections,
-  uRESTMdl, uGenFunc;
+  uRESTMdl, uGenFunc, uCharacter, uShips;
 
 {$R *.fmx}
 
@@ -141,6 +142,7 @@ var
   Idx: Integer;
   Idx1: Integer;
   TmpS: string;
+  TmpSS: string;
   TmpStr: string;
   Line: string;
   TmpI: Integer;
@@ -148,8 +150,9 @@ var
   SumFixed: Integer;
   Fixed: array of Integer;
   NonFixed: array of Integer;
-  Speed: string;
+  Stats: string;
   Comp: TComponent;
+  CountZetas: Integer;
 begin
   Line := Player.Data.Name;
 
@@ -163,6 +166,7 @@ begin
       Continue;
 
     TmpS := '';
+    TmpSS := '';
     SumTeam := 0;
     SumFixed := 0;
     SetLength(Fixed, FTeams.Items[Idx].Count + 1);
@@ -179,42 +183,151 @@ begin
       TmpI := 0;
       Idx1 := Player.IndexOf(FTeams.Items[Idx].Units[j].Base_id);
 
+      // no el té
       if Idx1 = -1 then
       begin
-        if cbFormat.ItemIndex = 0 then
-          TmpS := TmpS + ';0'
+        if FTeams.Items[Idx].Units[j].Fixed then
+          Fixed[j] := cMaxLevel * TTeam.GetPointsGearKo
         else
-          TmpS := TmpS + #9 + '0';
+          NonFixed[j] := cMaxLevel * TTeam.GetPointsGearKo;
+
+        if cbFormat.ItemIndex = 0 then
+        begin
+          TmpS := TmpS + ';' + (cMaxLevel * TTeam.GetPointsGearKo).ToString;
+          TmpSS := TmpSS + ';' + (cMaxLevel * TTeam.GetPointsGearKo).ToString;
+        end
+        else
+        begin
+          TmpS := TmpS + #9 + (cMaxLevel * TTeam.GetPointsGearKo).ToString;
+          TmpSS := TmpSS + #9 + (cMaxLevel * TTeam.GetPointsGearKo).ToString;
+        end;
         Continue;
       end;
 
-      // donem valor al gear
-      case Player.Units[Idx1].Data.Gear_level of
-        12: TmpI := FTeams.Items[Idx].GetPointsG12;
-        11: TmpI := FTeams.Items[Idx].GetPointsG11;
-        10: TmpI := FTeams.Items[Idx].GetPointsG10;
-        else TmpI := 0;
+      Stats := '';
+      // mirem el PG
+      if FTeams.Items[Idx].Units[j].PG <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'pg' + Player.Units[Idx1].Data.Power.ToString;
+
+        if (Player.Units[Idx1].Data.Power >= FTeams.Items[Idx].Units[j].PG) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsPG
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsPGKo;
       end;
 
-      // mirem les Zs
-      for k := 0 to FTeams.Items[Idx].Units[j].Count do
+      // donem valor al gear
+      if FTeams.Items[Idx].Units[j].Gear = 0 then
       begin
-        if Player.Units[Idx1].Data.IndexOfZ(FTeams.Items[Idx].Units[j].Zetas[K]) <> -1 then
-          TmpI := TmpI + FTeams.Items[Idx].GetPointsZeta;
+        if FTeams.Items[Idx].IsShip then
+          TmpI := TmpI + TTeam.GetPointsGear
+        else
+          TmpI := TmpI + cMaxLevel * TTeam.GetPointsGear;
+      end
+      else
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'g' + Player.Units[Idx1].Data.Gear_level.ToString;
+        if Player.Units[Idx1].Data.Gear_level >= FTeams.Items[Idx].Units[j].Gear then
+          TmpI := TmpI + ((Player.Units[Idx1].Data.Gear_level - FTeams.Items[Idx].Units[j].Gear) + 1) * TTeam.GetPointsGear
+        else
+          TmpI := TmpI + (FTeams.Items[Idx].Units[j].Gear - Player.Units[Idx1].Data.Gear_level) * TTeam.GetPointsGearKo;
       end;
 
       // mirem la velocitat
-      if (FTeams.Items[Idx].Units[j].Speed <> 0) and (Player.Units[Idx1].Data.Stats.S5 >= (FTeams.Items[Idx].Units[j].Speed - 5)) then
-        TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed;
+      if FTeams.Items[Idx].Units[j].Speed <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 's' + Player.Units[Idx1].Data.Stats.S5.ToString;
 
-      Speed := '';
-      if FTeams.Items[Idx].Units[j].Speed > 0 then
-        Speed := ' / ' + Player.Units[Idx1].Data.Stats.S5.ToString;
+        if (Player.Units[Idx1].Data.Stats.S5 >= (FTeams.Items[Idx].Units[j].Speed - 5)) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeedKo;
+      end;
 
+      // mirem la Salud
+      if FTeams.Items[Idx].Units[j].Health <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'h' + Player.Units[Idx1].Data.Stats.S1.ToString;
+
+        if (Player.Units[Idx1].Data.Stats.S1 >= FTeams.Items[Idx].Units[j].Health) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsHealth
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsHealthKo;
+      end;
+
+      // mirem la Tenacitat
+      if FTeams.Items[Idx].Units[j].Tenacity <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 't' + Trunc(Player.Units[Idx1].Data.Stats.S18 * 100).ToString;
+
+        if ((Player.Units[Idx1].Data.Stats.S18 * 100) >= FTeams.Items[Idx].Units[j].Tenacity) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsTenacity
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsTenacityKo;
+      end;
+
+      // mirem el dany físic
+      if FTeams.Items[Idx].Units[j].FisDam <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'fd' + Player.Units[Idx1].Data.Stats.S6.ToString;
+
+        if (Player.Units[Idx1].Data.Stats.S6 >= FTeams.Items[Idx].Units[j].FisDam) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsFDamage
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsFDamageKo;
+      end;
+
+      // mirem el dany especial
+      if FTeams.Items[Idx].Units[j].SpeDam <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'sd' + Player.Units[Idx1].Data.Stats.S7.ToString;
+
+        if (Player.Units[Idx1].Data.Stats.S7 >= FTeams.Items[Idx].Units[j].SpeDam) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsSDamage
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsSDamageKo;
+      end;
+
+      // mirem les Zs
+      CountZetas := 0;
+      for k := 0 to FTeams.Items[Idx].Units[j].Count do
+      begin
+        if Player.Units[Idx1].Data.IndexOfZ(FTeams.Items[Idx].Units[j].Zetas[K].Base_id) <> -1 then
+        begin
+          Inc(CountZetas);
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsZeta;
+        end
+        else
+          if not FTeams.Items[Idx].Units[j].Zetas[K].Optional then
+            TmpI := TmpI + FTeams.Items[Idx].GetPointsZetaKo;
+      end;
+      if CountZetas > 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'z' + CountZetas.ToString;
+      end;
+
+      if Stats <> '' then
+        Stats := ' / ' + Stats;
+
+      // donem format escollit
       if cbFormat.ItemIndex = 0 then
-        TmpS := TmpS + ';' + TmpI.ToString + Speed
+      begin
+        TmpS := TmpS + ';' + TmpI.ToString;
+        TmpSS := TmpSS + ';' + TmpI.ToString + Stats;
+      end
       else
-        TmpS := TmpS + #9 + TmpI.ToString + Speed;
+      begin
+        TmpS := TmpS + #9 + TmpI.ToString;
+        TmpSS := TmpSS + #9 + TmpI.ToString + Stats;
+      end;
 
       if FTeams.Items[Idx].Units[j].Fixed then
         Fixed[j] := TmpI
@@ -253,12 +366,12 @@ begin
     if cbFormat.ItemIndex = 0 then
     begin
       Line := Line + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS;
-      TmpStr := TmpStr + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpS;
+      TmpStr := TmpStr + ';' + FormatFloat('#,##0.00', (SumTeam * 100) / FTeams.Items[Idx].GetMaxScore) + ';' + SumTeam.ToString + ';' + SumFixed.ToString + TmpSS;
     end
     else
     begin
       Line := Line + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpS;
-      TmpStr := TmpStr + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpS;
+      TmpStr := TmpStr + #9 + FormatFloat('#,##0.00', (SumTeam * 100) / FTeams.Items[Idx].GetMaxScore) + #9 + SumTeam.ToString + #9 + SumFixed.ToString + TmpSS;
     end;
 
     Comp := tcData.FindComponent('t' + Idx.ToString).FindComponent('m' + Idx.ToString);
@@ -276,12 +389,14 @@ var
   TmpS: string;
   TmpI: Integer;
   TmpTeam: string;
+  TmpTeam2: string;
   TmpStr: string;
-  Speed: string;
+  Stats: string;
   Idx: Integer;
   SumFixed: Integer;
   Tab: TTabItem;
   Memo: TMemo;
+  CountZetas: Integer;
 begin
   if not TFile.Exists(eChkGuild.Text + '_guild.json') then
     Exit;
@@ -306,9 +421,10 @@ begin
     if Idx = -1 then
       Continue;
 
+    // creem Tab del nou equip
     Tab := TTabItem.Create(tcData);
     Tab.Parent := tcData;
-    Tab.Text := FTeams.Items[i].Name;
+    Tab.Text := FTeams.Items[Idx].Name;
     Tab.Name := 't' + Idx.ToString;
     Tab.Tag := Idx;
 
@@ -318,45 +434,106 @@ begin
     Memo.Text := '';
     Memo.Name := 'm' + Idx.ToString;
 
+    // mostrem Team que s'està tractant
     lSteps.Text := 'Checking Team ' + FTeams.Items[Idx].Name;
 
     SumFixed := 0;
     TmpTeam := '';
+    TmpTeam2 := '';
     // recorrem els toons de l'equip
     for j := 0 to FTeams.Items[Idx].Count do
     begin
-      TmpI := FTeams.Items[Idx].GetPointsG12;
-      if FTeams.Items[Idx].Units[j].Speed > 0 then
-        TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed;
-      for k := 0 to FTeams.Items[Idx].Units[j].Count do
-        TmpI := TmpI + FTeams.Items[Idx].GetPointsZeta;
+      TmpI := FTeams.Items[Idx].Units[j].GetUnitScore;
 
-      Speed := '';
+      // control del Stats
+      Stats := '';
+      if FTeams.Items[Idx].Units[j].PG > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'pg' + FTeams.Items[Idx].Units[j].PG.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].Gear > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := 'g' + FTeams.Items[Idx].Units[j].Gear.ToString;
+      end;
       if FTeams.Items[Idx].Units[j].Speed > 0 then
-        Speed := ' / ' + FTeams.Items[Idx].Units[j].Speed.ToString;
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 's' + FTeams.Items[Idx].Units[j].Speed.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].Health > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'h' + FTeams.Items[Idx].Units[j].Health.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].Tenacity > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 't' + FTeams.Items[Idx].Units[j].Tenacity.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].FisDam > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'fd' + FTeams.Items[Idx].Units[j].FisDam.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].SpeDam > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'sd' + FTeams.Items[Idx].Units[j].Speed.ToString;
+      end;
+      CountZetas := 0;
+      for k := 0 to FTeams.Items[Idx].Units[j].Count do
+        if not FTeams.Items[Idx].Units[j].Zetas[k].Optional then
+          Inc(CountZetas);
+      if CountZetas > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'z' + CountZetas.ToString;
+      end;
+      if Stats <> '' then
+        Stats := ' / ' + Stats;
 
       if TmpTeam <> '' then
       begin
         if cbFormat.ItemIndex = 0 then
-          TmpTeam := TmpTeam + ';'
+        begin
+          TmpTeam := TmpTeam + ';';
+          TmpTeam2 := TmpTeam2 + ';';
+        end
         else
+        begin
           TmpTeam := TmpTeam + #9;
+          TmpTeam2 := TmpTeam2 + #9;
+        end;
       end;
 
       if FTeams.Items[Idx].Units[j].Fixed then
       begin
         SumFixed := SumFixed + TmpI;
         if FTeams.Items[Idx].Units[j].Alias = '' then
-          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+        begin
+          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Stats + ')';
+          TmpTeam2 := TmpTeam2 + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + ')';
+        end
         else
-          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+        begin
+          TmpTeam := TmpTeam + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Stats + ')';
+          TmpTeam2 := TmpTeam2 + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + ')';
+        end;
       end
       else
       begin
         if FTeams.Items[Idx].Units[j].Alias = '' then
-          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Speed + ')'
+        begin
+          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + Stats + ')';
+          TmpTeam2 := TmpTeam2 + '*' + FTeams.Items[Idx].Units[j].Name + ' (' + TmpI.ToString + ')';
+        end
         else
-          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Speed + ')';
+        begin
+          TmpTeam := TmpTeam + '*' + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + Stats + ')';
+          TmpTeam2 := TmpTeam2 + '*' + FTeams.Items[Idx].Units[j].Alias + ' (' + TmpI.ToString + ')';
+        end;
       end;
     end;
 
@@ -367,16 +544,16 @@ begin
       if cbFormat.ItemIndex = 0 then
       begin
         TmpS := TmpS + ';';
-        TmpStr := TmpStr + ';';
+        TmpStr := TmpStr + ';%;';
       end
       else
       begin
         TmpS := TmpS + #9;
-        TmpStr := TmpStr + #9;
+        TmpStr := TmpStr + #9 + '%' + #9;
       end;
     end;
-    TmpS := TmpS + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + ')';
-    TmpStr := TmpStr + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + ')';
+    TmpS := TmpS + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + '/' + FTeams.Items[Idx].GetMaxScore.ToString + ')';
+    TmpStr := TmpStr + FTeams.Items[Idx].Name + ' (' + FTeams.Items[Idx].Score.ToString + '/' + FTeams.Items[Idx].GetMaxScore.ToString + ')';
 
     if cbFormat.ItemIndex = 0 then
     begin
@@ -400,7 +577,7 @@ begin
       TmpS := TmpS + #9;
       TmpStr := TmpStr + #9;
     end;
-    TmpS := TmpS + TmpTeam;
+    TmpS := TmpS + TmpTeam2;
     Memo.Lines.Add(TmpStr + TmpTeam);
   end;
 

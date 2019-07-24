@@ -38,8 +38,8 @@ object CheckGearFrm: TCheckGearFrm
     Size.Height = 244.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
-    Viewport.Width = 640.000000000000000000
-    Viewport.Height = 244.000000000000000000
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 240.000000000000000000
   end
   object bToClbd: TButton
     Align = Bottom
@@ -50,6 +50,7 @@ object CheckGearFrm: TCheckGearFrm
     Size.PlatformDefault = False
     TabOrder = 1
     Text = 'Copy Teams to Clipboard'
+    OnClick = bToClbdClick
   end
   object Label1: TLabel
     Align = Top
@@ -73,54 +74,7 @@ object CheckGearFrm: TCheckGearFrm
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 304
-    Top = 224
-    object tDataBaseId: TStringField
-      FieldName = 'BaseId'
-      Size = 100
-    end
-    object tDataAlias: TStringField
-      FieldName = 'Alias'
-      Size = 100
-    end
-    object tDataL13: TIntegerField
-      FieldName = 'L13'
-    end
-    object tDataL12: TIntegerField
-      FieldName = 'L12'
-    end
-    object tDataL11: TIntegerField
-      FieldName = 'L11'
-    end
-    object tDataL10: TIntegerField
-      FieldName = 'L10'
-    end
-    object tDataL9: TIntegerField
-      FieldName = 'L9'
-    end
-    object tDataL8: TIntegerField
-      FieldName = 'L8'
-    end
-    object tDataL7: TIntegerField
-      FieldName = 'L7'
-    end
-    object tDataL6: TIntegerField
-      FieldName = 'L6'
-    end
-    object tDataL5: TIntegerField
-      FieldName = 'L5'
-    end
-    object tDataL4: TIntegerField
-      FieldName = 'L4'
-    end
-    object tDataL3: TIntegerField
-      FieldName = 'L3'
-    end
-    object tDataL2: TIntegerField
-      FieldName = 'L2'
-    end
-    object tDataL1: TIntegerField
-      FieldName = 'L1'
-    end
+    Left = 312
+    Top = 232
   end
 end

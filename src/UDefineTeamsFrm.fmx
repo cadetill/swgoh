@@ -83,4 +83,67 @@ object DefineTeamsFrm: TDefineTeamsFrm
     Text = 'Copy Teams to Clipboard'
     OnClick = bToClbdClick
   end
+  object pNew: TPanel
+    Position.X = 200.000000000000000000
+    Position.Y = 136.000000000000000000
+    Size.Width = 225.000000000000000000
+    Size.Height = 177.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'pNewStyle1'
+    TabOrder = 2
+    object rTitle: TRectangle
+      Align = Top
+      Fill.Color = claWhite
+      Margins.Left = 1.000000000000000000
+      Margins.Top = 1.000000000000000000
+      Margins.Right = 1.000000000000000000
+      Position.X = 1.000000000000000000
+      Position.Y = 1.000000000000000000
+      Sides = []
+      Size.Width = 223.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object lTitle: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Text = 'Set Info Team'
+      TabOrder = 1
+    end
+    object lName: TLabel
+      Position.X = 32.000000000000000000
+      Position.Y = 56.000000000000000000
+      Size.Width = 49.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Name'
+      TabOrder = 2
+    end
+    object eName: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 3
+      Position.X = 88.000000000000000000
+      Position.Y = 52.000000000000000000
+    end
+    object cbIsShip: TCheckBox
+      Position.X = 32.000000000000000000
+      Position.Y = 88.000000000000000000
+      TabOrder = 4
+      Text = 'Is Ship'
+    end
+    object bOk: TButton
+      Position.X = 24.000000000000000000
+      Position.Y = 136.000000000000000000
+      TabOrder = 5
+      Text = 'Ok'
+      OnClick = bOkClick
+    end
+    object bCancel: TButton
+      Position.X = 120.000000000000000000
+      Position.Y = 136.000000000000000000
+      TabOrder = 6
+      Text = 'Cancel'
+      OnClick = bCancelClick
+    end
+  end
 end

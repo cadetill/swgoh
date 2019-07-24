@@ -127,8 +127,8 @@ begin
   if not Assigned(P) then
     Exit;
 
-  PlayerInfo := TGenFunc.CheckPlayer(P, FChar);
   ModsInfo := TGenFunc.CheckMods(P.Data.Ally_code.ToString);
+  PlayerInfo := TGenFunc.CheckPlayer(P, FChar, ModsInfo, '');
 
   // mostrem dades generals
   mData.Lines.Clear;
@@ -158,7 +158,7 @@ begin
       mData.Lines.Add('Mods 6*: ' + FormatFloat('#,##0', ModsInfo.Mods6));
     end;
     1:
-      mData.Lines.Add(Format('"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s"', [
+      mData.Lines.Add(Format('"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s"', [
                                   P.Data.Name,
                                   P.Data.Ally_code.ToString,
                                   P.Data.Guild_name,
@@ -166,6 +166,7 @@ begin
                                   FormatFloat('#,##0', P.Data.Galactic_power),
                                   FormatFloat('#,##0', P.Data.Character_galactic_power),
                                   FormatFloat('#,##0', P.Data.Ship_galactic_power),
+                                  FormatFloat('#,##0', PlayerInfo.Gear13),
                                   FormatFloat('#,##0', PlayerInfo.Gear12),
                                   FormatFloat('#,##0', PlayerInfo.Gear11),
                                   FormatFloat('#,##0', PlayerInfo.Gear10),
@@ -178,10 +179,11 @@ begin
                                   FormatFloat('#,##0', ModsInfo.Plus15),
                                   FormatFloat('#,##0', ModsInfo.Plus10),
                                   FormatFloat('#,##0', ModsInfo.Arrows),
-                                  FormatFloat('#,##0', ModsInfo.Mods6)
+                                  FormatFloat('#,##0', ModsInfo.Mods6),
+                                  FormatFloat('#,##0', PlayerInfo.Crystals)
                                  ]));
     2:
-      mData.Lines.Add(Format('"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"', [
+      mData.Lines.Add(Format('"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"'+ #9 + '"%s"', [
                                   P.Data.Name,
                                   P.Data.Ally_code.ToString,
                                   P.Data.Guild_name,
@@ -189,6 +191,7 @@ begin
                                   FormatFloat('#,##0', P.Data.Galactic_power),
                                   FormatFloat('#,##0', P.Data.Character_galactic_power),
                                   FormatFloat('#,##0', P.Data.Ship_galactic_power),
+                                  FormatFloat('#,##0', PlayerInfo.Gear13),
                                   FormatFloat('#,##0', PlayerInfo.Gear12),
                                   FormatFloat('#,##0', PlayerInfo.Gear11),
                                   FormatFloat('#,##0', PlayerInfo.Gear10),
@@ -201,7 +204,8 @@ begin
                                   FormatFloat('#,##0', ModsInfo.Plus15),
                                   FormatFloat('#,##0', ModsInfo.Plus10),
                                   FormatFloat('#,##0', ModsInfo.Arrows),
-                                  FormatFloat('#,##0', ModsInfo.Mods6)
+                                  FormatFloat('#,##0', ModsInfo.Mods6),
+                                  FormatFloat('#,##0', PlayerInfo.Crystals)
                                  ]));
   end;
 end;

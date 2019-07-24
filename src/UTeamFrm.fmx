@@ -2,7 +2,7 @@ object TeamFrm: TTeamFrm
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 675
+  ClientHeight = 659
   ClientWidth = 640
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -10,64 +10,35 @@ object TeamFrm: TTeamFrm
   DesignerMasterStyle = 0
   object ScrollBox1: TScrollBox
     Align = Client
+    Margins.Bottom = 5.000000000000000000
     Size.Width = 640.000000000000000000
-    Size.Height = 675.000000000000000000
+    Size.Height = 545.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Viewport.Width = 640.000000000000000000
-    Viewport.Height = 675.000000000000000000
-    object pName: TPanel
-      Align = Top
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 5.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 5.000000000000000000
-      Size.Width = 630.000000000000000000
-      Size.Height = 40.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = 'pushpanel'
-      TabOrder = 0
-      object lName: TLabel
-        Align = Left
-        Size.Width = 76.000000000000000000
-        Size.Height = 40.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Name'
-        TabOrder = 0
-      end
-      object eName: TEdit
-        Touch.InteractiveGestures = [LongTap, DoubleTap]
-        Align = Client
-        TabOrder = 1
-        Size.Width = 554.000000000000000000
-        Size.Height = 40.000000000000000000
-        Size.PlatformDefault = False
-        OnChange = eNameChange
-      end
-    end
+    Viewport.Width = 624.000000000000000000
+    Viewport.Height = 545.000000000000000000
     object pUnits: TPanel
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 114.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'pushpanel'
-      TabOrder = 1
+      TabOrder = 0
       object cbUnits: TComboBox
         Align = Client
-        Size.Width = 574.000000000000000000
+        Size.Width = 558.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
       end
       object bAddUnit: TButton
         Align = Right
-        Position.X = 574.000000000000000000
+        Position.X = 558.000000000000000000
         Size.Width = 56.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
@@ -81,11 +52,11 @@ object TeamFrm: TTeamFrm
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 154.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 45.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 150.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 1
       AllowDrag = True
       DisableFocusEffect = True
       ItemHeight = 30.000000000000000000
@@ -93,10 +64,10 @@ object TeamFrm: TTeamFrm
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnDragChange = lbUnitsDragChange
-      Viewport.Width = 626.000000000000000000
+      Viewport.Width = 610.000000000000000000
       Viewport.Height = 146.000000000000000000
       object ListBoxItem3: TListBoxItem
-        Size.Width = 626.000000000000000000
+        Size.Width = 610.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
@@ -110,8 +81,8 @@ object TeamFrm: TTeamFrm
       Margins.Top = 10.000000000000000000
       Margins.Right = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 314.000000000000000000
-      Size.Width = 610.000000000000000000
+      Position.Y = 205.000000000000000000
+      Size.Width = 594.000000000000000000
       Size.Height = 14.000000000000000000
       Size.PlatformDefault = False
     end
@@ -120,11 +91,11 @@ object TeamFrm: TTeamFrm
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 345.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 236.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 3
       DisableFocusEffect = True
       ItemHeight = 30.000000000000000000
       DefaultItemStyles.ItemStyle = ''
@@ -132,18 +103,27 @@ object TeamFrm: TTeamFrm
       DefaultItemStyles.GroupFooterStyle = ''
       ShowCheckboxes = True
       OnChangeCheck = lbZetasChangeCheck
-      Viewport.Width = 626.000000000000000000
+      Viewport.Width = 610.000000000000000000
       Viewport.Height = 60.000000000000000000
       object ListBoxItem1: TListBoxItem
-        Size.Width = 626.000000000000000000
+        Size.Width = 610.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         Text = 'ListBoxItem1'
+        object CheckBox1: TCheckBox
+          Align = Right
+          Position.X = 520.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Optional'
+        end
       end
       object ListBoxItem2: TListBoxItem
         Position.Y = 30.000000000000000000
-        Size.Width = 626.000000000000000000
+        Size.Width = 610.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
@@ -154,21 +134,22 @@ object TeamFrm: TTeamFrm
       Align = Top
       Margins.Left = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 409.000000000000000000
-      Size.Width = 635.000000000000000000
+      Position.Y = 300.000000000000000000
+      Size.Width = 619.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 4
       Text = 'Fixed Unit'
       OnChange = cbFixedChange
     end
     object pGear: TPanel
       Align = Top
       Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 449.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 390.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'pushpanel'
@@ -190,7 +171,7 @@ object TeamFrm: TTeamFrm
         Max = 12.000000000000000000
         HorzIncrement = 0.000000000000000000
         VertIncrement = 0.000000000000000000
-        Size.Width = 565.000000000000000000
+        Size.Width = 549.000000000000000000
         Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
         OnChange = eGearChange
@@ -202,8 +183,8 @@ object TeamFrm: TTeamFrm
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 499.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 440.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 7
@@ -224,113 +205,309 @@ object TeamFrm: TTeamFrm
         Max = 400.000000000000000000
         HorzIncrement = 0.000000000000000000
         VertIncrement = 0.000000000000000000
-        Size.Width = 565.000000000000000000
+        Size.Width = 549.000000000000000000
         Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
         OnChange = eSpeedChange
       end
-    end
-    object pStars: TPanel
-      Align = Top
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 5.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 549.000000000000000000
-      Size.Width = 630.000000000000000000
-      Size.Height = 45.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 8
-      object lStars: TLabel
-        Align = Left
-        Size.Width = 65.000000000000000000
-        Size.Height = 45.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Stars'
-        TabOrder = 1
-      end
-      object eStars: TNumberBox
-        Touch.InteractiveGestures = [LongTap, DoubleTap]
-        Align = Client
-        TabOrder = 2
-        Cursor = crIBeam
-        DecimalDigits = 0
-        Max = 7.000000000000000000
-        HorzIncrement = 0.000000000000000000
-        VertIncrement = 0.000000000000000000
-        Size.Width = 565.000000000000000000
-        Size.Height = 45.000000000000000000
-        Size.PlatformDefault = False
-        OnChange = eStarsChange
-      end
-    end
-    object Line2: TLine
-      Align = Top
-      LineType = Top
-      Margins.Left = 15.000000000000000000
-      Margins.Top = 10.000000000000000000
-      Margins.Right = 15.000000000000000000
-      Position.X = 15.000000000000000000
-      Position.Y = 100.000000000000000000
-      Size.Width = 610.000000000000000000
-      Size.Height = 9.000000000000000000
-      Size.PlatformDefault = False
     end
     object Label1: TLabel
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 328.000000000000000000
-      Size.Width = 630.000000000000000000
+      Position.Y = 219.000000000000000000
+      Size.Width = 614.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Zetas List'
-      TabOrder = 10
+      TabOrder = 12
     end
-    object pScore: TPanel
+    object pHealth: TPanel
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 50.000000000000000000
-      Size.Width = 630.000000000000000000
-      Size.Height = 40.000000000000000000
+      Position.Y = 490.000000000000000000
+      Size.Width = 614.000000000000000000
+      Size.Height = 45.000000000000000000
       Size.PlatformDefault = False
-      StyleLookup = 'pushpanel'
-      TabOrder = 11
-      object lScore: TLabel
+      TabOrder = 8
+      object lHealth: TLabel
         Align = Left
-        Size.Width = 145.000000000000000000
-        Size.Height = 40.000000000000000000
+        Size.Width = 65.000000000000000000
+        Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
-        Text = 'Recommended Score'
-        TabOrder = 0
+        Text = 'Health'
+        TabOrder = 1
       end
-      object eScore: TNumberBox
+      object eHealth: TNumberBox
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         Align = Client
-        TabOrder = 1
+        TabOrder = 2
         Cursor = crIBeam
         DecimalDigits = 0
+        Max = 150000.000000000000000000
         HorzIncrement = 0.000000000000000000
         VertIncrement = 0.000000000000000000
-        Size.Width = 445.000000000000000000
-        Size.Height = 40.000000000000000000
+        Size.Width = 549.000000000000000000
+        Size.Height = 45.000000000000000000
         Size.PlatformDefault = False
-        OnChange = eScoreChange
-      end
-      object bScore: TButton
-        Align = Right
-        Position.X = 590.000000000000000000
-        Size.Width = 40.000000000000000000
-        Size.Height = 40.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 2
-        Text = 'Help'
-        OnClick = bScoreClick
+        OnChange = eHealthChange
       end
     end
+    object pFisDam: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 590.000000000000000000
+      Size.Width = 614.000000000000000000
+      Size.Height = 45.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 10
+      object lFisDam: TLabel
+        Align = Left
+        Size.Width = 89.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Fisical Damage'
+        TabOrder = 1
+      end
+      object eFisDam: TNumberBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 2
+        Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 99999.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
+        Size.Width = 525.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = eFisDamChange
+      end
+    end
+    object pTenacity: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 540.000000000000000000
+      Size.Width = 614.000000000000000000
+      Size.Height = 45.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      object lTenacity: TLabel
+        Align = Left
+        Size.Width = 65.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Tenacity'
+        TabOrder = 1
+      end
+      object eTenacity: TNumberBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 2
+        Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 300.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
+        Size.Width = 549.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = eTenacityChange
+      end
+    end
+    object pSpeDam: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 640.000000000000000000
+      Size.Width = 614.000000000000000000
+      Size.Height = 45.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 11
+      object lSpeDam: TLabel
+        Align = Left
+        Size.Width = 89.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Special Damage'
+        TabOrder = 1
+      end
+      object eSpeDam: TNumberBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 2
+        Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 99999.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
+        Size.Width = 525.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = eSpeDamChange
+      end
+    end
+    object pPG: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 340.000000000000000000
+      Size.Width = 614.000000000000000000
+      Size.Height = 45.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      object lPG: TLabel
+        Align = Left
+        Size.Width = 65.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'PG'
+        TabOrder = 1
+      end
+      object ePG: TNumberBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 2
+        Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 99999.000000000000000000
+        HorzIncrement = 0.000000000000000000
+        VertIncrement = 0.000000000000000000
+        Size.Width = 549.000000000000000000
+        Size.Height = 45.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = ePGChange
+      end
+    end
+  end
+  object pName: TPanel
+    Align = Top
+    Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Position.X = 5.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 630.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'pushpanel'
+    TabOrder = 2
+    object lName: TLabel
+      Align = Left
+      Size.Width = 76.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Name'
+      TabOrder = 0
+    end
+    object eName: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Client
+      TabOrder = 1
+      Size.Width = 554.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = eNameChange
+    end
+  end
+  object pScore: TPanel
+    Align = Top
+    Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Position.X = 5.000000000000000000
+    Position.Y = 50.000000000000000000
+    Size.Width = 630.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'pushpanel'
+    TabOrder = 3
+    object lScore: TLabel
+      Align = Left
+      Size.Width = 137.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Recommended Score'
+      TabOrder = 0
+    end
+    object eScore: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Left
+      TabOrder = 1
+      Cursor = crIBeam
+      DecimalDigits = 0
+      Position.X = 137.000000000000000000
+      HorzIncrement = 0.000000000000000000
+      VertIncrement = 0.000000000000000000
+      Size.Width = 144.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = eScoreChange
+    end
+    object bScore: TButton
+      Align = Left
+      Position.X = 321.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Help'
+      OnClick = bScoreClick
+    end
+    object cbDefTeam: TCheckBox
+      Align = Left
+      Margins.Left = 20.000000000000000000
+      Position.X = 381.000000000000000000
+      Size.Width = 116.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Defensive Team'
+      OnChange = cbDefTeamChange
+    end
+    object bCalc: TButton
+      Align = Left
+      Position.X = 281.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Calc'
+      OnClick = bCalcClick
+    end
+    object cbIsShip: TCheckBox
+      Align = Client
+      Size.Width = 133.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Is Ship'
+      OnChange = cbIsShipChange
+    end
+  end
+  object Line2: TLine
+    Align = Top
+    LineType = Top
+    Margins.Left = 15.000000000000000000
+    Margins.Top = 10.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Position.X = 15.000000000000000000
+    Position.Y = 100.000000000000000000
+    Size.Width = 610.000000000000000000
+    Size.Height = 9.000000000000000000
+    Size.PlatformDefault = False
   end
 end

@@ -86,8 +86,8 @@ object MainFrm: TMainFrm
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 250.000000000000000000
-      Viewport.Height = 496.000000000000000000
+      Viewport.Width = 230.000000000000000000
+      Viewport.Height = 492.000000000000000000
       object lbiGetInfo: TListBoxGroupHeader
         TextSettings.HorzAlign = Center
         StyledSettings = [Family, Size, Style, FontColor]

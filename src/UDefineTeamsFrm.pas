@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, FMX.SearchBox, FMX.Layouts, FMX.ListBox,
-  uTeams, uInterfaces, uAbilities;
+  uTeams, uInterfaces, uAbilities, FMX.Objects;
 
 type
   TDefineTeamsFrm = class(TForm, IChildren)
@@ -17,10 +17,20 @@ type
     bToClbd: TButton;
     Button1: TButton;
     Button2: TButton;
+    pNew: TPanel;
+    rTitle: TRectangle;
+    lTitle: TLabel;
+    lName: TLabel;
+    eName: TEdit;
+    cbIsShip: TCheckBox;
+    bOk: TButton;
+    bCancel: TButton;
     procedure bAddClick(Sender: TObject);
     procedure bToClbdClick(Sender: TObject);
     procedure lbTeamsDragChange(SourceItem, DestItem: TListBoxItem;
       var Allow: Boolean);
+    procedure bCancelClick(Sender: TObject);
+    procedure bOkClick(Sender: TObject);
   private
     FTeams: TTeams;
     FAbi: TAbilities;
@@ -80,6 +90,13 @@ end;
 
 procedure TDefineTeamsFrm.bAddClick(Sender: TObject);
 begin
+  lbTeams.Enabled := False;
+  pNew.Visible := True;
+  pNew.Position.X := (Width - pNew.Width) / 2;
+  pNew.Position.Y := (Height - pNew.Height) / 2;
+  eName.Text := '';
+  cbIsShip.IsChecked := False;
+{
   TDialogService.InputQuery('Set Name Team', ['Name'], [''],
     procedure(const AResult: TModalResult; const AValues: array of string)
     var
@@ -118,6 +135,53 @@ begin
         OnClickBEdit(lbItem);
       end;
     end);
+}
+end;
+
+procedure TDefineTeamsFrm.bCancelClick(Sender: TObject);
+begin
+  pNew.Visible := False;
+  lbTeams.Enabled := True;
+end;
+
+procedure TDefineTeamsFrm.bOkClick(Sender: TObject);
+var
+  lbItem: TListBoxItem;
+  BDel: TButton;
+  BEdit: TButton;
+begin
+  pNew.Visible := False;
+  lbTeams.Enabled := True;
+  if Trim(eName.Text) <> '' then
+  begin
+    lbItem := TListBoxItem.Create(lbTeams);
+    lbItem.Text := Trim(eName.Text);
+    lbItem.ItemData.Detail := '';
+
+    BDel := TButton.Create(lbItem);
+    BDel.Align := TAlignLayout.Right;
+    BDel.Width := 40;
+    BDel.StyleLookup := 'trashtoolbutton';
+    BDel.Parent := lbItem;
+    BDel.OnClick := OnClickBDel;
+
+    BEdit := TButton.Create(lbItem);
+    BEdit.Align := TAlignLayout.Right;
+    BEdit.Width := 40;
+    BEdit.StyleLookup := 'composetoolbutton';
+    BEdit.Parent := lbItem;
+    BEdit.OnClick := OnClickBEdit;
+
+    lbTeams.AddObject(lbItem);
+
+    FTeams.AddTeam(Trim(eName.Text), cbIsShip.IsChecked, OnChangeTeam);
+
+    // guardem Json
+    FTeams.SaveToFile(TGenFunc.GetBaseFolder + uTeams.cFileName);
+
+    // executem OnClick
+    OnClickBEdit(lbItem);
+  end;
 end;
 
 procedure TDefineTeamsFrm.bToClbdClick(Sender: TObject);
@@ -130,24 +194,50 @@ var
 begin
   L := TStringList.Create;
   try
+    // recorrem els Teams
     for i := 0 to FTeams.Count do
     begin
       L.Add('Team: ' + FTeams.Items[i].Name);
+      // recorrem els Toons
       for j := 0 to FTeams.Items[i].Count do
       begin
         TmpStr := '';
+
+        if FTeams.Items[i].Units[j].PG <> 0 then
+          TmpStr := TmpStr + ' - PG: ' + FTeams.Items[i].Units[j].PG.ToString;
+
+        if FTeams.Items[i].Units[j].Gear <> 0 then
+          TmpStr := TmpStr + ' - Gear: ' + FTeams.Items[i].Units[j].Gear.ToString;
+
+        if FTeams.Items[i].Units[j].Speed <> 0 then
+          TmpStr := TmpStr + ' - Speed: ' + FTeams.Items[i].Units[j].Speed.ToString;
+
+        if FTeams.Items[i].Units[j].Health <> 0 then
+          TmpStr := TmpStr + ' - Health: ' + FTeams.Items[i].Units[j].Health.ToString;
+
+        if FTeams.Items[i].Units[j].Tenacity <> 0 then
+          TmpStr := TmpStr + ' - Tenacity: ' + FTeams.Items[i].Units[j].Tenacity.ToString;
+
+        if FTeams.Items[i].Units[j].FisDam <> 0 then
+          TmpStr := TmpStr + ' - Fis.Dam.: ' + FTeams.Items[i].Units[j].FisDam.ToString;
+
+        if FTeams.Items[i].Units[j].SpeDam <> 0 then
+          TmpStr := TmpStr + ' - Spe.Dam.: ' + FTeams.Items[i].Units[j].SpeDam.ToString;
+
         for k := 0 to FTeams.Items[i].Units[j].Count do
         begin
-          if TmpStr <> '' then
+          if k <> 0 then
             TmpStr := TmpStr + ' ; '
           else
-            TmpStr := ' -> zetas needed: ';
+            TmpStr := TmpStr + ' - zetas needed: ';
 
-          Idx := FAbi.IndexOf(FTeams.Items[i].Units[j].Zetas[k]);
+          Idx := FAbi.IndexOf(FTeams.Items[i].Units[j].Zetas[k].Base_id);
           if Idx <> -1 then
             NameAb := FAbi.Items[Idx].Name
           else
-            NameAb := FTeams.Items[i].Units[j].Zetas[k];
+            NameAb := FTeams.Items[i].Units[j].Zetas[k].Base_id;
+          if FTeams.Items[i].Units[j].Zetas[k].Optional then
+            NameAb := NameAb + '(*)';
 
           TmpStr := TmpStr + NameAb;
         end;
@@ -170,6 +260,7 @@ begin
   inherited;
 
   FTeams := TTeams.Create;
+  pNew.Visible := False;
 end;
 
 destructor TDefineTeamsFrm.Destroy;

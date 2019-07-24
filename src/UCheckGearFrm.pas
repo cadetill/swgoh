@@ -19,21 +19,7 @@ type
     SearchBox1: TSearchBox;
     Label1: TLabel;
     tData: TFDMemTable;
-    tDataBaseId: TStringField;
-    tDataAlias: TStringField;
-    tDataL13: TIntegerField;
-    tDataL12: TIntegerField;
-    tDataL11: TIntegerField;
-    tDataL10: TIntegerField;
-    tDataL9: TIntegerField;
-    tDataL8: TIntegerField;
-    tDataL7: TIntegerField;
-    tDataL6: TIntegerField;
-    tDataL5: TIntegerField;
-    tDataL4: TIntegerField;
-    tDataL3: TIntegerField;
-    tDataL2: TIntegerField;
-    tDataL1: TIntegerField;
+    procedure bToClbdClick(Sender: TObject);
   private
     FChar: TUnitList;
     FGear: TGear;
@@ -52,7 +38,7 @@ implementation
 
 uses
   System.IOUtils,
-  uGenFunc, uCharacter;
+  uGenFunc, uCharacter, uIniFiles;
 
 {$R *.fmx}
 
@@ -61,7 +47,7 @@ uses
 function TCheckGearFrm.AcceptForm: Boolean;
   procedure AddRecord(FieldName, BaseId, Alias, Name: string; Quantity: Integer);
   begin
-    if tData.Locate('BaseId', BaseId, [loCaseInsensitive]) then
+    if tData.FindKey([BaseId]) then
       tData.Edit
     else
     begin
@@ -80,6 +66,7 @@ var
   TmpI: Integer;
   TmpS: string;
   i,j,k: Integer;
+  MaxGear: Integer;
 begin
   Result := False;
   mData.Lines.Clear;
@@ -91,7 +78,38 @@ begin
   if Idx = -1 then
     Exit;
 
-  tData.Open;
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  MaxGear := TFileIni.GetIntValue('GEAR', 'MAXGEAR', 0);
+
+  if tData.Active then
+    tData.Close;
+  tData.FieldDefs.Clear;
+  tData.IndexDefs.Clear;
+  with tData.FieldDefs.AddFieldDef do
+  begin
+    DataType := ftString;
+    Size := 100;
+    Name := 'BaseId';
+  end;
+  with tData.FieldDefs.AddFieldDef do
+  begin
+    DataType := ftString;
+    Size := 100;
+    Name := 'Alias';
+  end;
+  for i := MaxGear downto 1 do
+    with tData.FieldDefs.AddFieldDef do
+    begin
+      DataType := ftInteger;
+      Name := 'L' + i.ToString;
+    end;
+  with tData.IndexDefs.AddIndexDef do
+  begin
+    Fields := 'BaseId';
+    Name := 'Primary';
+  end;
+  tData.CreateDataSet;
+  tData.IndexName := 'Primary';
 
   for i := FChar.Items[Idx].CountGL downto 0 do
   begin
@@ -102,7 +120,6 @@ begin
       if FGear.Items[IdxG].ToCheck then
       begin
         AddRecord('L' + (i+1).ToString, FGear.Items[IdxG].Base_id, FGear.Items[IdxG].Alias, FGear.Items[IdxG].Name, 1);
-        //mData.Lines.Add((i+1).ToString + ' - ' + FGear.Items[IdxG].Alias + ' - 1')
       end
       else
         if FGear.Items[IdxG].Count > -1 then
@@ -113,10 +130,7 @@ begin
             if TmpI < 0 then
               Continue;
             if FGear.Items[TmpI].ToCheck then
-            begin
               AddRecord('L' + (i+1).ToString, FGear.Items[TmpI].Base_id, FGear.Items[TmpI].Alias, FGear.Items[TmpI].Name, Trunc(FGear.Items[IdxG].Ingredients[k].Amount));
-              //mData.Lines.Add((i+1).ToString + ' - ' + FGear.Items[TmpI].Alias + ' - ' + FGear.Items[IdxG].Ingredients[k].Amount.ToString);
-            end;
           end;
         end;
     end;
@@ -132,9 +146,7 @@ begin
   begin
     TmpS := tData.FieldByName('Alias').AsString + #9;
     for i := 2 to tData.FieldDefs.Count - 1 do
-    begin
       TmpS := TmpS + #9 + tData.Fields[i].AsString;
-    end;
 
     mData.Lines.Add(TmpS);
 
@@ -181,6 +193,11 @@ begin
       FreeAndNil(L);
     end;
   end;
+end;
+
+procedure TCheckGearFrm.bToClbdClick(Sender: TObject);
+begin
+  TGenFunc.CopyToClipboard(mData.Lines.Text)
 end;
 
 function TCheckGearFrm.SetCaption: string;

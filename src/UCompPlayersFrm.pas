@@ -135,8 +135,8 @@ begin
     if not Assigned(PlayerI[i].P) then
       Exit;
 
-    PlayerI[i].PlayerInfo := TGenFunc.CheckPlayer(PlayerI[i].P, FChar);
     PlayerI[i].ModsInfo := TGenFunc.CheckMods(PlayerI[i].P.Data.Ally_code.ToString);
+    PlayerI[i].PlayerInfo := TGenFunc.CheckPlayer(PlayerI[i].P, FChar, PlayerI[i].ModsInfo, '');
   end;
 
   // mostrem dades generals

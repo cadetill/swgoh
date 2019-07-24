@@ -45,8 +45,8 @@ object CheckPlayerFrm: TCheckPlayerFrm
     Size.Height = 304.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 6
-    Viewport.Width = 616.000000000000000000
-    Viewport.Height = 300.000000000000000000
+    Viewport.Width = 620.000000000000000000
+    Viewport.Height = 304.000000000000000000
   end
   object lFormat: TLabel
     Align = Top
