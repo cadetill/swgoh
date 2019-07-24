@@ -7,9 +7,13 @@ uses
   FMX.ListBox,
   System.Classes;
 
+const
+  cMaxLevel = 12;
+
 type
   TPlayerInfo = record
     Power: Double;
+    Gear13: Integer;
     Gear12: Integer;
     Gear11: Integer;
     Gear10: Integer;
@@ -18,6 +22,7 @@ type
     Zetas: Integer;
     CharRank: Integer;
     ShipRank: Integer;
+    Crystals: Integer;
   end;
 
   TModsInfo = record
@@ -32,7 +37,7 @@ type
   public
     class function GetIniName: string; static;
     class function GetField(S: string; FieldIndex: Integer; Delimiter: Char): string; static;
-    class function CheckPlayer(Player: TPlayer; Char: TUnitList): TPlayerInfo; static;
+    class function CheckPlayer(Player: TPlayer; Char: TUnitList; ModsInfo: TModsInfo; HTML: string): TPlayerInfo; static;
     class function CheckMods(PlayerId: string): TModsInfo; static;
     class procedure QuickSort(var A: array of Integer; iLo, iHi: Integer); static;
     class procedure GetDefinedTeams(LB: TListBox; var Teams: TTeams; OnChangeTeam, OnClickBEdit, OnClickBDel: TNotifyEvent); static;
@@ -108,22 +113,47 @@ begin
   end;
 end;
 
-class function TGenFunc.CheckPlayer(Player: TPlayer; Char: TUnitList): TPlayerInfo;
+class function TGenFunc.CheckPlayer(Player: TPlayer; Char: TUnitList;
+  ModsInfo: TModsInfo; HTML: string): TPlayerInfo;
 var
   i: Integer;
-  Idx: Integer;
   CristalChar: Integer;
   CristalShip: Integer;
+  Idx, Idx2: Integer;
+  TmpStr: string;
+  TmpInt: Integer;
 begin
+  Result.CharRank := 0;
+  Result.ShipRank := 0;
+  Idx := Pos(Player.Data.Name, HTML, 1);
+  if Idx <> 0 then
+  begin
+    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    Idx2 := Pos('</td>', HTML, Idx);
+    TmpStr := Copy(HTML, Idx+24, Idx2-(Idx+24));
+    if TryStrToInt(TmpStr, TmpInt) then
+      Result.CharRank := TmpInt;
+    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    Idx2 := Pos('</td>', HTML, Idx);
+    TmpStr := Copy(HTML, Idx+24, Idx2-(Idx+24));
+    if TryStrToInt(TmpStr, TmpInt) then
+      Result.ShipRank := TmpInt;
+  end;
+
   TFileIni.SetFileIni(TGenFunc.GetIniName);
 
   Result.Power := 0;
+  Result.Gear13 := 0;
   Result.Gear12 := 0;
   Result.Gear11 := 0;
   Result.Gear10 := 0;
   Result.Gear9 := 0;
   Result.Gear8 := 0;
   Result.Zetas := 0;
+  Result.Crystals := 0;
   for i := 0 to Player.Count do
   begin
     Idx := Char.IndexOf(Player.Units[i].Data.Base_Id);
@@ -131,6 +161,7 @@ begin
       Continue;
 
     case Player.Units[i].Data.Gear_level of
+      13: Inc(Result.Gear13);
       12: Inc(Result.Gear12);
       11: Inc(Result.Gear11);
       10: Inc(Result.Gear10);
@@ -143,15 +174,20 @@ begin
     Result.Power := Result.Power + (Player.Units[i].Data.Power * Char.Items[Idx].Multiplier);
   end;
 
-  Result.Power := Result.Power + (Result.Gear12 * TFileIni.GetIntValue('TOSUM', 'GEARXII', 0)) +
+  Result.Power := Result.Power + (Result.Gear13 * TFileIni.GetIntValue('TOSUM', 'GEARXIII', 0)) +
+                                 (Result.Gear12 * TFileIni.GetIntValue('TOSUM', 'GEARXII', 0)) +
                                  (Result.Gear11 * TFileIni.GetIntValue('TOSUM', 'GEARXI', 0)) +
                                  (Result.Gear10 * TFileIni.GetIntValue('TOSUM', 'GEARX', 0)) +
                                  (Result.Gear9 * TFileIni.GetIntValue('TOSUM', 'GEARIX', 0)) +
                                  (Result.Gear8 * TFileIni.GetIntValue('TOSUM', 'GEARVIII', 0)) +
-                                 (Result.Zetas * TFileIni.GetIntValue('TOSUM', 'ZETAS', 0));
-  Result.CharRank := 0;
-  if Assigned(Player.Data.Arena) then
-    Result.CharRank := Player.Data.Arena.Rank;
+                                 (Result.Zetas * TFileIni.GetIntValue('TOSUM', 'ZETAS', 0)) +
+                                 (ModsInfo.Plus20 * 10000) +
+                                 (ModsInfo.Plus15 * 5000) +
+                                 (ModsInfo.Plus10 * 1000) +
+                                 (ModsInfo.Mods6 * 1000);
+//  Result.CharRank := 0;
+//  if Assigned(Player.Data.Arena) then
+//    Result.CharRank := Player.Data.Arena.Rank;
   case Result.CharRank of
     1: CristalChar := 500;
     2: CristalChar := 450;
@@ -173,9 +209,9 @@ begin
     CristalChar := 0;
   end;
 
-  Result.ShipRank := 0;
-  if Assigned(Player.Data.Fleet_arena) then
-    Result.ShipRank := Player.Data.Fleet_arena.Rank;
+//  Result.ShipRank := 0;
+//  if Assigned(Player.Data.Fleet_arena) then
+//    Result.ShipRank := Player.Data.Fleet_arena.Rank;
   case Result.ShipRank of
     1: CristalShip := 400;
     2: CristalShip := 375;
@@ -189,14 +225,15 @@ begin
     CristalShip := 0;
   end;
 
-  case (CristalChar + CristalShip) of
-    701..900: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '900_701', 0);
-    551..700: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '700_551', 0);
-    301..550: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '550_301', 0);
-    201..300: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '300_201', 0);
-    151..200: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '200_151', 0);
-    101..150: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '150_101', 0);
-    0..100: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '100_0', 0);
+  Result.Crystals := CristalChar + CristalShip;
+  case Result.Crystals of
+    750..900: Result.Power := Result.Power + 2000000; // * TFileIni.GetFloatValue('TOSUM', '900_701', 0);
+    600..749: Result.Power := Result.Power + 1000000; // * TFileIni.GetFloatValue('TOSUM', '700_551', 0);
+    400..599: Result.Power := Result.Power + 500000; // * TFileIni.GetFloatValue('TOSUM', '550_301', 0);
+    200..399: Result.Power := Result.Power + 250000; // * TFileIni.GetFloatValue('TOSUM', '300_201', 0);
+    0..199: Result.Power := Result.Power + 0; // * TFileIni.GetFloatValue('TOSUM', '200_151', 0);
+//    101..150: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '150_101', 0);
+//    0..100: Result.Power := Result.Power * TFileIni.GetFloatValue('TOSUM', '100_0', 0);
   end;
 end;
 
@@ -327,7 +364,11 @@ begin
           NoFix := NoFix + '*' + Teams.Items[i].Units[j].Alias;
       end;
     end;
-    lbItem.ItemData.Detail := Fixed;
+    if Teams.Items[i].DefTeam then
+      lbItem.ItemData.Detail := '(defense) '
+    else
+      lbItem.ItemData.Detail := '(attack) ';
+    lbItem.ItemData.Detail := lbItem.ItemData.Detail + Fixed;
     if (lbItem.ItemData.Detail <> '') and (NoFix <> '') then
       lbItem.ItemData.Detail := lbItem.ItemData.Detail + ' / ';
     lbItem.ItemData.Detail := lbItem.ItemData.Detail + NoFix;

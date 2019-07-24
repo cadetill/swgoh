@@ -62,6 +62,8 @@ type
     destructor Destroy; override;
 
     function IndexOf(BaseId: string): Integer;
+    procedure Compare(FileName: string); override;
+    procedure AssignNoDefValues(Origin, Dest: TItem);
 
     class function FromJsonString(AJsonString: string): TGear;
 
@@ -72,9 +74,46 @@ type
 implementation
 
 uses
-  Rest.Json, System.SysUtils;
+  Rest.Json, System.SysUtils, System.Classes, System.IOUtils;
 
 { TGear }
+
+procedure TGear.AssignNoDefValues(Origin, Dest: TItem);
+begin
+  Dest.ToCheck := Origin.ToCheck;
+  Dest.Alias := Origin.Alias;
+end;
+
+procedure TGear.Compare(FileName: string);
+var
+  OldList: TGear;
+  L: TStringList;
+  i: Integer;
+  Idx: Integer;
+begin
+  inherited;
+
+  // si el fitxer no existeix, sortim
+  if not TFile.Exists(FileName) then
+    Exit;
+
+  // carreguem fitxer existent
+  L := TStringList.Create;
+  try
+    L.LoadFromFile(FileName);
+    OldList := TGear.FromJsonString(L.Text);
+  finally
+    FreeAndNil(L);
+  end;
+
+  // recorrem fitxer existent actualitzant camps propis al nou
+  for i := 0 to Count do
+  begin
+    Idx := OldList.IndexOf(Items[i].Base_Id);
+    if Idx <> -1 then // si el trobem
+      Self.AssignNoDefValues(OldList.Items[Idx], Self.Items[i]);
+  end;
+end;
 
 destructor TGear.Destroy;
 var
