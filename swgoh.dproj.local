@@ -77,13 +77,13 @@
     <Transaction>2019/03/27 16:16:51.000.650,D:\Documents\Dropbox\Programacio\SWGOH\src\UCompPlayersFrm.fmx=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx</Transaction>
     <Transaction>2019/03/27 16:16:51.000.650,D:\Documents\Dropbox\Programacio\SWGOH\src\UCompPlayersFrm.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
     <Transaction>2019/05/16 17:07:47.000.031,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
-    <Transaction>2019/05/16 17:08:24.000.281,D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineGearFrm.fmx=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx</Transaction>
     <Transaction>2019/05/16 17:08:24.000.280,D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineGearFrm.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
+    <Transaction>2019/05/16 17:08:24.000.281,D:\Documents\Dropbox\Programacio\SWGOH\src\UDefineGearFrm.fmx=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx</Transaction>
     <Transaction>2019/05/17 18:08:32.000.023,=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
     <Transaction>2019/05/17 18:08:51.000.330,D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.pas=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.pas</Transaction>
     <Transaction>2019/05/17 18:08:51.000.330,D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.fmx=D:\Documents\Dropbox\Programacio\SWGOH\Unit1.fmx</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
-		<NoProfile iOSSimulator="iPhone5" Android="127.0.0.1:62001"/>
+		<NoProfile iOSSimulator="iPhone5" Android="Test"/>
 	</ActiveMobileDevice>
 </BorlandProject>
