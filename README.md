@@ -21,10 +21,12 @@ You can:
 - Define teams to control (characters, zetas, speed, gear, stars,...)
 - Define gear to check on toons (to know what gear this toon need)
 - Compare two players
+- Compare Guilds
 - Check a single player to get their stats
 - Check a whole guild
 - Check defined teams from a guild
 - Check defined gear from a character
+- Check Gear and Zetas from a guild members
 
 ---
 
