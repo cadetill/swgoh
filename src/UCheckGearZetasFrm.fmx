@@ -62,8 +62,8 @@ object CheckGearZetasFrm: TCheckGearZetasFrm
     Size.Height = 364.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
-    Viewport.Width = 630.000000000000000000
-    Viewport.Height = 364.000000000000000000
+    Viewport.Width = 626.000000000000000000
+    Viewport.Height = 360.000000000000000000
   end
   object lSteps: TLabel
     Align = Bottom

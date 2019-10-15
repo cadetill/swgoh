@@ -165,7 +165,7 @@ begin
         if Guild.Players[j].Units[Idx].Data.CountZ = -1 then
           Str1 := 'z0'
         else
-          Str1 := 'z' + Guild.Players[j].Units[Idx].Data.CountZ.ToString;
+          Str1 := 'z' + (Guild.Players[j].Units[Idx].Data.CountZ + 1).ToString;
 
         if Guild.Players[j].Units[Idx].Data.Gear_level = 13 then
         begin
