@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.ListBox,
   FMX.Layouts, FMX.TabControl,
-  uInterfaces, uTeams, uGuild, uPlayer, uUnit;
+  uInterfaces, uTeams, uPlayer, uUnit;
 
 type
   TCheckTeamsFrm = class(TForm, IChildren)
@@ -51,7 +51,7 @@ implementation
 
 uses
   System.IOUtils, System.DateUtils, Generics.Collections,
-  uRESTMdl, uGenFunc, uCharacter, uShips;
+  uRESTMdl, uGenFunc, uCharacter, uShips, uGuild;
 
 {$R *.fmx}
 
@@ -211,10 +211,26 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 'pg' + Player.Units[Idx1].Data.Power.ToString;
 
-        if (Player.Units[Idx1].Data.Power >= FTeams.Items[Idx].Units[j].PG) then
+        if Player.Units[Idx1].Data.Power >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].PG) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsPG
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsPGKo;
+      end;
+
+      // mirem les reliquies
+      if FTeams.Items[Idx].Units[j].RelicTier <> 0 then
+      begin
+        Player.Units[Idx1].Data.Relic_tier := Player.Units[Idx1].Data.Relic_tier - 2;
+        if Player.Units[Idx1].Data.Relic_tier < 0 then
+          Player.Units[Idx1].Data.Relic_tier := 0;
+
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'r' + Player.Units[Idx1].Data.Relic_tier.ToString;
+
+        if Player.Units[Idx1].Data.Relic_tier >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].RelicTier) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsRelicTier
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsRelicTierKo;
       end;
 
       // donem valor al gear
@@ -241,7 +257,7 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 's' + Player.Units[Idx1].Data.Stats.S5.ToString;
 
-        if (Player.Units[Idx1].Data.Stats.S5 >= (FTeams.Items[Idx].Units[j].Speed - 5)) then
+        if Player.Units[Idx1].Data.Stats.S5 >= (FTeams.Items[Idx].Units[j].Speed - 5) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeed
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsSpeedKo;
@@ -253,7 +269,7 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 'h' + Player.Units[Idx1].Data.Stats.S1.ToString;
 
-        if (Player.Units[Idx1].Data.Stats.S1 >= FTeams.Items[Idx].Units[j].Health) then
+        if Player.Units[Idx1].Data.Stats.S1 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].Health) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsHealth
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsHealthKo;
@@ -265,7 +281,7 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 't' + Trunc(Player.Units[Idx1].Data.Stats.S18 * 100).ToString;
 
-        if ((Player.Units[Idx1].Data.Stats.S18 * 100) >= FTeams.Items[Idx].Units[j].Tenacity) then
+        if (Player.Units[Idx1].Data.Stats.S18 * 100) >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].Tenacity) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsTenacity
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsTenacityKo;
@@ -277,7 +293,7 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 'fd' + Player.Units[Idx1].Data.Stats.S6.ToString;
 
-        if (Player.Units[Idx1].Data.Stats.S6 >= FTeams.Items[Idx].Units[j].FisDam) then
+        if Player.Units[Idx1].Data.Stats.S6 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].FisDam) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsFDamage
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsFDamageKo;
@@ -289,10 +305,34 @@ begin
         if Stats <> '' then  Stats := Stats + '|';
         Stats := Stats + 'sd' + Player.Units[Idx1].Data.Stats.S7.ToString;
 
-        if (Player.Units[Idx1].Data.Stats.S7 >= FTeams.Items[Idx].Units[j].SpeDam) then
+        if Player.Units[Idx1].Data.Stats.S7 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].SpeDam) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsSDamage
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsSDamageKo;
+      end;
+
+      // mirem la Potència
+      if FTeams.Items[Idx].Units[j].Potency <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'p' + Trunc(Player.Units[Idx1].Data.Stats.S17 * 100).ToString;
+
+        if (Player.Units[Idx1].Data.Stats.S17 * 100) >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].Potency) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsPotency
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsPotencyKo;
+      end;
+
+      // mirem la Prob. de crític
+      if FTeams.Items[Idx].Units[j].CritChance <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'cc' + Trunc(Player.Units[Idx1].Data.Stats.S14).ToString;
+
+        if Player.Units[Idx1].Data.Stats.S14 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].CritChance) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChance
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChanceKo;
       end;
 
       // mirem les Zs
@@ -452,10 +492,15 @@ begin
         if Stats <> '' then Stats := Stats + '|';
         Stats := Stats + 'pg' + FTeams.Items[Idx].Units[j].PG.ToString;
       end;
+      if FTeams.Items[Idx].Units[j].RelicTier > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'r' + FTeams.Items[Idx].Units[j].RelicTier.ToString;
+      end;
       if FTeams.Items[Idx].Units[j].Gear > 0 then
       begin
         if Stats <> '' then Stats := Stats + '|';
-        Stats := 'g' + FTeams.Items[Idx].Units[j].Gear.ToString;
+        Stats := Stats + 'g' + FTeams.Items[Idx].Units[j].Gear.ToString;
       end;
       if FTeams.Items[Idx].Units[j].Speed > 0 then
       begin
@@ -480,7 +525,17 @@ begin
       if FTeams.Items[Idx].Units[j].SpeDam > 0 then
       begin
         if Stats <> '' then Stats := Stats + '|';
-        Stats := Stats + 'sd' + FTeams.Items[Idx].Units[j].Speed.ToString;
+        Stats := Stats + 'sd' + FTeams.Items[Idx].Units[j].SpeDam.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].Potency > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'p' + FTeams.Items[Idx].Units[j].Potency.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].CritChance > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'cc' + FTeams.Items[Idx].Units[j].CritChance.ToString;
       end;
       CountZetas := 0;
       for k := 0 to FTeams.Items[Idx].Units[j].Count do

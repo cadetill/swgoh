@@ -56,6 +56,15 @@ type
     lPG: TLabel;
     ePG: TNumberBox;
     cbIsShip: TCheckBox;
+    pPotency: TPanel;
+    lPotency: TLabel;
+    ePotency: TNumberBox;
+    pCritChance: TPanel;
+    lCritChance: TLabel;
+    eCritChance: TNumberBox;
+    pRelic: TPanel;
+    lRelic: TLabel;
+    eRelic: TNumberBox;
     procedure bAddUnitClick(Sender: TObject);
     procedure eNameChange(Sender: TObject);
     procedure eGearChange(Sender: TObject);
@@ -74,6 +83,9 @@ type
     procedure bCalcClick(Sender: TObject);
     procedure ePGChange(Sender: TObject);
     procedure cbIsShipChange(Sender: TObject);
+    procedure ePotencyChange(Sender: TObject);
+    procedure eCritChanceChange(Sender: TObject);
+    procedure eRelicChange(Sender: TObject);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -239,6 +251,20 @@ begin
   FTeam.IsShip := cbIsShip.IsChecked;
 end;
 
+procedure TTeamFrm.eCritChanceChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].CritChance := Trunc(eCritChance.Value);
+end;
+
 procedure TTeamFrm.eFisDamChange(Sender: TObject);
 var
   Idx: Integer;
@@ -298,6 +324,34 @@ begin
     Exit;
 
   FTeam.Units[Idx].PG := Trunc(ePG.Value);
+end;
+
+procedure TTeamFrm.ePotencyChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Potency := Trunc(ePotency.Value);
+end;
+
+procedure TTeamFrm.eRelicChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].RelicTier := Trunc(eRelic.Value);
 end;
 
 procedure TTeamFrm.eScoreChange(Sender: TObject);
@@ -440,8 +494,11 @@ begin
   eSpeed.Value := FTeam.Units[Idx].Speed;
   eHealth.Value := FTeam.Units[Idx].Health;
   eTenacity.Value := FTeam.Units[Idx].Tenacity;
+  ePotency.Value := FTeam.Units[Idx].Potency;
+  eCritChance.Value := FTeam.Units[Idx].CritChance;
   eFisDam.Value := FTeam.Units[Idx].FisDam;
   eSpeDam.Value := FTeam.Units[Idx].SpeDam;
+  eRelic.Value := FTeam.Units[Idx].RelicTier;
 
   for i := 0 to FTeam.Units[Idx].Count do
     for j := 0 to lbZetas.Count - 1 do

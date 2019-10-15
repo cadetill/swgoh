@@ -63,7 +63,7 @@ type
     pTSpeed: TPanel;
     lTSpeed: TLabel;
     eTSpeedOk: TNumberBox;
-    pTitle: TPanel;
+    pTTitle: TPanel;
     lTitle: TLabel;
     lTitleOK: TLabel;
     lTitleKO: TLabel;
@@ -102,6 +102,18 @@ type
     pGearXIII: TPanel;
     lGearXIII: TLabel;
     eGearXIII: TNumberBox;
+    pTPotency: TPanel;
+    lTPotency: TLabel;
+    eTPotencyOk: TNumberBox;
+    eTPotencyKo: TNumberBox;
+    pTCriChance: TPanel;
+    lTCriChance: TLabel;
+    eTCriChanceOk: TNumberBox;
+    eTCriChanceKo: TNumberBox;
+    pTRelic: TPanel;
+    lTRelic: TLabel;
+    eTRelicOk: TNumberBox;
+    eTRelicKo: TNumberBox;
     procedure eGearXIIChange(Sender: TObject);
     procedure eGearXIChange(Sender: TObject);
     procedure eGearIXChange(Sender: TObject);
@@ -133,6 +145,12 @@ type
     procedure eTPGKoChange(Sender: TObject);
     procedure eMaxGearChange(Sender: TObject);
     procedure eGearXIIIChange(Sender: TObject);
+    procedure eTPotencyKoChange(Sender: TObject);
+    procedure eTPotencyOkChange(Sender: TObject);
+    procedure eTCriChanceOkChange(Sender: TObject);
+    procedure eTCriChanceKoChange(Sender: TObject);
+    procedure eTRelicOkChange(Sender: TObject);
+    procedure eTRelicKoChange(Sender: TObject);
   private
     procedure SetWidthTeamComponents;
   public
@@ -184,12 +202,18 @@ begin
   eTHealthKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'HEALTHKO', 0);
   eTTenacityOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'TENACITYOK', 0);
   eTTenacityKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'TENACITYKO', 0);
+  eTPotencyOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'POTENCYOK', 0);
+  eTPotencyKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'POTENCYKO', 0);
   eTFDamOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'FDAMAGEOK', 0);
   eTFDamKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'FDAMAGEKO', 0);
   eTSDamOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'SDAMAGEOK', 0);
   eTSDamKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'SDAMAGEKO', 0);
   eTZetasOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'ZETASOK', 0);
   eTZetasKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'ZETASKO', 0);
+  eTCriChanceOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'CRITCHANCEOK', 0);
+  eTCriChanceKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'CRITCHANCEKO', 0);
+  eTRelicOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'RELICTIEROK', 0);
+  eTRelicKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'RELICTIERKO', 0);
 
   eMaxGear.Value := TFileIni.GetFloatValue('GEAR', 'MAXGEAR', 0);
 end;
@@ -222,6 +246,26 @@ end;
 procedure TToSumFrm.eMaxGearChange(Sender: TObject);
 begin
   TFileIni.SetIntValue('GEAR', 'MAXGEAR', eMaxGear.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTPotencyKoChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'POTENCYKO', eTPotencyKo.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTPotencyOkChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'POTENCYOK', eTPotencyOk.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTRelicKoChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'RELICTIERKO', eTZetasKo.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTRelicOkChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'RELICTIEROK', eTZetasOk.Value.ToString.ToInteger);
 end;
 
 procedure TToSumFrm.e100Change(Sender: TObject);
@@ -268,7 +312,7 @@ procedure TToSumFrm.SetWidthTeamComponents;
 var
   TmpI: Integer;
 begin
-  TmpI := (Trunc(pTGear.Width - lTitle.Width) div 2) - Trunc(lTitleKO.Margins.Left + pTitle.Margins.Left + pTitle.Margins.Right);
+  TmpI := (Trunc(pTGear.Width - lTitle.Width) div 2) - Trunc(lTitleKO.Margins.Left + pTTitle.Margins.Left + pTTitle.Margins.Right);
 
   lTitleOK.Width := TmpI;
   eTPGOk.Width := TmpI;
@@ -279,6 +323,16 @@ begin
   eTFDamOk.Width := TmpI;
   eTSDamOk.Width := TmpI;
   eTHealthOk.Width := TmpI;
+end;
+
+procedure TToSumFrm.eTCriChanceKoChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'CRITCHANCEKO', eTCriChanceKo.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTCriChanceOkChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'CRITCHANCEOK', eTCriChanceOk.Value.ToString.ToInteger);
 end;
 
 procedure TToSumFrm.eTFDamKoChange(Sender: TObject);

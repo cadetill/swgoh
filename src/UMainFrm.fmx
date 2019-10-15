@@ -1,7 +1,7 @@
 object MainFrm: TMainFrm
   Left = 0
   Top = 0
-  Caption = 'Form2'
+  Caption = 'S.W.G.O.H. Extract Data'
   ClientHeight = 544
   ClientWidth = 640
   FormFactor.Width = 320
@@ -86,15 +86,15 @@ object MainFrm: TMainFrm
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 230.000000000000000000
-      Viewport.Height = 492.000000000000000000
+      Viewport.Width = 250.000000000000000000
+      Viewport.Height = 496.000000000000000000
       object lbiGetInfo: TListBoxGroupHeader
         TextSettings.HorzAlign = Center
         StyledSettings = [Family, Size, Style, FontColor]
         Size.Width = 230.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 8
         Text = 'Getting Information'
       end
       object lbiGetDataWeb: TListBoxItem
@@ -120,7 +120,7 @@ object MainFrm: TMainFrm
         Size.Width = 230.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 9
         Text = 'Configuration'
       end
       object lbiSetToSum: TListBoxItem
@@ -160,7 +160,7 @@ object MainFrm: TMainFrm
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 10
+        TabOrder = 11
         object bDefineGear: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -178,7 +178,7 @@ object MainFrm: TMainFrm
         Size.Width = 230.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 9
+        TabOrder = 10
         Text = 'Checks'
       end
       object lbiComparePlayers: TListBoxItem
@@ -186,7 +186,7 @@ object MainFrm: TMainFrm
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 3
+        TabOrder = 4
         object bComparePlayers: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -197,12 +197,28 @@ object MainFrm: TMainFrm
           OnClick = bComparePlayersClick
         end
       end
-      object lbiCheckPlayer: TListBoxItem
+      object lbiCompareGuilds: TListBoxItem
         Position.Y = 390.000000000000000000
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 4
+        TabOrder = 3
+        object bCompareGuilds: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Compare Guilds'
+          OnClick = bCompareGuildsClick
+        end
+      end
+      object lbiCheckPlayer: TListBoxItem
+        Position.Y = 450.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
         object bCheckPlayer: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -214,11 +230,11 @@ object MainFrm: TMainFrm
         end
       end
       object lbiCheckGuilds: TListBoxItem
-        Position.Y = 450.000000000000000000
+        Position.Y = 510.000000000000000000
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 5
+        TabOrder = 6
         object bCheckGuilds: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -230,11 +246,11 @@ object MainFrm: TMainFrm
         end
       end
       object lbiCheckTeams: TListBoxItem
-        Position.Y = 510.000000000000000000
+        Position.Y = 570.000000000000000000
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 6
+        TabOrder = 7
         object bCheckTeams: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -246,11 +262,11 @@ object MainFrm: TMainFrm
         end
       end
       object lbiCheckGear: TListBoxItem
-        Position.Y = 570.000000000000000000
+        Position.Y = 630.000000000000000000
         Size.Width = 230.000000000000000000
         Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 11
+        TabOrder = 12
         object bCheckGear: TButton
           Align = Top
           Size.Width = 230.000000000000000000
@@ -259,6 +275,23 @@ object MainFrm: TMainFrm
           TabOrder = 0
           Text = 'Check Gear'
           OnClick = bCheckGearClick
+        end
+      end
+      object lbiCheckGearZetas: TListBoxItem
+        Position.Y = 690.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 13
+        Text = 'lbiCheckGearZetas'
+        object bCheckGearZetas: TButton
+          Align = Top
+          Size.Width = 230.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Check Gear/Zetas from Ally'
+          OnClick = bCheckGearZetasClick
         end
       end
     end

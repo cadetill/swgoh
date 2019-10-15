@@ -18,7 +18,7 @@ inherited CheckGuildsFrm: TCheckGuildsFrm
     Viewport.Height = 200.000000000000000000
   end
   inherited lSteps: TLabel
-    TabOrder = 18
+    TabOrder = 21
   end
   object lFormat: TLabel
     Align = Top

@@ -65,6 +65,7 @@ begin
                 lSteps.Text := Format('Checking Player %s - try %d/10', [lbID.Items[i], j]);
               end);
             Mdl.LoadData(tcPlayer, lbID.Items[i]);
+            Mdl.LoadData(tcMods, lbID.Items[i]);
             Break;
           except
             Sleep(5000);
@@ -115,6 +116,8 @@ var
   PlayerI: array [0..1] of TPlayerI;
   i: Integer;
   L: TStringList;
+  HTML: string;
+  Mdl: TRESTMdl;
 begin
   for i := 0 to lbID.Count - 1 do
   begin
@@ -135,19 +138,27 @@ begin
     if not Assigned(PlayerI[i].P) then
       Exit;
 
+    Mdl := TRESTMdl.Create(nil);
+    try
+      //HTML := Mdl.LoadData(tcURL, PlayerI[i].P.Data.Guild_id.ToString);
+    finally
+      FreeAndNil(Mdl);
+    end;
+
     PlayerI[i].ModsInfo := TGenFunc.CheckMods(PlayerI[i].P.Data.Ally_code.ToString);
-    PlayerI[i].PlayerInfo := TGenFunc.CheckPlayer(PlayerI[i].P, FChar, PlayerI[i].ModsInfo, '');
+    PlayerI[i].PlayerInfo := TGenFunc.CheckPlayer(PlayerI[i].P, FChar, PlayerI[i].ModsInfo, HTML);
   end;
 
   // mostrem dades generals
   mData.Lines.Clear;
   mData.Lines.Add(PlayerI[0].P.Data.Name + ' vs ' + PlayerI[1].P.Data.Name);
-  mData.Lines.Add(PlayerI[0].P.Data.Guild_name + ' - ' + PlayerI[0].P.Data.Guild_name);
+  mData.Lines.Add(PlayerI[0].P.Data.Guild_name + ' - ' + PlayerI[1].P.Data.Guild_name);
   mData.Lines.Add('');
   mData.Lines.Add('Power: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.Power) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.Power));
   mData.Lines.Add('GP: ' + FormatFloat('#,##0', PlayerI[0].P.Data.Galactic_power) + ' - ' + FormatFloat('#,##0', PlayerI[1].P.Data.Galactic_power));
   mData.Lines.Add('GP Char.: ' + FormatFloat('#,##0', PlayerI[0].P.Data.Character_galactic_power) + ' - ' + FormatFloat('#,##0', PlayerI[1].P.Data.Character_galactic_power));
   mData.Lines.Add('GP Ships: ' + FormatFloat('#,##0', PlayerI[0].P.Data.Ship_galactic_power) + ' - ' + FormatFloat('#,##0', PlayerI[1].P.Data.Ship_galactic_power));
+  mData.Lines.Add('Gear13: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.Gear13) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.Gear13));
   mData.Lines.Add('Gear12: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.Gear12) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.Gear12));
   mData.Lines.Add('Gear11: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.Gear11) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.Gear11));
   mData.Lines.Add('Gear10: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.Gear10) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.Gear10));
@@ -157,6 +168,7 @@ begin
   mData.Lines.Add('Char. Rank: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.CharRank) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.CharRank));
   mData.Lines.Add('Ships Rank: ' + FormatFloat('#,##0', PlayerI[0].PlayerInfo.ShipRank) + ' - ' + FormatFloat('#,##0', PlayerI[1].PlayerInfo.ShipRank));
   mData.Lines.Add('');
+  mData.Lines.Add('Mods +25: ' + FormatFloat('#,##0', PlayerI[0].ModsInfo.Plus25) + ' - ' + FormatFloat('#,##0', PlayerI[1].ModsInfo.Plus25));
   mData.Lines.Add('Mods +20: ' + FormatFloat('#,##0', PlayerI[0].ModsInfo.Plus20) + ' - ' + FormatFloat('#,##0', PlayerI[1].ModsInfo.Plus20));
   mData.Lines.Add('Mods +15: ' + FormatFloat('#,##0', PlayerI[0].ModsInfo.Plus15) + ' - ' + FormatFloat('#,##0', PlayerI[1].ModsInfo.Plus15));
   mData.Lines.Add('Mods +10: ' + FormatFloat('#,##0', PlayerI[0].ModsInfo.Plus10) + ' - ' + FormatFloat('#,##0', PlayerI[1].ModsInfo.Plus10));

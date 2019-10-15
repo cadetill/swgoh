@@ -49,6 +49,10 @@ type
     bDefineGear: TButton;
     lbiCheckGear: TListBoxItem;
     bCheckGear: TButton;
+    lbiCompareGuilds: TListBoxItem;
+    bCompareGuilds: TButton;
+    lbiCheckGearZetas: TListBoxItem;
+    bCheckGearZetas: TButton;
     procedure bBackClick(Sender: TObject);
     procedure bGetDataWebClick(Sender: TObject);
     procedure bSetToSumClick(Sender: TObject);
@@ -60,6 +64,8 @@ type
     procedure bCheckTeamsClick(Sender: TObject);
     procedure bDefineGearClick(Sender: TObject);
     procedure bCheckGearClick(Sender: TObject);
+    procedure bCompareGuildsClick(Sender: TObject);
+    procedure bCheckGearZetasClick(Sender: TObject);
   private
     FFrmList: TObjectList<TCustomForm>;
 
@@ -81,7 +87,8 @@ implementation
 
 uses
   uRESTMdl, UHomeFrm, UToSumFrm, UDefineTeamsFrm, UCheckPlayerFrm, UCheckGuildsFrm,
-  UCheckTeamsFrm, UCompPlayersFrm, UDefineGearFrm, UCheckGearFrm,
+  UCheckTeamsFrm, UCompPlayersFrm, UDefineGearFrm, UCheckGearFrm, UCompGildsFrm,
+  UCheckGearZetasFrm,
   System.JSON.Serializers;
 
 {$R *.fmx}
@@ -99,6 +106,11 @@ begin
   CreateForm(TCheckGearFrm, nil);
 end;
 
+procedure TMainFrm.bCheckGearZetasClick(Sender: TObject);
+begin
+  CreateForm(TCheckGearZetasFrm, nil);
+end;
+
 procedure TMainFrm.bCheckGuildsClick(Sender: TObject);
 begin
   CreateForm(TCheckGuildsFrm, nil);
@@ -112,6 +124,11 @@ end;
 procedure TMainFrm.bCheckTeamsClick(Sender: TObject);
 begin
   CreateForm(TCheckTeamsFrm, nil);
+end;
+
+procedure TMainFrm.bCompareGuildsClick(Sender: TObject);
+begin
+  CreateForm(TCompGildsFrm, nil);
 end;
 
 procedure TMainFrm.bComparePlayersClick(Sender: TObject);

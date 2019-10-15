@@ -13,7 +13,7 @@ object ToSumFrm: TToSumFrm
     Size.Width = 666.000000000000000000
     Size.Height = 788.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     TabPosition = PlatformDefault
     Sizes = (
@@ -27,7 +27,7 @@ object ToSumFrm: TToSumFrm
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 78.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -533,7 +533,7 @@ object ToSumFrm: TToSumFrm
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 74.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -581,7 +581,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -595,7 +596,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -611,12 +613,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 387.000000000000000000
+            Position.Y = 487.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 8
+            TabOrder = 11
             object lTZetas: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -630,7 +632,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -644,7 +647,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -679,7 +683,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -693,7 +698,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -703,7 +709,7 @@ object ToSumFrm: TToSumFrm
               OnChange = eTSpeedKoChange
             end
           end
-          object pTitle: TPanel
+          object pTTitle: TPanel
             Align = Top
             Margins.Left = 5.000000000000000000
             Margins.Top = 5.000000000000000000
@@ -766,7 +772,7 @@ object ToSumFrm: TToSumFrm
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 5
+            TabOrder = 7
             object lTTenacity: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -780,7 +786,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -794,7 +801,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -810,12 +818,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 287.000000000000000000
+            Position.Y = 387.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 6
+            TabOrder = 8
             object lTFDam: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -829,7 +837,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -843,7 +852,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -859,12 +869,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 337.000000000000000000
+            Position.Y = 437.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 7
+            TabOrder = 9
             object lTSDam: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -878,7 +888,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -892,7 +903,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -913,7 +925,7 @@ object ToSumFrm: TToSumFrm
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 4
+            TabOrder = 5
             object lTHealth: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -927,7 +939,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -941,7 +954,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -976,7 +990,8 @@ object ToSumFrm: TToSumFrm
               Align = Left
               TabOrder = 1
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
@@ -990,7 +1005,8 @@ object ToSumFrm: TToSumFrm
               Align = Client
               TabOrder = 2
               Cursor = crIBeam
-              Min = -100.000000000000000000
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
@@ -998,6 +1014,159 @@ object ToSumFrm: TToSumFrm
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTPGKoChange
+            end
+          end
+          object pTPotency: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 287.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 6
+            object lTPotency: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Potency'
+              TabOrder = 0
+            end
+            object eTPotencyOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTPotencyOkChange
+            end
+            object eTPotencyKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTPotencyKoChange
+            end
+          end
+          object pTCriChance: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 337.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 4
+            object lTCriChance: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Cri.Chance'
+              TabOrder = 0
+            end
+            object eTCriChanceOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTCriChanceOkChange
+            end
+            object eTCriChanceKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTCriChanceKoChange
+            end
+          end
+          object pTRelic: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 537.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 10
+            object lTRelic: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Relic Tier'
+              TabOrder = 0
+            end
+            object eTRelicOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 232.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTRelicOkChange
+            end
+            object eTRelicKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 354.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTRelicKoChange
             end
           end
         end
