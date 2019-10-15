@@ -35,6 +35,9 @@ type
     FSpeDam: Integer;
     FHealth: Integer;
     FPG: Integer;
+    FPotency: Integer;
+    FCritChance: Integer;
+    FRelicTier: Integer;
 
     function GetCount: Integer;
   public
@@ -56,9 +59,12 @@ type
     property Gear: Integer read FGear write FGear;
     property Speed: Integer read FSpeed write FSpeed;
     property Tenacity: Integer read FTenacity write FTenacity;
+    property Potency: Integer read FPotency write FPotency;
+    property CritChance: Integer read FCritChance write FCritChance;
     property Health: Integer read FHealth write FHealth;
     property FisDam: Integer read FFisDam write FFisDam;
     property SpeDam: Integer read FSpeDam write FSpeDam;
+    property RelicTier: Integer read FRelicTier write FRelicTier;
     property Zetas: TArray<TZeta> read FZetas write FZetas;
     property Count: Integer read GetCount;
   end;
@@ -97,6 +103,12 @@ type
     class function GetPointsSDamageKo: Integer;
     class function GetPointsZeta: Integer;
     class function GetPointsZetaKo: Integer;
+    class function GetPointsPotency: Integer;
+    class function GetPointsPotencyKo: Integer;
+    class function GetPointsCritChance: Integer;
+    class function GetPointsCritChanceKo: Integer;
+    class function GetPointsRelicTier: Integer;
+    class function GetPointsRelicTierKo: Integer;
 
     function IndexOf(Name: string): Integer;
     function AddUnit(BaseId, Name: string): TUnitTeam;
@@ -131,6 +143,8 @@ type
     function Move(From, Dest: string): Boolean; overload;
     procedure DeleteTeam(Name: string);
     procedure Clear;
+
+    function GetPercent(Value: Integer): Integer;
 
     class function FromJsonString(AJsonString: string): TTeams;
 
@@ -210,6 +224,11 @@ end;
 function TTeams.GetCount: Integer;
 begin
   Result := High(FItems);
+end;
+
+function TTeams.GetPercent(Value: Integer): Integer;
+begin
+  Result := Round(Value / 0.99);
 end;
 
 function TTeams.IndexOf(Name: string): Integer;
@@ -336,6 +355,18 @@ begin
     Result := Result + Units[i].GetMaxScore(FIsShip);
 end;
 
+class function TTeam.GetPointsCritChance: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'CRITCHANCEOK', 0);
+end;
+
+class function TTeam.GetPointsCritChanceKo: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'CRITCHANCEKO', 0);
+end;
+
 class function TTeam.GetPointsFDamage: Integer;
 begin
   TFileIni.SetFileIni(TGenFunc.GetIniName);
@@ -376,6 +407,30 @@ class function TTeam.GetPointsPGKo: Integer;
 begin
   TFileIni.SetFileIni(TGenFunc.GetIniName);
   Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'PGKO', 0);
+end;
+
+class function TTeam.GetPointsPotency: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'POTENCYOK', 0);
+end;
+
+class function TTeam.GetPointsPotencyKo: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'POTENCYKO', 0);
+end;
+
+class function TTeam.GetPointsRelicTier: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'RELICTIEROK', 0);
+end;
+
+class function TTeam.GetPointsRelicTierKo: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'RELICTIERKO', 0);
 end;
 
 class function TTeam.GetPointsPG: Integer;
@@ -583,6 +638,8 @@ begin
     Inc(Result, TTeam.GetPointsFDamage);
   if FSpeDam <> 0 then
     Inc(Result, TTeam.GetPointsSDamage);
+  if FRelicTier <> 0 then
+    Inc(Result, TTeam.GetPointsRelicTier);
 
   for i := 0 to Count do
     Inc(Result, TTeam.GetPointsZeta);
@@ -610,6 +667,12 @@ begin
     Inc(Result, TTeam.GetPointsFDamage);
   if FSpeDam <> 0 then
     Inc(Result, TTeam.GetPointsSDamage);
+  if FPotency <> 0 then
+    Inc(Result, TTeam.GetPointsPotency);
+  if FCritChance <> 0 then
+    Inc(Result, TTeam.GetPointsCritChance);
+  if FRelicTier <> 0 then
+    Inc(Result, TTeam.GetPointsRelicTier);
 
   for i := 0 to Count do
   begin

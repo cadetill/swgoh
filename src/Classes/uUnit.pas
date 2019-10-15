@@ -153,6 +153,7 @@ type
     FGear: TArray<TGear>;
     FStats: TStats;
     FAlias: string;
+    FRelic_tier: Integer;
     function GetCountA: Integer;
     function GetCountZ: Integer;
     function GetCountG: Integer;
@@ -182,6 +183,7 @@ type
     property Stats: TStats read FStats write FStats;
     property Multiplier: Integer read FMultiplier write FMultiplier;
     property Alias: string read FAlias write FAlias;
+    property Relic_tier: Integer read FRelic_tier write FRelic_tier;
     property CountZ: Integer read GetCountZ;
     property CountA: Integer read GetCountA;
     property CountG: Integer read GetCountG;

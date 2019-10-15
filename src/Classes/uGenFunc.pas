@@ -27,6 +27,7 @@ type
 
   TModsInfo = record
     Arrows: Integer;
+    Plus25: Integer;
     Plus20: Integer;
     Plus15: Integer;
     Plus10: Integer;
@@ -65,6 +66,7 @@ var
 begin
   // inicialitzem valors
   Result.Arrows := 0;
+  Result.Plus25 := 0;
   Result.Plus20 := 0;
   Result.Plus15 := 0;
   Result.Plus10 := 0;
@@ -98,16 +100,12 @@ begin
     begin
       if SameText(M.Mods[i].Secondary_stats[j].Name, 'Speed') then
       begin
-        if M.Mods[i].Secondary_stats[j].Display_value.ToInteger >= 20 then
-          Inc(Result.Plus20)
-        else
-          if (M.Mods[i].Secondary_stats[j].Display_value.ToInteger >= 15) and
-             (M.Mods[i].Secondary_stats[j].Display_value.ToInteger < 20) then
-            Inc(Result.Plus15)
-          else
-            if (M.Mods[i].Secondary_stats[j].Display_value.ToInteger >= 10) and
-               (M.Mods[i].Secondary_stats[j].Display_value.ToInteger < 15) then
-              Inc(Result.Plus10);
+        case M.Mods[i].Secondary_stats[j].Display_value.ToInteger of
+          25..99: Inc(Result.Plus25);
+          20..24: Inc(Result.Plus20);
+          15..19: Inc(Result.Plus15);
+          10..14: Inc(Result.Plus10);
+        end;
       end;
     end;
   end;
@@ -181,6 +179,7 @@ begin
                                  (Result.Gear9 * TFileIni.GetIntValue('TOSUM', 'GEARIX', 0)) +
                                  (Result.Gear8 * TFileIni.GetIntValue('TOSUM', 'GEARVIII', 0)) +
                                  (Result.Zetas * TFileIni.GetIntValue('TOSUM', 'ZETAS', 0)) +
+                                 (ModsInfo.Plus25 * 20000) +
                                  (ModsInfo.Plus20 * 10000) +
                                  (ModsInfo.Plus15 * 5000) +
                                  (ModsInfo.Plus10 * 1000) +
