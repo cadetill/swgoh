@@ -30,7 +30,11 @@ uses
   UCheckTeamsFrm in 'src\UCheckTeamsFrm.pas' {CheckTeamsFrm},
   UCompPlayersFrm in 'src\UCompPlayersFrm.pas' {CompPlayersFrm},
   UDefineGearFrm in 'src\UDefineGearFrm.pas' {DefineGearFrm},
-  UCheckGearFrm in 'src\UCheckGearFrm.pas' {CheckGearFrm};
+  UCheckGearFrm in 'src\UCheckGearFrm.pas' {CheckGearFrm},
+  UCompGildsFrm in 'src\UCompGildsFrm.pas' {CompGildsFrm},
+  uCompGuilds in 'src\Classes\uCompGuilds.pas',
+  uGuildInfo in 'src\Classes\uGuildInfo.pas',
+  UCheckGearZetasFrm in 'src\UCheckGearZetasFrm.pas' {CheckGearZetasFrm};
 
 {$R *.res}
 
