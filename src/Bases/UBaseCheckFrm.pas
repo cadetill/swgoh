@@ -85,6 +85,7 @@ begin
   lbID.AddObject(lbItem);
 
   eID.Text := '';
+  eID.SetFocus;
 end;
 
 procedure TBaseCheckFrm.bToClbdClick(Sender: TObject);
