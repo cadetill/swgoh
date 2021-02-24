@@ -586,7 +586,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTGearOkChange
@@ -601,7 +601,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTGearKoChange
@@ -613,12 +613,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 487.000000000000000000
+            Position.Y = 537.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 11
+            TabOrder = 12
             object lTZetas: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -637,7 +637,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTZetasOkChange
@@ -652,7 +652,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTZetasKoChange
@@ -688,7 +688,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTSpeedOkChange
@@ -703,7 +703,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTSpeedKoChange
@@ -767,12 +767,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 237.000000000000000000
+            Position.Y = 287.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 7
+            TabOrder = 8
             object lTTenacity: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -791,7 +791,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTTenacityOkChange
@@ -806,7 +806,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTTenacityKoChange
@@ -818,12 +818,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 387.000000000000000000
+            Position.Y = 437.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 8
+            TabOrder = 9
             object lTFDam: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -842,7 +842,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTFDamOkChange
@@ -857,7 +857,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTFDamKoChange
@@ -869,12 +869,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 437.000000000000000000
+            Position.Y = 487.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 9
+            TabOrder = 10
             object lTSDam: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -893,7 +893,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTSDamOkChange
@@ -908,7 +908,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTSDamKoChange
@@ -925,7 +925,7 @@ object ToSumFrm: TToSumFrm
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 5
+            TabOrder = 6
             object lTHealth: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -944,7 +944,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTHealthOkChange
@@ -959,7 +959,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTHealthKoChange
@@ -995,7 +995,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTPGOkChange
@@ -1010,7 +1010,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTPGKoChange
@@ -1022,12 +1022,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 287.000000000000000000
+            Position.Y = 337.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 6
+            TabOrder = 7
             object lTPotency: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -1046,7 +1046,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTPotencyOkChange
@@ -1061,7 +1061,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTPotencyKoChange
@@ -1073,7 +1073,7 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 337.000000000000000000
+            Position.Y = 387.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
@@ -1097,7 +1097,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTCriChanceOkChange
@@ -1112,7 +1112,7 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTCriChanceKoChange
@@ -1124,12 +1124,12 @@ object ToSumFrm: TToSumFrm
             Margins.Top = 5.000000000000000000
             Margins.Right = 5.000000000000000000
             Position.X = 5.000000000000000000
-            Position.Y = 537.000000000000000000
+            Position.Y = 587.000000000000000000
             Size.Width = 656.000000000000000000
             Size.Height = 45.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'pushpanel'
-            TabOrder = 10
+            TabOrder = 11
             object lTRelic: TLabel
               Align = Left
               Size.Width = 65.000000000000000000
@@ -1148,7 +1148,7 @@ object ToSumFrm: TToSumFrm
               Position.X = 65.000000000000000000
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
-              Size.Width = 232.000000000000000000
+              Size.Width = 230.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTRelicOkChange
@@ -1163,10 +1163,61 @@ object ToSumFrm: TToSumFrm
               HorzIncrement = 0.000000000000000000
               VertIncrement = 0.000000000000000000
               Margins.Left = 5.000000000000000000
-              Size.Width = 354.000000000000000000
+              Size.Width = 356.000000000000000000
               Size.Height = 45.000000000000000000
               Size.PlatformDefault = False
               OnChange = eTRelicKoChange
+            end
+          end
+          object pTProtection: TPanel
+            Align = Top
+            Margins.Left = 5.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 5.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 237.000000000000000000
+            Size.Width = 656.000000000000000000
+            Size.Height = 45.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'pushpanel'
+            TabOrder = 5
+            object lTProtection: TLabel
+              Align = Left
+              Size.Width = 65.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Protection'
+              TabOrder = 0
+            end
+            object eTProtectionOk: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Left
+              TabOrder = 1
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              Position.X = 65.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Size.Width = 230.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTProtectionOkChange
+            end
+            object eTProtectionKo: TNumberBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Min = -9999.000000000000000000
+              Max = 9999.000000000000000000
+              HorzIncrement = 0.000000000000000000
+              VertIncrement = 0.000000000000000000
+              Margins.Left = 5.000000000000000000
+              Size.Width = 356.000000000000000000
+              Size.Height = 45.000000000000000000
+              Size.PlatformDefault = False
+              OnChange = eTProtectionKoChange
             end
           end
         end

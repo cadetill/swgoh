@@ -110,8 +110,8 @@ object CheckTeamsFrm: TCheckTeamsFrm
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     ShowCheckboxes = True
-    Viewport.Width = 630.000000000000000000
-    Viewport.Height = 184.000000000000000000
+    Viewport.Width = 626.000000000000000000
+    Viewport.Height = 180.000000000000000000
     object ListBoxItem1: TListBoxItem
       ItemData.Detail = 'detail'
       ItemData.Accessory = aDetail
@@ -179,8 +179,8 @@ object CheckTeamsFrm: TCheckTeamsFrm
         Size.Height = 109.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Viewport.Width = 630.000000000000000000
-        Viewport.Height = 109.000000000000000000
+        Viewport.Width = 626.000000000000000000
+        Viewport.Height = 105.000000000000000000
       end
     end
   end

@@ -275,6 +275,18 @@ begin
           TmpI := TmpI + FTeams.Items[Idx].GetPointsHealthKo;
       end;
 
+      // mirem la Protecció
+      if FTeams.Items[Idx].Units[j].Protection <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'pr' + Player.Units[Idx1].Data.Stats.S28.ToString;
+
+        if Player.Units[Idx1].Data.Stats.S28 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].Protection) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsProtection
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsProtectionKo;
+      end;
+
       // mirem la Tenacitat
       if FTeams.Items[Idx].Units[j].Tenacity <> 0 then
       begin
@@ -330,6 +342,30 @@ begin
         Stats := Stats + 'cc' + Trunc(Player.Units[Idx1].Data.Stats.S14).ToString;
 
         if Player.Units[Idx1].Data.Stats.S14 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].CritChance) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChance
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChanceKo;
+      end;
+
+      // mirem la Evasió de crític
+      if FTeams.Items[Idx].Units[j].CritAvoidance <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'ca' + Trunc(Player.Units[Idx1].Data.Stats.S39).ToString;
+
+        if Player.Units[Idx1].Data.Stats.S39 >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].CritAvoidance) then
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChance
+        else
+          TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChanceKo;
+      end;
+
+      // mirem la Dany crític
+      if FTeams.Items[Idx].Units[j].CritDamage <> 0 then
+      begin
+        if Stats <> '' then  Stats := Stats + '|';
+        Stats := Stats + 'cd' + Trunc(Player.Units[Idx1].Data.Stats.S16 * 100).ToString;
+
+        if (Player.Units[Idx1].Data.Stats.S16 * 100) >= FTeams.GetPercent(FTeams.Items[Idx].Units[j].CritDamage) then
           TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChance
         else
           TmpI := TmpI + FTeams.Items[Idx].GetPointsCritChanceKo;
@@ -512,6 +548,11 @@ begin
         if Stats <> '' then Stats := Stats + '|';
         Stats := Stats + 'h' + FTeams.Items[Idx].Units[j].Health.ToString;
       end;
+      if FTeams.Items[Idx].Units[j].Protection > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'pr' + FTeams.Items[Idx].Units[j].Protection.ToString;
+      end;
       if FTeams.Items[Idx].Units[j].Tenacity > 0 then
       begin
         if Stats <> '' then Stats := Stats + '|';
@@ -536,6 +577,16 @@ begin
       begin
         if Stats <> '' then Stats := Stats + '|';
         Stats := Stats + 'cc' + FTeams.Items[Idx].Units[j].CritChance.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].CritAvoidance > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'ca' + FTeams.Items[Idx].Units[j].CritAvoidance.ToString;
+      end;
+      if FTeams.Items[Idx].Units[j].CritDamage > 0 then
+      begin
+        if Stats <> '' then Stats := Stats + '|';
+        Stats := Stats + 'cd' + FTeams.Items[Idx].Units[j].CritDamage.ToString;
       end;
       CountZetas := 0;
       for k := 0 to FTeams.Items[Idx].Units[j].Count do

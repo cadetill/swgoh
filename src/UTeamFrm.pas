@@ -65,6 +65,15 @@ type
     pRelic: TPanel;
     lRelic: TLabel;
     eRelic: TNumberBox;
+    pProtection: TPanel;
+    lProtection: TLabel;
+    eProtection: TNumberBox;
+    pCritAvoid: TPanel;
+    lCritAvoid: TLabel;
+    eCritAvoid: TNumberBox;
+    pCritDamage: TPanel;
+    lCritDamage: TLabel;
+    eCritDamage: TNumberBox;
     procedure bAddUnitClick(Sender: TObject);
     procedure eNameChange(Sender: TObject);
     procedure eGearChange(Sender: TObject);
@@ -86,6 +95,9 @@ type
     procedure ePotencyChange(Sender: TObject);
     procedure eCritChanceChange(Sender: TObject);
     procedure eRelicChange(Sender: TObject);
+    procedure eProtectionChange(Sender: TObject);
+    procedure eCritAvoidChange(Sender: TObject);
+    procedure eCritDamageChange(Sender: TObject);
   private
     FChar: TUnitList;
     FShips: TUnitList;
@@ -251,6 +263,20 @@ begin
   FTeam.IsShip := cbIsShip.IsChecked;
 end;
 
+procedure TTeamFrm.eCritAvoidChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].CritAvoidance := Trunc(eCritAvoid.Value);
+end;
+
 procedure TTeamFrm.eCritChanceChange(Sender: TObject);
 var
   Idx: Integer;
@@ -263,6 +289,20 @@ begin
     Exit;
 
   FTeam.Units[Idx].CritChance := Trunc(eCritChance.Value);
+end;
+
+procedure TTeamFrm.eCritDamageChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].CritDamage := Trunc(eCritDamage.Value);
 end;
 
 procedure TTeamFrm.eFisDamChange(Sender: TObject);
@@ -338,6 +378,20 @@ begin
     Exit;
 
   FTeam.Units[Idx].Potency := Trunc(ePotency.Value);
+end;
+
+procedure TTeamFrm.eProtectionChange(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if lbUnits.ItemIndex = -1 then
+    Exit;
+
+  Idx := FTeam.IndexOf(lbUnits.Selected.Text);
+  if Idx = -1 then
+    Exit;
+
+  FTeam.Units[Idx].Protection := Trunc(eProtection.Value);
 end;
 
 procedure TTeamFrm.eRelicChange(Sender: TObject);
@@ -493,9 +547,12 @@ begin
   eGear.Value := FTeam.Units[Idx].Gear;
   eSpeed.Value := FTeam.Units[Idx].Speed;
   eHealth.Value := FTeam.Units[Idx].Health;
+  eProtection.Value := FTeam.Units[Idx].Protection;
   eTenacity.Value := FTeam.Units[Idx].Tenacity;
   ePotency.Value := FTeam.Units[Idx].Potency;
   eCritChance.Value := FTeam.Units[Idx].CritChance;
+  eCritAvoid.Value := FTeam.Units[Idx].CritAvoidance;
+  eCritDamage.Value := FTeam.Units[Idx].CritDamage;
   eFisDam.Value := FTeam.Units[Idx].FisDam;
   eSpeDam.Value := FTeam.Units[Idx].SpeDam;
   eRelic.Value := FTeam.Units[Idx].RelicTier;

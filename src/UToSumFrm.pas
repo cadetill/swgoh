@@ -114,6 +114,10 @@ type
     lTRelic: TLabel;
     eTRelicOk: TNumberBox;
     eTRelicKo: TNumberBox;
+    pTProtection: TPanel;
+    lTProtection: TLabel;
+    eTProtectionOk: TNumberBox;
+    eTProtectionKo: TNumberBox;
     procedure eGearXIIChange(Sender: TObject);
     procedure eGearXIChange(Sender: TObject);
     procedure eGearIXChange(Sender: TObject);
@@ -151,6 +155,8 @@ type
     procedure eTCriChanceKoChange(Sender: TObject);
     procedure eTRelicOkChange(Sender: TObject);
     procedure eTRelicKoChange(Sender: TObject);
+    procedure eTProtectionOkChange(Sender: TObject);
+    procedure eTProtectionKoChange(Sender: TObject);
   private
     procedure SetWidthTeamComponents;
   public
@@ -200,6 +206,8 @@ begin
   eTSpeedKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'SPEEDKO', 0);
   eTHealthOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'HEALTHOK', 0);
   eTHealthKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'HEALTHKO', 0);
+  eTProtectionOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'PROTECTIONOK', 0);
+  eTProtectionKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'PROTECTIONKO', 0);
   eTTenacityOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'TENACITYOK', 0);
   eTTenacityKo.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'TENACITYKO', 0);
   eTPotencyOk.Value := TFileIni.GetFloatValue('TOSUM_TEAMS', 'POTENCYOK', 0);
@@ -246,6 +254,16 @@ end;
 procedure TToSumFrm.eMaxGearChange(Sender: TObject);
 begin
   TFileIni.SetIntValue('GEAR', 'MAXGEAR', eMaxGear.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTProtectionKoChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'PROTECTIONKO', eTProtectionKo.Value.ToString.ToInteger);
+end;
+
+procedure TToSumFrm.eTProtectionOkChange(Sender: TObject);
+begin
+  TFileIni.SetIntValue('TOSUM_TEAMS', 'PROTECTIONOK', eTProtectionOk.Value.ToString.ToInteger);
 end;
 
 procedure TToSumFrm.eTPotencyKoChange(Sender: TObject);
