@@ -38,6 +38,9 @@ type
     FPotency: Integer;
     FCritChance: Integer;
     FRelicTier: Integer;
+    FProtection: Integer;
+    FCritAvoidance: Integer;
+    FCritDamage: Integer;
 
     function GetCount: Integer;
   public
@@ -61,7 +64,10 @@ type
     property Tenacity: Integer read FTenacity write FTenacity;
     property Potency: Integer read FPotency write FPotency;
     property CritChance: Integer read FCritChance write FCritChance;
+    property CritAvoidance: Integer read FCritAvoidance write FCritAvoidance;
+    property CritDamage: Integer read FCritDamage write FCritDamage;
     property Health: Integer read FHealth write FHealth;
+    property Protection: Integer read FProtection write FProtection;
     property FisDam: Integer read FFisDam write FFisDam;
     property SpeDam: Integer read FSpeDam write FSpeDam;
     property RelicTier: Integer read FRelicTier write FRelicTier;
@@ -95,6 +101,8 @@ type
     class function GetPointsSpeedKo: Integer;
     class function GetPointsHealth: Integer;
     class function GetPointsHealthKo: Integer;
+    class function GetPointsProtection: Integer;
+    class function GetPointsProtectionKo: Integer;
     class function GetPointsTenacity: Integer;
     class function GetPointsTenacityKo: Integer;
     class function GetPointsFDamage: Integer;
@@ -421,6 +429,18 @@ begin
   Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'POTENCYKO', 0);
 end;
 
+class function TTeam.GetPointsProtection: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'PROTECTIONOK', 0);
+end;
+
+class function TTeam.GetPointsProtectionKo: Integer;
+begin
+  TFileIni.SetFileIni(TGenFunc.GetIniName);
+  Result := TFileIni.GetIntValue('TOSUM_TEAMS', 'PROTECTIONKO', 0);
+end;
+
 class function TTeam.GetPointsRelicTier: Integer;
 begin
   TFileIni.SetFileIni(TGenFunc.GetIniName);
@@ -493,6 +513,7 @@ const
          '%d/%d points by Gear'#13 +
          '%d/%d points for Speed'#13 +
          '%d/%d point for Health'#13 +
+         '%d/%d point for Protection'#13 +
          '%d/%d points for Tenacity'#13 +
          '%d/%d points for Fisical Damage'#13 +
          '%d/%d points for Special Damage'#13 +
@@ -502,6 +523,7 @@ begin
                           TTeam.GetPointsGear, TTeam.GetPointsGearKo,
                           TTeam.GetPointsSpeed, TTeam.GetPointsSpeedKo,
                           TTeam.GetPointsHealth, TTeam.GetPointsHealthKo,
+                          TTeam.GetPointsProtection, TTeam.GetPointsProtectionKo,
                           TTeam.GetPointsTenacity, TTeam.GetPointsTenacityKo,
                           TTeam.GetPointsFDamage, TTeam.GetPointsFDamageKo,
                           TTeam.GetPointsSDamage, TTeam.GetPointsSDamageKo,
@@ -634,6 +656,8 @@ begin
     Inc(Result, TTeam.GetPointsTenacity);
   if FHealth <> 0 then
     Inc(Result, TTeam.GetPointsHealth);
+  if FProtection <> 0 then
+    Inc(Result, TTeam.GetPointsProtection);
   if FFisDam <> 0 then
     Inc(Result, TTeam.GetPointsFDamage);
   if FSpeDam <> 0 then
@@ -663,6 +687,8 @@ begin
     Inc(Result, TTeam.GetPointsTenacity);
   if FHealth <> 0 then
     Inc(Result, TTeam.GetPointsHealth);
+  if FProtection <> 0 then
+    Inc(Result, TTeam.GetPointsProtection);
   if FFisDam <> 0 then
     Inc(Result, TTeam.GetPointsFDamage);
   if FSpeDam <> 0 then

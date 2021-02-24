@@ -123,7 +123,7 @@ var
 begin
   Result.CharRank := 0;
   Result.ShipRank := 0;
-  Idx := Pos(Player.Data.Name, HTML, 1);
+  Idx := Pos(Player.Data.Name + '"', HTML, 1);
   if Idx <> 0 then
   begin
     Idx := Pos('<td class="text-center">', HTML, Idx+25);
