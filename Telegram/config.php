@@ -2,19 +2,15 @@
   class TData {
     // variables de connexió a la base de dades
     public $bdserver = 'localhost';
-    public $bdnamebd = 'cadetill_swgoh';
-    public $bduser = 'cadetill_swgoh'; 
-    public $bdpas = 'MNtEswU34';
-//    public $bdserver = 'mariadb';
-//    public $bdnamebd = 'cda';
-//    public $bduser = 'cdasql';
-//    public $bdpas = '0_ujRTnp';
+    public $bdnamebd = '';
+    public $bduser = ''; 
+    public $bdpas = '';
 
     // variables connexió a la API de swgoh.help 
-    public $swgohUser = 'cadetill';
-    public $swgohPass = 'MNtEswU34';
-    public $botToken = "1007209055:AAE6uvWX6QKIQbfBqwfOj__FaUE1gJ7txqw";
-    public $website = "https://api.telegram.org/bot1007209055:AAE6uvWX6QKIQbfBqwfOj__FaUE1gJ7txqw";
+    public $swgohUser = '';
+    public $swgohPass = '';
+    public $botToken = "";
+    public $website = "";
 
     // variables del xat
     public $chatId = "";
