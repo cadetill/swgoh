@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   UBaseCheckFrm, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.ListBox, FMX.Layouts,
-  FMX.StdCtrls, FMX.Edit, FMX.Controls.Presentation;
+  FMX.StdCtrls, FMX.Edit, FMX.Controls.Presentation, FMX.Memo.Types, Data.DB,
+  Datasnap.DBClient;
 
 type
   TCompPlayersFrm = class(TBaseCheckFrm)
@@ -62,10 +63,10 @@ begin
             TThread.Synchronize(TThread.CurrentThread,
               procedure
               begin
-                lSteps.Text := Format('Checking Player %s - try %d/10', [lbID.Items[i], j]);
+                lSteps.Text := Format('Checking Player %s - try %d/10', [lbID.ListItems[i].TagString, j]);
               end);
-            Mdl.LoadData(tcPlayer, lbID.Items[i]);
-            Mdl.LoadData(tcMods, lbID.Items[i]);
+            Mdl.LoadData(tcPlayer, lbID.ListItems[i].TagString);
+            Mdl.LoadData(tcMods, lbID.ListItems[i].TagString);
             Break;
           except
             Sleep(5000);

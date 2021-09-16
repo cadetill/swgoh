@@ -1,20 +1,20 @@
 <?php
   class TData {
     // variables de connexió a la base de dades
-    public $bdserver = '----';
-    public $bdnamebd = '----';
-    public $bduser = '----'; 
-    public $bdpas = '-----';
-//    public $bdserver = '----';
-//    public $bdnamebd = '----';
-//    public $bduser = '----';
-//    public $bdpas = '----';
+    public $bdserver = 'localhost';
+    public $bdnamebd = 'cadetill_swgoh';
+    public $bduser = 'cadetill_swgoh'; 
+    public $bdpas = 'MNtEswU34';
+//    public $bdserver = 'mariadb';
+//    public $bdnamebd = 'cda';
+//    public $bduser = 'cdasql';
+//    public $bdpas = '0_ujRTnp';
 
     // variables connexió a la API de swgoh.help 
-    public $swgohUser = '----';
-    public $swgohPass = '----';
-    public $botToken = "----";
-    public $website = "----";
+    public $swgohUser = 'cadetill';
+    public $swgohPass = 'MNtEswU34';
+    public $botToken = "1007209055:AAE6uvWX6QKIQbfBqwfOj__FaUE1gJ7txqw";
+    public $website = "https://api.telegram.org/bot1007209055:AAE6uvWX6QKIQbfBqwfOj__FaUE1gJ7txqw";
 
     // variables del xat
     public $chatId = "";
@@ -33,7 +33,7 @@
     public $aliasFile = "./json/alias.json";
     public $imFile = "./json/im.json";
     public $panicFile = "./json/panic.json";
-    public $imPhoto = "https://cadetill.com/swgoh/bot/img/im004.jpg";
+    public $imPhoto = "https://cadetill.com/swgoh/bot/img/im006.jpg";
     
     // urls externes
     public $swgoh_gg = 'https://swgoh.gg/game-asset/u/';
@@ -65,11 +65,17 @@
                             '/gf', '/gf@impman_bot',                            // check units for guild farming
                             '/here', '/here@impman_bot',                        // mention a person/people
                             '/panic', '/panic@impman_bot',                      // units needed to get specified unit
-                            '/rancor', '/rancor@impman_bot'                     // command for Rancor raid
+                            '/rancor', '/rancor@impman_bot',                    // command for Rancor raid
+                            '/stats', '/stats@impman_bot'                       // stats for a list of units
                            );
     
     // unitats noves o a eliminar del bot per a que funcioni la crinolo API
-    public $unitsToDelete = array();
+    public $unitsToDelete = array('CAPITALEXECUTOR', 'MAULS7');
+    
+    //màxim de caràcters per missatge
+    public $maxChars = 3000;
     
     public $maintenance = false;
+    
+    public $debugMode = true;
   }

@@ -9,10 +9,12 @@ uses
 
 const
   cMaxLevel = 12;
+  ctExecutor = 'Executor';
 
 type
   TPlayerInfo = record
     Power: Double;
+    Relics: Integer;
     Gear13: Integer;
     Gear12: Integer;
     Gear11: Integer;
@@ -23,6 +25,7 @@ type
     CharRank: Integer;
     ShipRank: Integer;
     Crystals: Integer;
+    GL: Integer;
   end;
 
   TModsInfo = record
@@ -128,13 +131,13 @@ begin
   begin
     Idx := Pos('<td class="text-center">', HTML, Idx+25);
     Idx := Pos('<td class="text-center">', HTML, Idx+25);
-    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    //Idx := Pos('<td class="text-center">', HTML, Idx+25);
     Idx2 := Pos('</td>', HTML, Idx);
     TmpStr := Copy(HTML, Idx+24, Idx2-(Idx+24));
     if TryStrToInt(TmpStr, TmpInt) then
       Result.CharRank := TmpInt;
     Idx := Pos('<td class="text-center">', HTML, Idx+25);
-    Idx := Pos('<td class="text-center">', HTML, Idx+25);
+    //Idx := Pos('<td class="text-center">', HTML, Idx+25);
     Idx2 := Pos('</td>', HTML, Idx);
     TmpStr := Copy(HTML, Idx+24, Idx2-(Idx+24));
     if TryStrToInt(TmpStr, TmpInt) then
@@ -144,6 +147,7 @@ begin
   TFileIni.SetFileIni(TGenFunc.GetIniName);
 
   Result.Power := 0;
+  Result.Relics := 0;
   Result.Gear13 := 0;
   Result.Gear12 := 0;
   Result.Gear11 := 0;
@@ -152,11 +156,18 @@ begin
   Result.Gear8 := 0;
   Result.Zetas := 0;
   Result.Crystals := 0;
+  Result.GL := 0;
   for i := 0 to Player.Count do
   begin
     Idx := Char.IndexOf(Player.Units[i].Data.Base_Id);
     if Idx = -1 then
       Continue;
+
+    if Player.Units[i].Data.Gear_level = 13 then
+      Result.Relics := Result.Relics + (Player.Units[i].Data.Relic_tier - 2);
+
+    if Player.Units[i].Data.IsLegend or SameText(Player.Units[i].Data.Name, ctExecutor) then
+      Inc(Result.GL);
 
     case Player.Units[i].Data.Gear_level of
       13: Inc(Result.Gear13);

@@ -127,6 +127,14 @@ function showHelp($command = "", $lang = "") {
     case '/rancor+':
       $ret = getRancorHelp($lang, true);
       break;
+    case 'stats':
+    case '/stats':
+      $ret = getStatsHelp($lang, false);
+      break;
+    case 'stats+':
+    case '/stats+':
+      $ret = getStatsHelp($lang, true);
+      break;
     default:
       $ret = getGeneralHelp($lang);
       break;
@@ -137,6 +145,108 @@ function showHelp($command = "", $lang = "") {
 
 
 
+
+/**************************************************************************
+  retorna l'ajuda del comando /stats
+**************************************************************************/
+function getStatsHelp($lang, $plus) {
+  switch ($lang) {
+    case "SPA_XM":
+      $ret = "<b>COMANDO: <i>stats</i></b> (by cadetill)\n";
+      $ret .= "\n";
+      $ret .= "<b>Definición:</b> \n";
+      $ret .= "  Comando para obtener los stats de diferentes unidades.\n\n";
+      $ret .= "<b>Sintaxis:</b> \n";
+      if ($plus) {
+        $ret .= "  /stats <i>SubCommand</i> +<i>aliasUnit</i> +<i>needed_aliasUnit(requisito)</i> \n";
+      }
+      $ret .= "  /stats <i>aliasUnit</i> \n";
+      $ret .= "  /stats <i>list</i> \n";
+      if ($plus) {
+        $ret .= "\n";
+        $ret .= "<b>SubCommand:</b> \n";
+        $ret .= "<b>   - add</b>: añade un nuevo equipo \n";
+        $ret .= "<i>      Requisitos válidos</i> \n";
+        $ret .= "<i>        + s</i>: velocidad \n";
+        $ret .= "<i>        + hp</i>: salud+protección \n";
+        $ret .= "<i>        + h</i>: salud \n";
+        $ret .= "<i>        + p</i>: protección \n";
+        $ret .= "<i>        + pd</i>: daño físico \n";
+        $ret .= "<i>        + sd</i>: daño especial \n";
+        $ret .= "<i>        + po</i>: potencia \n";
+        $ret .= "<i>        + t</i>: tenacidad \n";
+        $ret .= "<i>        + a</i>: defensa \n";
+        $ret .= "<i>        + pa</i>: evasión física \n";
+        $ret .= "<i>        + sa</i>: evasión especial \n";
+        $ret .= "<i>        + pcc</i>: prob. crítico físico\n";
+        $ret .= "<i>        + scc</i>: prob. crítico especial\n";
+        $ret .= "<i>        + cd</i>: daño crítico \n";
+        $ret .= "<b>   - del</b>: borra una unidad existente \n";
+      }
+      $ret .= "\n";
+      $ret .= "<b>Ejemplos:</b> \n";
+      if ($plus) {
+        $ret .= "<i>    Añadir equipo:</i> \n";
+        $ret .= "        /stats add +rey +rey(pd=10000;h=180000),finnh(s=325) \n";
+        $ret .= "\n  Nota: las unidades se separan <b>por coma</b> y las stats <b>por punto y coma</b>\n\n";
+        $ret .= "<i>    Borrar equipo:</i> \n";
+        $ret .= "        /stats del +rey \n";
+      }
+      $ret .= "        /stats rey \n";
+      $ret .= "        /stats rey +123456789 \n";
+      $ret .= "\n";
+      $ret .= "<b>Tiempo requerido</b>\n";
+      $ret .= "  Unos 4 minutos\n\n";
+      break;
+    default:
+      $ret = "<b>COMMAND: <i>stats</i></b> (by cadetill)\n";
+      $ret .= "\n";
+      $ret .= "<b>Definition:</b> \n";
+      $ret .= "  Command to obtain the stats of a set of units.\n\n";
+      $ret .= "<b>Syntax:</b> \n";
+      if ($plus) {
+        $ret .= "  /stats <i>SubCommand</i> +<i>aliasUnit</i> +<i>needed_aliasUnit(requisite)</i> \n";
+      }
+      $ret .= "  /stats <i>aliasUnit</i> \n";
+      $ret .= "  /stats <i>list</i> \n";
+      if ($plus) {
+        $ret .= "\n";
+        $ret .= "<b>SubCommand:</b> \n";
+        $ret .= "<b>   - add</b>: adds new team \n";
+        $ret .= "<i>      Valids prerequisites</i> \n";
+        $ret .= "<i>        + s</i>: speed \n";
+        $ret .= "<i>        + hp</i>: health+protection \n";
+        $ret .= "<i>        + h</i>: health \n";
+        $ret .= "<i>        + p</i>: protection \n";
+        $ret .= "<i>        + pd</i>: physical damage \n";
+        $ret .= "<i>        + sd</i>: special damage \n";
+        $ret .= "<i>        + po</i>: potency \n";
+        $ret .= "<i>        + t</i>: tenacity \n";
+        $ret .= "<i>        + a</i>: armor \n";
+        $ret .= "<i>        + pa</i>: physical avoidance \n";
+        $ret .= "<i>        + sa</i>: special avoidance \n";
+        $ret .= "<i>        + pcc</i>: physical critical chance \n";
+        $ret .= "<i>        + scc</i>: special critical chance \n";
+        $ret .= "<i>        + cd</i>: critical damage \n";
+        $ret .= "<b>   - del</b>: del existing unit \n";
+      }
+      $ret .= "\n";
+      $ret .= "<b>Examples:</b> \n";
+      if ($plus) {
+        $ret .= "<i>    Add team:</i> \n";
+        $ret .= "        /stats add +rey +rey(pd=1000;h=180000),finn(s=325) \n";
+        $ret .= "\n  Nota: units are separated <b>by commas</b> and stats <b>by semicolons</b>\n\n";
+        $ret .= "<i>    Del team:</i> \n";
+        $ret .= "        /stats del +gas \n";
+      }
+      $ret .= "        /stats gas\n";
+      $ret .= "        /stats gas +123456789\n";
+      $ret .= "\n";
+      $ret .= "<b>Time required</b>\n";
+      $ret .= "  Around 4 minutes \n\n";
+  }
+  return $ret;
+}
 
 /**************************************************************************
   retorna l'ajuda del comando /rancor
@@ -246,6 +356,10 @@ function getPanicHelp($lang, $plus) {
         $ret .= "<i>    Borrar una unidad:</i> \n";
         $ret .= "        /panic del +gas \n";
       }
+      $ret .= "<i>    Listar de panic:</i> \n";
+      $ret .= "        /panic list\n";
+      $ret .= "        /panic list +aliasUnit \n";
+      $ret .= "<i>    Obtener un panic:</i> \n";
       $ret .= "        /panic gas\n";
       $ret .= "        /panic gas +123456789\n";
       $ret .= "\n";
@@ -285,6 +399,10 @@ function getPanicHelp($lang, $plus) {
         $ret .= "<i>    Del unit:</i> \n";
         $ret .= "        /panic del +gas \n";
       }
+      $ret .= "<i>    Panic list:</i> \n";
+      $ret .= "        /panic list\n";
+      $ret .= "        /panic list +aliasUnit \n";
+      $ret .= "<i>    Get a panic:</i> \n";
       $ret .= "        /panic gas\n";
       $ret .= "        /panic gas +123456789\n";
       $ret .= "\n";
@@ -573,8 +691,9 @@ function getGeneralHelp($lang) {
       $ret .= "<a http=''>/alias</a>: comandos para los alias. Ver la ayuda detallada para más información.\n\n";
       $ret .= "<a http=''>/teams</a>: comandos para la gestión de equipos. Ver la ayuda detallada para más información\n\n";
       $ret .= "<a http=''>/gf</a>: comandos para la comprobación de unidades en el gremio. Ver la ayuda detallada para más información\n\n";
-      $ret .= "<a http=''>/here</a>: comando para mencionar a usuarios. Ver la ayuda detallada para más información\n\n";
-      $ret .= "<a http=''>/panic</a>: comando que mostrará los personajes necesarios para uno determinado. Ver la ayuda detallada para más información\n\n";
+      $ret .= "<a http=''>/here</a>: comando para mencionar a usuarios. Ver la ayuda detallada para más información.\n\n";
+      $ret .= "<a http=''>/panic</a>: comando que mostrará los personajes necesarios para uno determinado. Ver la ayuda detallada para más información.\n\n";
+      $ret .= "<a http=''>/stats</a>: comando para obtener las stats deseadas de una serie de personajes. Ver la ayuda detallada para más información.\n\n";
       break;
     default:
       $ret = "<b>COMMANDS</b> (by cadetill)\n";
@@ -598,6 +717,7 @@ function getGeneralHelp($lang) {
       $ret .= "<a http=''>/gf</a>: commands for checking units in the guild. See detailed help for more info.\n\n";
       $ret .= "<a http=''>/here</a>: command to tag users. See detailed help for more info.\n\n";
       $ret .= "<a http=''>/panic</a>: command that will show the necessary characters for a certain one. See detailed help for more info.\n\n";
+      $ret .= "<a http=''>/stats</a>: command to obtain some stats from a list of units. See detailed help for more info.\n\n";
   }
   return $ret;
 }
@@ -619,6 +739,7 @@ function getTWHelp($lang, $plus) {
       if ($plus) {
         $ret .= "<b>   - new</b>: crea una nueva instancia (sólo 1 vez por gt) \n";
         $ret .= "<b>   - dates</b>: listado de fecha/jugador \n";
+        $ret .= "<b>   - noreg</b>: añade jugadores no registrados en la GT separados por coma. Con el parámetro +list muestra los jugadores añadidos hasta el momento. \n";
       }
       $ret .= "<b>   - def</b>: define un equipo defensivo \n";
       $ret .= "<b>   - off</b>: define un equipo atacante. Tienes que poner el equipo usado, los puntos sacados y el equipo atacado \n";
@@ -635,7 +756,8 @@ function getTWHelp($lang, $plus) {
       $ret .= "<b>   - save</b>: guarda el resultado de la GT actual (información de attacks) en la tabla de histórico. La fecha tiene que ser en formato aaaammdd. \n";
       $ret .= "<b>   - delh</b>: borra los datos históricos guardado de una GT. La fecha tiene que ser en formato aaaammdd. \n";
       $ret .= "<b>   - listh</b>: muestra los datos guardados de las GTs de los últimos 24 meses. \n";
-      $ret .= "<b>   - history</b>: histórico por jugador de los últimos 24 meses.Puedes ordenar el resultado usando un parámetro extra (título de la columna) \n\n";
+      $ret .= "<b>   - history</b>: histórico por jugador de los últimos 24 meses.Puedes ordenar el resultado usando un parámetro extra (título de la columna) \n";
+      $ret .= " \n";
       $ret .= "<b>Ejemplos:</b> \n";
       if ($plus) {
         $ret .= "<i>    Crear nueva instancia:</i> \n";
@@ -643,6 +765,9 @@ function getTWHelp($lang, $plus) {
         $ret .= "<i>    Listado de fechas:</i> \n";
         $ret .= "        /tw dates\n";
         $ret .= "        /tw dates +date\n";
+        $ret .= "<i>    Añadir jugadores no registrados:</i> \n";
+        $ret .= "        /tw noreg +123456789,987654321,456123789\n";
+        $ret .= "        /tw noreg +list\n";
       }
       $ret .= "<i>    Añadir defensa:</i> \n";
       $ret .= "        /tw def +gas\n";
@@ -705,6 +830,7 @@ function getTWHelp($lang, $plus) {
       if ($plus) {
         $ret .= "<b>   - new</b>: create a new instance (only 1 time for tw) \n";
         $ret .= "<b>   - dates</b>: list date/player \n";
+        $ret .= "<b>   - noreg</b>: adds non-GT registered players separated by commas. With +list param shows players added until this moment. \n";
       }
       $ret .= "<b>   - def</b>: define a defensive team \n";
       $ret .= "<b>   - off</b>: define an offensive team. You need to put your team used, points and enemy team \n";
@@ -721,7 +847,8 @@ function getTWHelp($lang, $plus) {
       $ret .= "<b>   - save</b>: Saves current TW result (attacks info) into the historic table. The date must be in yyyymmdd format. \n";
       $ret .= "<b>   - delh</b>: Deletes an specific saved TW history. The date must be in yyyymmdd format. \n";
       $ret .= "<b>   - listh</b>: Lists saved results of TW from last 24 month. \n";
-      $ret .= "<b>   - history</b>: History of the last 24 months per player. You can sort the result using an extra param (column title) \n\n";
+      $ret .= "<b>   - history</b>: History of the last 24 months per player. You can sort the result using an extra param (column title) \n";
+      $ret .= " \n";
       $ret .= "<b>Examples:</b> \n";
       if ($plus) {
         $ret .= "<i>    Create new instance:</i> \n";
@@ -729,6 +856,9 @@ function getTWHelp($lang, $plus) {
         $ret .= "<i>    List date/player:</i> \n";
         $ret .= "        /tw dates\n";
         $ret .= "        /tw dates +date\n";
+        $ret .= "<i>    Add non registered players:</i> \n";
+        $ret .= "        /tw noreg +123456789,987654321,456123789\n";
+        $ret .= "        /tw noreg +list\n";
       }
       $ret .= "<i>    Add defense:</i> \n";
       $ret .= "        /tw def +gas\n";

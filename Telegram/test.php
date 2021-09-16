@@ -188,6 +188,7 @@
              <option value="listh">listh</option>
              <option value="history">history</option>
              <option value="dates">dates</option>
+             <option value="noreg">noreg</option>
         </select></br>
         <label for="unit">Unit/Alias:</label><input type="text" name="unit" /></br>
         <label for="points">Points:</label><input type="text" name="points" /></br>
@@ -303,6 +304,8 @@
              <option value="gas">gas</option>
              <option value="see">see</option>
              <option value="jml">jml</option>
+             <option value="cup">cup</option>
+             <option value="nconsul">nconsul</option>
         </select></br>
         <label for="unit">Unit:</label><input type="text" name="unit" /></br>
         <label for="unit">Dependences:</label><input type="text" name="dependences" /></br>
@@ -324,6 +327,25 @@
         </select></br>
         <label for="percen">Percen:</label><input type="text" name="percen" /></br>
 	<input type="hidden" name="json" value="19" />
+        <input type="submit" />
+      </form></br>
+    ';
+
+    // STATS
+    echo '
+      <form action="test.php" method="post"></br>
+        <strong>Stats Command</strong></br>
+        <label for="subcomand">SubComand:<select name="subcomand">
+             <option value="add">add</option>
+             <option value="del">del</option>
+             <option value="list">list</option>
+             <option value="gas">gas</option>
+             <option value="see">see</option>
+             <option value="jml">jml</option>
+        </select></br>
+        <label for="unit">Unit:</label><input type="text" name="unit" /></br>
+        <label for="unit">Dependences:</label><input type="text" name="dependences" /></br>
+	<input type="hidden" name="json" value="20" />
         <input type="submit" />
       </form></br>
     ';
@@ -360,6 +382,7 @@
   require_once 'here.php';
   require_once 'panic.php';
   require_once 'rancor.php';
+  require_once 'stats.php';
   require_once './textimage/class.textPainter.php';
   
   $data = new TData;
@@ -499,6 +522,14 @@
       if ($_REQUEST['percen'] != "") $_REQUEST['percen'] = "+".$_REQUEST['percen'];
       $json = str_replace("%subcomand%", $_REQUEST['subcomand'], '{"update_id":430824491,"message":{"message_id":171538,"from":{"id":345381881,"is_bot":false,"first_name":"cadetill Ne\'tra","username":"cadetill","language_code":"es"},"chat":{"id":345381881,"first_name":"cadetill Ne\'tra","username":"cadetill","type":"private"},"date":1591395320,"text":"/rancor %subcomand% %percen% ","entities":[{"offset":0,"length":10,"type":"bot_command"}]}}');
       $json = str_replace("%percen%", $_REQUEST['percen'], $json);
+      break;
+    case 20:  // STATS
+      if ($_REQUEST['subcomand'] == "") break;
+      if ($_REQUEST['unit'] != "") $_REQUEST['unit'] = "+".$_REQUEST['unit'];
+      if ($_REQUEST['dependences'] != "") $_REQUEST['dependences'] = "+".$_REQUEST['dependences'];
+      $json = str_replace("%subcomand%", $_REQUEST['subcomand'], '{"update_id":430824491,"message":{"message_id":171538,"from":{"id":345381881,"is_bot":false,"first_name":"cadetill Ne\'tra","username":"cadetill","language_code":"es"},"chat":{"id":345381881,"first_name":"cadetill Ne\'tra","username":"cadetill","type":"private"},"date":1591395320,"text":"/stats %subcomand% %unit% %dependences% ","entities":[{"offset":0,"length":10,"type":"bot_command"}]}}');
+      $json = str_replace("%unit%", $_REQUEST['unit'], $json);
+      $json = str_replace("%dependences%", $_REQUEST['dependences'], $json);
       break;
   }
 
@@ -677,6 +708,11 @@
         //echo '$data->message: '.$data->message;
       $rancor = new TRancor(explode(' +',trim($data->message)), $data);
       $response = $rancor->execCommand();
+      break;
+    case '/stats': 
+    case '/stats@impman_bot':
+      $stats = new TStats(explode(' +',trim($data->message)), $data);
+      $response = $stats->execCommand();
       break;
   }
 

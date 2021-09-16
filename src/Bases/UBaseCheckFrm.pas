@@ -5,8 +5,8 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
-  FMX.StdCtrls, FMX.ListBox, FMX.Layouts, FMX.Objects,
-  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
+  FMX.StdCtrls, FMX.ListBox, FMX.Layouts, FMX.Objects, FMX.Controls.Presentation,
+  FMX.ScrollBox, FMX.Memo, FMX.Memo.Types, Data.DB, Datasnap.DBClient,
   UInterfaces, uUnit, uAbilities;
 
 type
@@ -22,6 +22,7 @@ type
     eID: TEdit;
     bAdd: TButton;
     bToClbd: TButton;
+    cdsData: TClientDataSet;
     procedure bAddClick(Sender: TObject);
     procedure bToClbdClick(Sender: TObject);
   private
@@ -72,8 +73,8 @@ begin
     Exit;
 
   lbItem := TListBoxItem.Create(lbID);
-  lbItem.Text := TGenFunc.GetField(eID.Text, 5, '/');
-  lbItem.TagString := eID.Text;
+  lbItem.Text := eID.Text;
+  lbItem.TagString := TGenFunc.GetField(eID.Text, 5, '/');
 
   Button := TButton.Create(lbItem);
   Button.Align := TAlignLayout.Right;

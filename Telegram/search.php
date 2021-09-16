@@ -75,14 +75,14 @@ class TSearch extends TBase {
         $this->getData();
         // mirem que haguem trobat Id Guild
         if ($this->guild[0]["id"] == "")
-          return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+          return $this->translatedText("error6");                               // "Ooooops! API server may have shut down. Try again later.\n\n"
         $res = $this->printSearch();
         break;
       case 'search2':
         $this->getData();
         // mirem que haguem trobat Id Guild
         if ($this->guild[0]["id"] == "")
-          return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+          return $this->translatedText("error6");                               // "Ooooops! API server may have shut down. Try again later.\n\n"
         $res = $this->printSearch2();
         break;
       default:
@@ -91,9 +91,14 @@ class TSearch extends TBase {
 
     $finalTime = microtime(true);
     $time = $finalTime - $initialTime;
-    $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));  // "<i>Elapsed time: ".gmdate("H:i:s", $time)."</i>\n";
-    
-    return array($res);
+    if (is_array($res)) {
+      $res[count($res)-1] .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));  // "<i>Elapsed time: ".gmdate("H:i:s", $time)."</i>\n";
+    } 
+    else {
+      $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));    // "<i>Elapsed time: ".gmdate("H:i:s", $time)."</i>\n";
+      $res = array($res);
+    }
+    $this->sendMessage($res);
   }
   
   /****************************************************
@@ -116,7 +121,7 @@ class TSearch extends TBase {
   /****************************************************
     dóna sortida al comando search
   ****************************************************/
-  private function printSearch() {
+  private function printSearch() {      
     $count = 0; 
     $gear = array();
     $stars = array();
@@ -183,11 +188,13 @@ class TSearch extends TBase {
     }  //foreach players
 
     // PART 5: bump del resultat
-    $res  = $this->translatedText("txtSearch01", $this->guild[0]["name"]);       // "<b>Guild</b>: ".$this->guild[0]["name"]."\n";
-    $res .= $this->translatedText("txtSearch02", $this->nameUnit);               // "<b>searching</b>: ".$this->nameUnit."\n";
-    $res .= $this->translatedText("txtSearch03", $count);                        // "<b>Total</b>: ".$count."\n\n";
+    $res = array();
+    $pos = 0;
+    $res[$pos]  = $this->translatedText("txtSearch01", $this->guild[0]["name"]);       // "<b>Guild</b>: ".$this->guild[0]["name"]."\n";
+    $res[$pos] .= $this->translatedText("txtSearch02", $this->nameUnit);               // "<b>searching</b>: ".$this->nameUnit."\n";
+    $res[$pos] .= $this->translatedText("txtSearch03", $count);                        // "<b>Total</b>: ".$count."\n\n";
       
-    $res .= $this->translatedText("txtSearch04");                                // "<b>---------- Stars ----------</b>\n";
+    $res[$pos] .= $this->translatedText("txtSearch04");                                // "<b>---------- Stars ----------</b>\n";
     krsort($stars);
     foreach ($stars as $key => $values) {
       $tmp = "";
@@ -195,10 +202,14 @@ class TSearch extends TBase {
         if ($tmp != "") $tmp .= ", ";
         $tmp .= $val;
       }
-      $res .= "<b>".$key."*</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      $res[$pos] .= "<b>".$key."*</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      
+      if (strlen($res[$pos]) > $this->dataObj->maxChars) {
+        $pos++;
+      }
     }
       
-    $res .= $this->translatedText("txtSearch05");                                // "<b>---------- Gear ----------</b>\n";
+    $res[$pos] .= $this->translatedText("txtSearch05");                                // "<b>---------- Gear ----------</b>\n";
     krsort($gear);
     foreach ($gear as $key => $values) {
       $tmp = "";
@@ -206,10 +217,14 @@ class TSearch extends TBase {
         if ($tmp != "") $tmp .= ", ";
         $tmp .= $val;
       }
-      $res .= "<b>".$key."</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      $res[$pos] .= "<b>".$key."</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      
+      if (strlen($res[$pos]) > $this->dataObj->maxChars) {
+        $pos++;
+      }
     }
       
-    $res .= $this->translatedText("txtSearch06");                                // "<b>---------- Zetas ----------</b>\n";
+    $res[$pos] .= $this->translatedText("txtSearch06");                                // "<b>---------- Zetas ----------</b>\n";
     krsort($zetas);
     foreach ($zetas as $key => $values) {
       $tmp = "";
@@ -217,20 +232,24 @@ class TSearch extends TBase {
         if ($tmp != "") $tmp .= ", ";
         $tmp .= $val;
       }
-      $res .= "<b>".$key."</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      $res[$pos] .= "<b>".$key."</b>: ".count($values)." <pre>(".$tmp.")</pre>\n\n";
+      
+      if (strlen($res[$pos]) > $this->dataObj->maxChars) {
+        $pos++;
+      }
     }
       
     usort($nohave, 'strcasecmp');
-    $res .= $this->translatedText("txtSearch07");                                // <b>------- Don't have it -----</b>\n";
+    $res[$pos] .= $this->translatedText("txtSearch07");                                // <b>------- Don't have it -----</b>\n";
     krsort($zetas);
     foreach ($nohave as $value) {
       $tmp = "";
-      $res .= $value."\n";
+      $res[$pos] .= $value."\n";
     }
-    $res .= "\n";
+    $res[$pos] .= "\n";
 
-    $res .= $this->translatedText("last_update", date("d-m-Y H:i:s", substr($this->guild[0]["updated"], 0, -3)));    // "<i>Last update: ".date("d-m-Y H:i:s", substr($this->guild[0]["updated"], 0, -3))."</i>\n";
-    $res .= "\n";
+    $res[$pos] .= $this->translatedText("last_update", date("d-m-Y H:i:s", substr($this->guild[0]["updated"], 0, -3)));    // "<i>Last update: ".date("d-m-Y H:i:s", substr($this->guild[0]["updated"], 0, -3))."</i>\n";
+    $res[$pos] .= "\n";
       
     return $res;      
   }

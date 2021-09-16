@@ -75,7 +75,14 @@ class TIm extends TBase {
 
     $finalTime = microtime(true);
     $time = $finalTime - $initialTime;
-    $res .= "<i>Elapsed time: ".gmdate("H:i:s", $time)."</i>\n";
+    if (is_array($res)) {
+      $res[count($res)-1] .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));
+      return $res;
+    } 
+    else {
+      $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));
+      return array($res);
+    }
     
     return array($res);
   }
@@ -122,15 +129,16 @@ class TIm extends TBase {
     }
     
     // imprimim resultat
-    $ret = $this->translatedText("txtIm01");                                    // "<b>Grupo łmperio Mandaloriano</b>\n";
-    $ret .= "\n";
+    $ret = array();
+    $tmpStr = $this->translatedText("txtIm01");                                    // "<b>Grupo łmperio Mandaloriano</b>\n";
+    $tmpStr .= "\n";
     $branch = "";
     foreach($im as $key => $i) {
       if ($branch == "") {
         $branch = $i["branch"];
       }
       if ($branch != $i["branch"]) {
-        $ret .= "----------------------------------------\n\n";
+        $tmpStr .= "----------------------------------------\n\n";
       }
       $branch = $i["branch"];
       
@@ -142,21 +150,26 @@ class TIm extends TBase {
           break;
         }
       }
-      $ret .= "<b>".$i["name"]." (".$key.")</b>\n";
-      $ret .= "<b>Alias</b>: ".$i["alias"]."\n";
-      $ret .= $this->translatedText("txtIm13", $i["branch"]);                   // "<b>Branch</b>: ".$i["branch"]."\n";
-      $ret .= $this->translatedText("txtIm02", $i["lider"]);                    // "<b>Leader</b>: ".$i["lider"]."\n";
-      $ret .= $this->translatedText("txtIm12", $i["allycode"]);                 // "<b>AllyCode</b>: ".$i["allycode"]."\n";
-      $ret .= $this->translatedText("txtIm03", $gp);                            // "<b>GP</b>: ".$gp."\n";
-      $ret .= $this->translatedText("txtIm04", $players);                       // "<b>Players</b>: ".$players."\n";
-      $ret .= $this->translatedText("txtIm05", $i["url"]);                      // "<b>url</b>: ".$i["url"]."\n";
-      $ret .= "\n";
+      $tmpStr .= "<b>".$i["name"]." (".$key.")</b>\n";
+      $tmpStr .= "<b>Alias</b>: ".$i["alias"]."\n";
+      $tmpStr .= $this->translatedText("txtIm13", $i["branch"]);                   // "<b>Branch</b>: ".$i["branch"]."\n";
+      $tmpStr .= $this->translatedText("txtIm02", $i["lider"]);                    // "<b>Leader</b>: ".$i["lider"]."\n";
+      $tmpStr .= $this->translatedText("txtIm12", $i["allycode"]);                 // "<b>AllyCode</b>: ".$i["allycode"]."\n";
+      $tmpStr .= $this->translatedText("txtIm03", $gp);                            // "<b>GP</b>: ".$gp."\n";
+      $tmpStr .= $this->translatedText("txtIm04", $players);                       // "<b>Players</b>: ".$players."\n";
+      $tmpStr .= $this->translatedText("txtIm05", $i["url"]);                      // "<b>url</b>: ".$i["url"]."\n";
+      $tmpStr .= "\n";
+
+      if (strlen($tmpStr) > $this->dataObj->maxChars) {
+        array_push($ret, $tmpStr);
+        $tmpStr = "";
+      }
     }
   
-    $ret .= "----------------------------------------\n\n";
-    $ret .= "More Info:\n";
-    $ret .= "https://docs.google.com/spreadsheets/d/1m0g8aa6qhmtv_J0mq9WafpcXIA256Z-r41h-4y3xitc/edit#gid=0\n\n";
-	
+    $tmpStr .= "----------------------------------------\n\n";
+    $tmpStr .= "More Info:\n";
+    $tmpStr .= "https://docs.google.com/spreadsheets/d/1m0g8aa6qhmtv_J0mq9WafpcXIA256Z-r41h-4y3xitc/edit#gid=0\n\n";
+    array_push($ret, $tmpStr);
     
     $this->sendPhoto('', $this->dataObj->imPhoto, '');
     return $ret;

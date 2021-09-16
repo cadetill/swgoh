@@ -29,6 +29,7 @@ here - mention a person/people
 help - shows this help
 panic - shows units needed for a specified unit
 rancor - command for rancor
+stats - stats for a list of units
 */
 //error_reporting( E_ALL );
 //ini_set('display_errors', 1);
@@ -36,8 +37,6 @@ rancor - command for rancor
 
   http_response_code(200);
   fastcgi_finish_request();
-//echo 'hola';
-//exit;
   
   require_once 'translate.php';
   require_once 'SwgohHelp.php';
@@ -64,6 +63,7 @@ rancor - command for rancor
   require_once 'here.php';
   require_once 'panic.php';
   require_once 'rancor.php';
+  require_once 'stats.php';
   require_once './textimage/class.textPainter.php';
   
   $data = new TData;
@@ -128,7 +128,8 @@ rancor - command for rancor
     // si no és un gremi IM, sortim
     if (($command != '/register') && ($command != '/register@impman_bot') && 
         ($command != '/help') && ($command != '/help@impman_bot') &&
-        !isIMGuild($player[0]["guildRefId"], $data)) {
+        !isIMGuild($player[0]["guildRefId"], $data) &&
+		(!isUserAdmin($data->username, $data))) {
       sendMessage($data, array("You are not from an IM guild.\n\n"));
       return;
     } 
@@ -272,6 +273,11 @@ rancor - command for rancor
     case '/rancor@impman_bot':
       $rancor = new TRancor(explode(' +',trim($data->message)), $data);
       $response = $rancor->execCommand();
+      break;
+    case '/stats': 
+    case '/stats@impman_bot':
+      $stats = new TStats(explode(' +',trim($data->message)), $data);
+      $response = $stats->execCommand();
       break;
   }
   if (!is_array($response)) {

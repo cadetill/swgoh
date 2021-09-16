@@ -384,6 +384,10 @@ class TTranslate {
     $this->translated["ENG_US"]["txtTw45"] = "<i>Characters</i>\n";
     $this->translated["ENG_US"]["txtTw46"] = "\n<b>With %s</b>\n";
     $this->translated["ENG_US"]["txtTw47"] = "Average (%s TWs)";
+    $this->translated["ENG_US"]["txtTw48"] = "There are some allycodes incorrects for %s:\n\n";
+    $this->translated["ENG_US"]["txtTw49"] = "All allycodes are discarted!\n\n";
+    $this->translated["ENG_US"]["txtTw50"] = "These allycodes have been added for %s:\n\n";
+    $this->translated["ENG_US"]["txtTw51"] = "Allycodes non registered for %s:\n\n";
   
     // classe TTeams
     $this->translated["ENG_US"]["teamserr1"] = "Team %s not found for %s.\n\n";
@@ -422,12 +426,41 @@ class TTranslate {
     $this->translated["ENG_US"]["txtPanic2"] = "<b>Dependency units</b>\n";
     $this->translated["ENG_US"]["txtPanic3"] = "Panic unit '%s' was deleted.\n\n";
     $this->translated["ENG_US"]["txtPanic4"] = "<b>List of units</b>\n\n";
+    $this->translated["ENG_US"]["txtPanic5"] = "level";
+    $this->translated["ENG_US"]["txtPanic6"] = "gear";
+    $this->translated["ENG_US"]["txtPanic7"] = "relics";
+    $this->translated["ENG_US"]["txtPanic8"] = "galactic power";
+    $this->translated["ENG_US"]["txtPanic9"] = "stars";
     
     // class TRancor
     $this->translated["ENG_US"]["txtRancor1"] = "Rancor for %s has been initialized\n\n";
     $this->translated["ENG_US"]["txtRancor2"] = "Rancor for %s \n\n";
     $this->translated["ENG_US"]["txtRancor3"] = "Total: %s (%s)\n\n";
     $this->translated["ENG_US"]["txtRancor4"] = "Rancor modified for %s with %s%\n\n";
+    
+    // class TStats
+    $this->translated["ENG_US"]["statserr1"] = "Unit '%s' not defined into States list.\n\n";
+    $this->translated["ENG_US"]["statserr2"] = "No units found into your rooster.\n\n";
+    $this->translated["ENG_US"]["statserr3"] = "Incorrect requisite.\n\n";
+    $this->translated["ENG_US"]["txtStats1"] = "Stat unit added.\n";
+    $this->translated["ENG_US"]["txtStats2"] = "<b>Units to control</b>\n";
+    $this->translated["ENG_US"]["txtStats3"] = "Stat unit '%s' was deleted.\n\n";
+    $this->translated["ENG_US"]["txtStats4"] = "<b>List of units</b>\n\n";
+    $this->translated["ENG_US"]["txtStats5"] = "speed";
+    $this->translated["ENG_US"]["txtStats6"] = "health+protection";
+    $this->translated["ENG_US"]["txtStats7"] = "health";
+    $this->translated["ENG_US"]["txtStats8"] = "protection";
+    $this->translated["ENG_US"]["txtStats9"] = "physical damage";
+    $this->translated["ENG_US"]["txtStats10"] = "special damage";
+    $this->translated["ENG_US"]["txtStats11"] = "potency";
+    $this->translated["ENG_US"]["txtStats12"] = "tenacity";
+    $this->translated["ENG_US"]["txtStats13"] = "armor";
+    $this->translated["ENG_US"]["txtStats14"] = "physical avoidance";
+    $this->translated["ENG_US"]["txtStats15"] = "special avoidance";
+    $this->translated["ENG_US"]["txtStats16"] = "    + %s: %s\n";
+    $this->translated["ENG_US"]["txtStats17"] = "physical c.chance";
+    $this->translated["ENG_US"]["txtStats18"] = "critical damage";
+    $this->translated["ENG_US"]["txtStats19"] = "special c.chance";
 
     
     
@@ -451,6 +484,35 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtPanic2"] = "<b>Unidades dependientes</b>\n";
     $this->translated["SPA_XM"]["txtPanic3"] = "La unidad Panic '%s' ha sido borrada.\n\n";
     $this->translated["SPA_XM"]["txtPanic4"] = "<b>Lista de unidades</b>\n\n";
+    $this->translated["SPA_XM"]["txtPanic5"] = "nivel";
+    $this->translated["SPA_XM"]["txtPanic6"] = "equipo";
+    $this->translated["SPA_XM"]["txtPanic7"] = "relíquias";
+    $this->translated["SPA_XM"]["txtPanic8"] = "poder galactico";
+    $this->translated["SPA_XM"]["txtPanic9"] = "estrellas";
+
+    // class TStats
+    $this->translated["SPA_XM"]["statserr1"] = "La unidad '%s' no está definida en la lista Stats.\n\n";
+    $this->translated["SPA_XM"]["statserr2"] = "No se han encontrado las unidades en tu inventario.\n\n";
+    $this->translated["SPA_XM"]["statserr3"] = "Requisito incorrecto.\n\n";
+    $this->translated["SPA_XM"]["txtStats1"] = "Unidad Stat añadida.\n";
+    $this->translated["SPA_XM"]["txtStats2"] = "<b>Unidades a controlar</b>\n";
+    $this->translated["SPA_XM"]["txtStats3"] = "La unidad Stat '%s' ha sido borrada.\n\n";
+    $this->translated["SPA_XM"]["txtStats4"] = "<b>Lista de unidades</b>\n\n";
+    $this->translated["SPA_XM"]["txtStats5"] = "velocidad";
+    $this->translated["SPA_XM"]["txtStats6"] = "salud+protección";
+    $this->translated["SPA_XM"]["txtStats7"] = "salud";
+    $this->translated["SPA_XM"]["txtStats8"] = "protección";
+    $this->translated["SPA_XM"]["txtStats9"] = "daño físico";
+    $this->translated["SPA_XM"]["txtStats10"] = "daño especial";
+    $this->translated["SPA_XM"]["txtStats11"] = "potencia";
+    $this->translated["SPA_XM"]["txtStats12"] = "tenacidad";
+    $this->translated["SPA_XM"]["txtStats13"] = "blindaje";
+    $this->translated["SPA_XM"]["txtStats14"] = "evasión física";
+    $this->translated["SPA_XM"]["txtStats15"] = "evasión especial";
+    $this->translated["SPA_XM"]["txtStats16"] = "    + %s: %s\n";
+    $this->translated["SPA_XM"]["txtStats17"] = "prob. crítico físico";
+    $this->translated["SPA_XM"]["txtStats18"] = "daño crítico";
+    $this->translated["SPA_XM"]["txtStats19"] = "prob. crítico especial";
 
     // classe THere
     $this->translated["SPA_XM"]["hereerr1"] = "El usuario '%s' ya existe en la lista '%s'.\n\n";
@@ -795,6 +857,10 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtTw45"] = "<i>Personajes</i>\n";
     $this->translated["SPA_XM"]["txtTw46"] = "\n<b>Con %s</b>\n";
     $this->translated["SPA_XM"]["txtTw47"] = "Media (%s GTs)";
+    $this->translated["SPA_XM"]["txtTw48"] = "Hay allycodes incorrectos para %s:\n\n";
+    $this->translated["SPA_XM"]["txtTw49"] = "¡Todos los allycodes han sido descartados!\n\n";
+    $this->translated["SPA_XM"]["txtTw50"] = "Se han añadido los siguientes allycodes para %s:\n\n";
+    $this->translated["SPA_XM"]["txtTw51"] = "Allycodes no registrados para %s:\n\n";
 
     // classe TTeams
     $this->translated["SPA_XM"]["teamserr1"] = "Equipo %s no encontrado para %s.\n\n";

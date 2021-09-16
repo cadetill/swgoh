@@ -275,7 +275,7 @@ class TUnits extends TBase {
         $tmp = $unit['combatType'];
       }
       $tmpStr .= "   ".$unit[$this->dataObj->language]."\n";
-      if (strlen($tmpStr) > 3000) {
+      if (strlen($tmpStr) > $this->dataObj->maxChars) {
         array_push($ret, $tmpStr);
         $tmpStr = "";
       }

@@ -186,6 +186,9 @@ class TTW extends TBase {
         }
         $res = $this->dates();
         break; 
+      case 'noreg':
+        $res = $this->noreg();
+        break; 
       default:
         return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
     }
@@ -218,6 +221,8 @@ class TTW extends TBase {
           
     // esborrem posible contingut del gremi
     $sql = "delete from tw where guildRefId = '".$player[0]["guildRefId"]."'";
+    $idcon->query( $sql );
+    $sql = "delete from twconf where guildRefId = '".$player[0]["guildRefId"]."'";
     $idcon->query( $sql );
     if ($idcon->error) 
       return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.";
@@ -276,8 +281,8 @@ class TTW extends TBase {
     if ($idcon->error) 
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
 
-    $ret  = $this->translatedText("txtTw02", $player[0]["guildName"]);        // "TW updated for ".$player[0]["guildName"]."\n\n";
-    $ret .= $this->translatedText("txtTw03", $player[0]["name"]);             // "  Player: ".$player[0]["name"]."\n";
+    $ret  = $this->translatedText("txtTw02", $player[0]["guildName"]);          // "TW updated for ".$player[0]["guildName"]."\n\n";
+    $ret .= $this->translatedText("txtTw03", $player[0]["name"]);               // "  Player: ".$player[0]["name"]."\n";
     switch ($unittype) {
       case 'off':
         $ret .= $this->translatedText("txtTw04", TUnits::unitNameFromUnitId($unitId, $this->dataObj));               // "  Offensive unit: ". $this->alias."\n";
@@ -316,10 +321,12 @@ class TTW extends TBase {
       $unitId = TAlias::aliasSearch($this->alias, $this->dataObj);
     }
     
+    // si la unitat no la trobem, sortim amb error
     if ($unitId == "") {
       return $this->translatedText("twerr1", $this->alias);                     // "Unit <i>%s</i> not found.\n\n";
     }
         
+    // agafem punts segons sigue naus o terra
     if (TUnits::isAShip($unitId, $this->dataObj)) {
       $pointsBattle = 22;
     }
@@ -327,11 +334,11 @@ class TTW extends TBase {
       $pointsBattle = 20;
     }
     
+    // agafem info del gremi
     $players = $this->getInfoGuildExtra();
     
     if ($unitId != "rogue") {
       $tmp = array();
-//      echo 'players: '.count($players)."\n";
       
       // esborrem jugadors que no tinguin la unitat
       foreach ($players as $key => $value) {
@@ -347,7 +354,6 @@ class TTW extends TBase {
         if ($found) {
           $tmp[$key] = $players[$key];  
         }
-//        echo 'tmp: '.count($tmp)."\n";
       }
       
       $players = $tmp;
@@ -356,20 +362,20 @@ class TTW extends TBase {
     echo 'players: '.count($players)."\n";
     
     // mirem que haguem trobat Id Guild  
-//    if ($players[0]["id"] == "") {        
     if ($players[0]["guildRefId"] == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
+
+    // busquem no inscrits
+    $arrNoReg = $this->getNoReg();
     
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {
       return $this->translatedText("error4");                                   // return "Ooooops! An error has occurred getting data.\n\n";
     }
-    
+
     // busquem registres
-//    $sql  = "SELECT * FROM tw where guildRefId = '".$players[0]["id"]."' and unit = '".$unitId."'";
-//    $sql  = "SELECT t.*, (select u.username from users u where u.allycode = t.allyCode limit 1) username FROM tw t where guildRefId = '".$players[0]["guildRefId"]."' and unit = '".$unitId."'";
     $sql  = "SELECT * FROM tw where guildRefId = '".$players[0]["guildRefId"]."' and unit = '".$unitId."'";
     $res = $idcon->query( $sql );
     $sumOff = 0;
@@ -377,14 +383,16 @@ class TTW extends TBase {
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
     }
     
+    // inicialitzem arrays necessaris per a la impressió 
     $arrAtt = array();
     $arrDef = array();
     $arrUsed = array();
     $arrRogue = array();
+    
+    // recorrem registres omplin arrays
     while ($row = $res->fetch_assoc()) {
       $found = false;
       foreach ($players as $key => $player) {
-//      foreach ($players[0]["roster"] as $key => $player) {
         if ($row['allyCode'] == $player['allyCode']) {
           $found = true;
           switch ($row['unittype']) {
@@ -403,20 +411,20 @@ class TTW extends TBase {
               break;
           }
             
-//          unset($players[0]["roster"][$key]);
-          unset($players[$key]);
-          break;
+          unset($players[$key]); 
+          break; 
         }
       }
     }
-
+    
     $arrNo = array();
-//    foreach ($players[0]["roster"] as $player) {
     foreach ($players as $player) {
-      $sql  = "SELECT * FROM users where allycode = '".$player['allyCode']."' limit 1";
-      $res = $idcon->query( $sql );
-      $row = $res->fetch_assoc();
-      array_push($arrNo, '<code>'.$player['name'].'-'.$player['allyCode'].'</code> @'.$row['username']);
+      if (!in_array($player['allyCode'], $arrNoReg)) {
+        $sql  = "SELECT * FROM users where allycode = '".$player['allyCode']."' limit 1";
+        $res = $idcon->query( $sql );
+        $row = $res->fetch_assoc();
+        array_push($arrNo, '<code>'.$player['name'].'-'.$player['allyCode'].'</code> @'.$row['username']);
+      }
     }
     
     $idcon->close(); 
@@ -427,7 +435,6 @@ class TTW extends TBase {
     usort($arrNo, 'strnatcasecmp');    
     usort($arrRogue, 'strnatcasecmp');
             
-//    $ret  = $this->translatedText("txtTw07", $players[0]["name"]);              // "<b>Guild</b>: ".$players[0]["name"]."\n";
     $ret  = $this->translatedText("txtTw07", $players[0]["guildName"]);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
     if ($this->alias != "rogue") {
       $ret .= $this->translatedText("txtTw08", TUnits::unitNameFromUnitId($unitId, $this->dataObj));  // "<b>Unit</b>: ".$this->alias."\n";
@@ -556,7 +563,7 @@ class TTW extends TBase {
       return $this->translatedText("error4");                                   // return "Ooooops! An error has occurred getting data.\n\n";
             
     // cerquem registres
-    $sql  = "SELECT * FROM tw WHERE allyCode = '". $this->allyCode."'";
+    $sql  = "SELECT * FROM tw WHERE guildRefId = '".$player[0]["guildRefId"]."' and allyCode = '". $this->allyCode."'";
            
     $res = $idcon->query( $sql );
     if ($idcon->error) 
@@ -882,7 +889,6 @@ class TTW extends TBase {
         return strtoupper($a['unit']) <=> strtoupper($b['unit']);
       return $a['vs'] > $b['vs'];
     });
-//    echo "\n\n\n\n";print_r($arr);echo "\n\n\n\n";
     $tmpVersus = "";
     $idx = 0;
     foreach ($arr as $versus) {
@@ -898,23 +904,19 @@ class TTW extends TBase {
       
       $ret[$idx] .= "   - ".$versus['unit'].": ".$versus['primera']."P / ".$versus['total']."T / ".$versus['sumaPuntos']." puntos / ".$num."% \n";
       
-      if (strlen($ret[$idx]) > 4000) {
+      if (strlen($ret[$idx]) > $this->dataObj->maxChars) {
         $idx++;
       }
     }
     $ret[$idx] .= "\n";
     
-//    file_put_contents("./review", $ret[0]);
-//    return $ret[0];
 
- 
     // visió CON
     usort($arr, function($a, $b) {
       if ($a['unit'] == $b['unit'])
         return strtoupper($a['vs']) <=> strtoupper($b['vs']);
       return $a['unit'] > $b['unit'];
     });
-//    echo "\n\n\n\n";print_r($arr);echo "\n\n\n\n";
     $tmpVs = "";
     $idx++;
     foreach ($arr as $versus) {
@@ -930,12 +932,13 @@ class TTW extends TBase {
       
       $ret[$idx] .= "   - ".$versus['vs'].": ".$versus['primera']."P / ".$versus['total']."T / ".$versus['sumaPuntos']." puntos / ".$num."% \n";
       
-      if (strlen($ret[$idx]) > 4000) {
+      if (strlen($ret[$idx]) > $this->dataObj->maxChars) {
         $idx++;
       }
     }
     $ret[$idx] .= "\n";
         
+    
     // atacas no al primer intent
     $tmp = $this->translatedText("txtTw32");                                    // "<b>No first attack</b>\n\n";
         
@@ -1049,12 +1052,18 @@ class TTW extends TBase {
     $ret .= "rogues|battles|points|%\n";
     $ret .= "<pre>";
     
+    $sumOff = 0;
     foreach ($arr as $data) {
+      $sumOff = $sumOff + $data['off'];
       $ret .= str_pad($data['rogues'], 1, " ", STR_PAD_LEFT)."|".
               str_pad($data['off'], 2, " ", STR_PAD_LEFT)."|".
               str_pad($data['points'], 3, " ", STR_PAD_LEFT)."|".
               str_pad($data['percent'], 6, " ", STR_PAD_LEFT)." - ".
               $data['name']."\n";
+    }
+    if ($sumOff > 0) {
+      $ret .= "----------------\n";
+      $ret .= " ".str_pad($sumOff, 3, " ", STR_PAD_LEFT)."              TOTAL\n";
     }
     $ret .= "</pre>";
     $ret .= "\n";
@@ -1610,7 +1619,7 @@ class TTW extends TBase {
       }
       $ret[$idx] .= "\n";
 
-      if (strlen($ret[$idx]) > 3000) {
+      if (strlen($ret[$idx]) > $this->dataObj->maxChars) {
         $ret[$idx] .= "</pre>";
         $idx++;
       }
@@ -1619,5 +1628,140 @@ class TTW extends TBase {
     $ret[$idx] .= "\n";
     
     return $ret;
+  }
+
+  /**************************************************************************
+    afegeix allycodes com a no registrats en la TW per a no tenir-los en compte 
+  **************************************************************************/
+  private function noreg() {
+    // mirem si volem llistar
+    if (strcasecmp($this->params[1], 'list') == 0 ) {
+      return $this->listNoReg();
+    }
+      
+    // posem allycodes en un array
+    $arr = explode(',', $this->params[1]);
+    
+    // agafem dades de la guild
+    $guild = $this->getInfoGuild();
+      
+    // comprovem la existència dels allycodes
+    $notfound = array();
+    $yesfound = array();
+    foreach ($arr as $ally) {
+      $found = false;
+      foreach ($guild[0]['roster'] as $player) {
+        if ($player['allyCode'] == $ally) {
+          $found = true;
+          $yesfound[$ally] = $player['name'];
+        }
+      }
+      if ($found == false)
+        array_push($notfound, $ally);
+    }
+    
+    // i hi ha algun allycode incorrecte, els mostrem i sortim
+    if (count($notfound) > 0) {
+      $ret = $this->translatedText("txtTw48", $guild[0]["name"]);               // "There are some allycodes incorrects for %s:\n\n";
+      foreach ($notfound as $ally) {
+        $ret .= $ally."\n"; 
+      }
+      $ret .= "\n";
+      $ret .= $this->translatedText("txtTw49");                                 // "All allycodes are discarted!\n\n";
+      return $ret;
+    }
+
+    // si no hi ha allicodes incorrectes, els afegim
+    // conectem a la base de dades
+    $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
+    if ($idcon->connect_error) {echo "\n\n";
+      return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
+    }
+      
+    // afegim registre
+    $sql  = "INSERT INTO twconf (guildRefId, noreg) ";
+    $sql .= "VALUES ('".$guild[0]["id"]."', '".$this->params[1]."') ";
+    $sql .= "ON DUPLICATE KEY UPDATE noreg='".$this->params[1]."'";
+    $idcon->query( $sql );
+    if ($idcon->error) 
+      return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
+    
+    $idcon->close(); 
+
+    // retornem allycodes/players afegits
+    $ret = $this->translatedText("txtTw50", $guild[0]["name"]);                 // "These allycodes have been added for %s:\n\n";
+    foreach ($yesfound as $ally => $player) {
+      $ret .= $ally." - ".$player."\n"; 
+    }
+    $ret .= "\n";
+    return $ret;
+  }
+  
+  /**************************************************************************
+    llista els allycodes no registrats en la TW 
+  **************************************************************************/
+  private function listNoReg() {
+    // agafem dades de la guild
+    $guild = $this->getInfoGuild();
+      
+    // conectem a la base de dades
+    $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
+    if ($idcon->connect_error) {echo "\n\n";
+      return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
+    }
+      
+    // busquem registre
+    $sql  = "SELECT noreg FROM twconf WHERE guildRefId = '".$guild[0]["id"]."'";
+    $res = $idcon->query( $sql );
+    if ($idcon->error) {
+      return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
+    }
+    
+    // busquem noms
+    $players = array();
+    $row = $res->fetch_assoc();
+    $arrAllys = explode(',', $row['noreg']);
+    foreach ($arrAllys as $ally) {
+      foreach ($guild[0]['roster'] as $player) {
+        if ($player['allyCode'] == $ally) {
+          $players[$ally] = $player['name'];
+        }
+      }
+    }
+    
+    $idcon->close(); 
+    
+    // imprimim resultat
+    $ret = $this->translatedText("txtTw51", $guild[0]["name"]);                 // "There are some allycodes incorrects for %s:\n\n";
+    foreach ($players as $ally => $player) {
+      $ret .= $ally." - ".$player."\n"; 
+    }
+    $ret .= "\n";
+    return $ret;
+  }
+  
+  /**************************************************************************
+    retorna un array amb els allycodes no registrats en la TW 
+  **************************************************************************/
+  private function getNoReg() {
+    // agafem dades de la guild
+    $guild = $this->getInfoGuild();
+      
+    // conectem a la base de dades
+    $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
+    if ($idcon->connect_error) {echo "\n\n";
+      return array();
+    }
+      
+    // busquem registre
+    $sql  = "SELECT noreg FROM twconf WHERE guildRefId = '".$guild[0]["id"]."'";
+    $res = $idcon->query( $sql );
+    if ($idcon->error) {
+      return array();
+    }
+    
+    // busquem noms
+    $row = $res->fetch_assoc();
+    return explode(',', $row['noreg']);
   }
 }

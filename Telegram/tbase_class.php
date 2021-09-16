@@ -137,11 +137,12 @@ class TBase {
     if ($players == "") { // si no existeix el fitxer o és més antic d'1h 
       $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
       $players = $swgoh->fetchPlayer( $roster, $this->dataObj->language );
-      file_put_contents("./guilds/".$guild[0]["id"], $players);
+      //file_put_contents("./guilds/".$guild[0]["id"], $players);
       //file_put_contents("./guilds/".$guild[0]["id"].'_', $players);
     }
+    //json_decode($players, true);
     $p = json_decode($players, true);
-    //return $p;
+    return $p;
     
     $finalPlayers = $this->deleteUnitsToDelete($players);
     //file_put_contents("./guilds/".$guild[0]["id"].'__', $finalPlayers);
@@ -486,19 +487,26 @@ class TBase {
     $white_background = imagecolorallocatealpha($dest_image, 255, 255, 255, 0); // --> fondo blanc
     imagefill($dest_image, 0, 0, $white_background);
 
+    // agafem dades de swgoh.gg per saber "alignment" i "url imatge"
+    $charsJson = file_get_contents($this->dataObj->chars_gg);
+    $chars = json_decode($charsJson, true);
+    $fleetJson = file_get_contents($this->dataObj->fleet_gg);
+    $units = array_merge($chars, json_decode($fleetJson, true));
+
     // recorrem unitats i les superposem a la imatge
     $rown = 0;
     $col = 0;
     //print_r($arr);
     foreach ($arr as $key => $unit) {
       // superposem imatge unitat 
-      $info_imagen = getimagesize($this->dataObj->swgoh_gg.$key.'.png');
+      $imgUrl = $this->getImageUrl($units, $key);
+      $info_imagen = getimagesize($imgUrl);
       if (($info_imagen[0] != 128) && ($info_imagen[1] != 128)) {
-        $file = $this->redimensionarPNG($this->dataObj->swgoh_gg.$key.'.png', 128, 128, "");
+        $file = $this->redimensionarPNG($imgUrl, 128, 128, "");
         $a = imagecreatefrompng($file);
       } 
       else {
-        $a = imagecreatefrompng($this->dataObj->swgoh_gg.$key.'.png');
+        $a = imagecreatefrompng($imgUrl);
       }
       imagecopy($dest_image, $a, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($a);
@@ -621,6 +629,12 @@ class TBase {
       $maxCols = 5;
     }
 
+    // agafem dades de swgoh.gg per saber "alignment" i "url imatge"
+    $charsJson = file_get_contents($this->dataObj->chars_gg);
+    $chars = json_decode($charsJson, true);
+    $fleetJson = file_get_contents($this->dataObj->fleet_gg);
+    $units = array_merge($chars, json_decode($fleetJson, true));
+
     // creem imatge
     $dest_image = imagecreatetruecolor($width*$maxCols, $height*$maxRowns);
 
@@ -634,13 +648,14 @@ class TBase {
     $okCount = 0;
     foreach ($arr as $unit) {
       // superposem imatge unitat
-      $info_imagen = getimagesize($this->dataObj->swgoh_gg.$unit['defId'].'.png');
+      $imgUrl = $this->getImageUrl($units, $unit['defId']);
+      $info_imagen = getimagesize($imgUrl);
       if (($info_imagen[0] != 128) && ($info_imagen[1] != 128)) {
-        $file = $this->redimensionarPNG($this->dataObj->swgoh_gg.$unit['defId'].'.png', 128, 128, "");
+        $file = $this->redimensionarPNG($imgUrl, 128, 128, "");
         $a = imagecreatefrompng($file);
       } 
       else {
-        $a = imagecreatefrompng($this->dataObj->swgoh_gg.$unit['defId'].'.png');
+        $a = imagecreatefrompng($imgUrl);
       }
       imagecopy($dest_image, $a, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($a);
@@ -648,16 +663,21 @@ class TBase {
       $alig = TUnits::getAlignment($unit['defId'], $this->dataObj);
 
       // superposem imatge de gear
-      if ($unit['gear'] == 13) {
-        if (strcasecmp($alig, 'Dark Side') == 0) {
-          $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'d.png');
-        }
-        else {
-          $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'l.png');
-        }
-      }
-      else {
-        $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'.png');
+      switch ($unit['gear']) {
+        case 13:
+          if (strcasecmp($alig, 'Dark Side') == 0) {
+            $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'d.png');
+          }
+          else {
+            $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'l.png');
+          }
+          break;
+        case 0:
+          $b = imagecreatefrompng('./img/gear-icon-g1.png');
+          break;
+        default:
+          $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'.png');
+          break;
       }
       imagecopy($dest_image, $b, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($b);
@@ -702,24 +722,28 @@ class TBase {
       }
 
       // superposem imatge de nivell
-      $img = new textPainter('./img/level.png', $unit['level'], './textimage/arial-bold.ttf', 10);
-      if ($unit['level'] < 10)
-        $img->setPosition(60, 117);
-      elseif ($unit['level'] < 100)
-        $img->setPosition(57, 117);
-      else
-        $img->setPosition(55, 117);
-      $img->setTextColor(255,255,255);
-      $filename = $img->saveImage("./tmp", "LVL_");
-
-      $e = imagecreatefrompng($filename);
-      imagecopy($dest_image, $e, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
-      imagedestroy($e);
+      if ($unit['level'] != 0) {
+        $img = new textPainter('./img/level.png', $unit['level'], './textimage/arial-bold.ttf', 10);
+        if ($unit['level'] < 10)
+          $img->setPosition(60, 117);
+        elseif ($unit['level'] < 100)
+          $img->setPosition(57, 117);
+        else
+          $img->setPosition(55, 117);
+        $img->setTextColor(255,255,255);
+        $filename = $img->saveImage("./tmp", "LVL_");
+        
+        $e = imagecreatefrompng($filename);
+        imagecopy($dest_image, $e, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
+        imagedestroy($e);
+      }
 
       // superposem imatge d'estrelles
-      $f = imagecreatefrompng('./img/star'.$unit['rarity'].'.png');
-      imagecopy($dest_image, $f, ($width*$col)+10, ($height*$rown), 0, 0, 160, 160);
-      imagedestroy($f);
+      if ($unit['rarity'] != 0) {
+        $f = imagecreatefrompng('./img/star'.$unit['rarity'].'.png');
+        imagecopy($dest_image, $f, ($width*$col)+10, ($height*$rown), 0, 0, 160, 160);
+        imagedestroy($f);
+      }
       
       // controlem prerequisits i posem "check" si els compleix
       $isOk = true;
@@ -745,14 +769,14 @@ class TBase {
               $isOk = false;  
             }
             break;
-          case 's':
+          case 's': 
             if ($unit['rarity'] < $pre) {
               $isOk = false;  
             }
             break;
         }
       }
-      if (($isOk) && ($unit["rarity"] == 7)) {
+      if ($isOk) { // if (($isOk) && ($unit["rarity"] == 7)) {
         $ok = imagecreatefrompng('./img/ok.png');
         imagecopy($dest_image, $ok, ($width*$col)+10, ($height*$rown), 0, 0, 160, 160);
         imagedestroy($ok);
@@ -928,5 +952,16 @@ class TBase {
     //echo "\n\nentrada delete units\n\n";
     
     return json_encode($p, true);
+  }
+  
+  /**************************************************************************
+    funció que returna la url de la unitat especificada
+  **************************************************************************/
+  private function getImageUrl($units, $defId) {
+    foreach ($units as $unit) {
+      if ($unit['base_id'] == $defId) {
+        return $unit['image'];
+      }
+    }
   }
 }

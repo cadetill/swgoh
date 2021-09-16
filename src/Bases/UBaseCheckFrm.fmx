@@ -108,8 +108,8 @@ object BaseCheckFrm: TBaseCheckFrm
     Size.Height = 262.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
-    Viewport.Width = 626.000000000000000000
-    Viewport.Height = 258.000000000000000000
+    Viewport.Width = 630.000000000000000000
+    Viewport.Height = 262.000000000000000000
   end
   object lSteps: TLabel
     Align = Bottom
@@ -131,5 +131,11 @@ object BaseCheckFrm: TBaseCheckFrm
     TabOrder = 1
     Text = 'Copy Teams to Clipboard'
     OnClick = bToClbdClick
+  end
+  object cdsData: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 272
+    Top = 96
   end
 end

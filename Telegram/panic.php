@@ -4,7 +4,7 @@ class TPanic extends TBase {
   private $subcomand;
   private $unit;
   private $dependences;
-  private $validPre = array('l','g','r','gp','s');
+  private $validPre = array('l','g','r','gp','s') ;
  
   /****************************************************
     constructor de la classe. Inicialitza variables
@@ -122,7 +122,7 @@ class TPanic extends TBase {
           $unitPre[$p[0]] = $p[1];
         }
       }
-      
+      echo $unit."\n";
       // busquem Id unitat
       $defIdUnit = TAlias::aliasSearch($unit, $this->dataObj);
       if ($defIdUnit == ""){

@@ -208,7 +208,7 @@ class TAlias extends TBase {
         $tmp .= $unit;
       }
       $tmpStr .= "<b>".$key. "</b>: ".$tmp."\n";
-      if (strlen($tmpStr) > 3000) {
+      if (strlen($tmpStr) > $this->dataObj->maxChars) {
         array_push($ret, $tmpStr);
         $tmpStr = "";
       }

@@ -320,7 +320,7 @@ class TTeams extends TBase {
     // agafem Id d'unitats
     $row = $res->fetch_assoc();
     $units = explode(',', $row['units']);
-    
+
     // omplim array $team amb la relació jugador, pg equip i unitats de l'equip
     $team = array();
     foreach ($players as $player) {
@@ -363,38 +363,45 @@ class TTeams extends TBase {
     
     // imprimim $team
 //    $ret  = $this->guildName."\n\n";
-    $ret  = $guild[0]['name']."\n\n";
-    $ret .= $this->translatedText("txtTeams08", $this->team);                   // "Team: %s \n\n";
-    $ret .= $this->translatedText("txtTeams09");                                // "Units: \n";
+    $ret = array();
+    $pos = 0;
+    $ret[$pos]  = $guild[0]['name']."\n\n";
+    $ret[$pos] .= $this->translatedText("txtTeams08", $this->team);                   // "Team: %s \n\n";
+    $ret[$pos] .= $this->translatedText("txtTeams09");                                // "Units: \n";
     $cont = 1;
     $title = "";
     $subtitle = "";
     foreach ($units as $unit) {        
-      $ret .= $this->translatedText("txtTeams10", array($cont, TUnits::unitNameFromUnitId($unit, $this->dataObj)));  // "  U%s: %s \n";
+      $ret[$pos] .= $this->translatedText("txtTeams10", array($cont, TUnits::unitNameFromUnitId($unit, $this->dataObj)));  // "  U%s: %s \n";
       if ($title != "")
         $title .= " |";
       $title .= "U".$cont;
       $subtitle .= "----";
       $cont++;
     }
-    $ret .= "\n";
-    $ret .= "<pre>";
-    $ret .= $title." |GP    \n";
-    $ret .= $subtitle."-------\n";
+    $ret[$pos] .= "\n";
+    $ret[$pos] .= "<pre>";
+    $ret[$pos] .= $title." |GP    \n";
+    $ret[$pos] .= $subtitle."-------\n";
     
     foreach ($team as $player) {
       foreach ($units as $unit) {        
-        $ret .= str_pad($player[$unit], 3, " ", STR_PAD_LEFT)."|";
+        $ret[$pos] .= str_pad($player[$unit], 3, " ", STR_PAD_LEFT)."|";
       }
-      $ret .= str_pad($player["gp"], 6, " ", STR_PAD_LEFT)." - ".
-              $player['name']."\n"; 
+      $ret[$pos] .= str_pad($player["gp"], 6, " ", STR_PAD_LEFT)." - ".$player['name']."\n"; 
+      
+      if (strlen($ret[$pos]) > $this->dataObj->maxChars) {
+        $ret[$pos] .= "</pre>\n";
+        $pos++;
+        $ret[$pos] .= "<pre>";
+      }
     }
-    $ret .= "</pre>\n";
+    $ret[$pos] .= "</pre>\n";
     
     if ($fileName != "") {
-      $ret .= $fileName."\n";
+      $ret[$pos] .= $fileName."\n";
     }
-    $ret .= "\n";
+    $ret[$pos] .= "\n";
     
     return $ret;
   }

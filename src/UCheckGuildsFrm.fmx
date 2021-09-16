@@ -9,31 +9,31 @@ inherited CheckGuildsFrm: TCheckGuildsFrm
     Viewport.Height = 91.000000000000000000
   end
   inherited Line2: TLine
-    Position.Y = 217.000000000000000000
+    Position.Y = 256.000000000000000000
   end
   inherited mData: TMemo
-    Size.Height = 200.000000000000000000
+    Size.Height = 161.000000000000000000
     TabOrder = 6
     Viewport.Width = 630.000000000000000000
-    Viewport.Height = 200.000000000000000000
+    Viewport.Height = 161.000000000000000000
   end
   inherited lSteps: TLabel
-    TabOrder = 21
+    TabOrder = 29
   end
-  object lFormat: TLabel
+  object lFormat: TLabel [6]
     Align = Top
     Margins.Left = 10.000000000000000000
     Margins.Top = 5.000000000000000000
     Margins.Right = 10.000000000000000000
     Position.X = 10.000000000000000000
-    Position.Y = 150.000000000000000000
+    Position.Y = 189.000000000000000000
     Size.Width = 620.000000000000000000
     Size.Height = 27.000000000000000000
     Size.PlatformDefault = False
     Text = 'Format'
     TabOrder = 0
   end
-  object cbFormat: TComboBox
+  object cbFormat: TComboBox [7]
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     Align = Top
     Items.Strings = (
@@ -43,10 +43,24 @@ inherited CheckGuildsFrm: TCheckGuildsFrm
     Margins.Left = 10.000000000000000000
     Margins.Right = 10.000000000000000000
     Position.X = 10.000000000000000000
-    Position.Y = 177.000000000000000000
+    Position.Y = 216.000000000000000000
     Size.Width = 620.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
+  end
+  object cbCheckTeams: TCheckBox [8]
+    Align = Top
+    Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Position.X = 5.000000000000000000
+    Position.Y = 150.000000000000000000
+    Size.Width = 630.000000000000000000
+    Size.Height = 29.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 26
+    Text = 'Control Teams'
   end
 end

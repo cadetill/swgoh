@@ -3,6 +3,7 @@ program swgoh;
 uses
   System.StartUpCopy,
   FMX.Forms,
+  MidasLib,
   UMainFrm in 'src\UMainFrm.pas' {MainFrm},
   uCharacter in 'src\Classes\uCharacter.pas',
   uUnit in 'src\Classes\uUnit.pas',

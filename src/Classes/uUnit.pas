@@ -6,6 +6,9 @@ uses
   System.Classes, System.Generics.Collections, System.JSON.Serializers,
   uBase;
 
+const
+  ctGL = 'Galactic Legend';
+
 type
   TAbility = class(TBase)
   private
@@ -154,6 +157,7 @@ type
     FStats: TStats;
     FAlias: string;
     FRelic_tier: Integer;
+    FCategories: TArray<String>;
     function GetCountA: Integer;
     function GetCountZ: Integer;
     function GetCountG: Integer;
@@ -163,6 +167,7 @@ type
     destructor Destroy; override;
 
     function IndexOfZ(BaseId: string): Integer;
+    function IsLegend: Boolean;
 
     class function FromJsonString(AJsonString: string): TUnit;
 
@@ -180,6 +185,7 @@ type
     property Image: String read FImage write FImage;
     property Description: String read FDescription write FDescription;
     property Ability_classes: TArray<String> read FAbility_classes write FAbility_classes;
+    property Categories: TArray<String> read FCategories write FCategories;
     property Stats: TStats read FStats write FStats;
     property Multiplier: Integer read FMultiplier write FMultiplier;
     property Alias: string read FAlias write FAlias;
@@ -273,6 +279,11 @@ begin
       Result := i;
       Break;
     end;
+end;
+
+function TUnit.IsLegend: Boolean;
+begin
+  Result := IndexOfZ('uniqueskill_GALACTICLEGEND01') <> -1;
 end;
 
 { TAbility }
