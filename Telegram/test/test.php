@@ -3,7 +3,7 @@
     set_time_limit(600);
     header('Content-Type: application/json');
 
-    $swgoh = new SwgohHelp(array("cadetill","MNtEswU34"));
+    $swgoh = new SwgohHelp(array("your_user","your_pass"));
     $jsonGuild = $swgoh->fetchGuild( '471192528', 'SPA_XM' );
     
     $arrGuild = json_decode($jsonGuild, true);
