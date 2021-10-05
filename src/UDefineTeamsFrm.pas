@@ -203,6 +203,9 @@ begin
       begin
         TmpStr := '';
 
+        if FTeams.Items[i].Units[j].RelicTier <> 0 then
+          TmpStr := TmpStr + ' - R: ' + FTeams.Items[i].Units[j]. RelicTier.ToString;
+
         if FTeams.Items[i].Units[j].PG <> 0 then
           TmpStr := TmpStr + ' - PG: ' + FTeams.Items[i].Units[j].PG.ToString;
 
@@ -215,8 +218,23 @@ begin
         if FTeams.Items[i].Units[j].Health <> 0 then
           TmpStr := TmpStr + ' - Health: ' + FTeams.Items[i].Units[j].Health.ToString;
 
+        if FTeams.Items[i].Units[j].Protection <> 0 then
+          TmpStr := TmpStr + ' - Protection: ' + FTeams.Items[i].Units[j].Protection.ToString;
+
         if FTeams.Items[i].Units[j].Tenacity <> 0 then
           TmpStr := TmpStr + ' - Tenacity: ' + FTeams.Items[i].Units[j].Tenacity.ToString;
+
+        if FTeams.Items[i].Units[j].Potency <> 0 then
+          TmpStr := TmpStr + ' - Potency: ' + FTeams.Items[i].Units[j].Potency.ToString;
+
+        if FTeams.Items[i].Units[j].CritChance <> 0 then
+          TmpStr := TmpStr + ' - CC: ' + FTeams.Items[i].Units[j].CritChance.ToString;
+
+        if FTeams.Items[i].Units[j].CritAvoidance <> 0 then
+          TmpStr := TmpStr + ' - C.Av.: ' + FTeams.Items[i].Units[j].CritAvoidance.ToString;
+
+        if FTeams.Items[i].Units[j].CritDamage <> 0 then
+          TmpStr := TmpStr + ' - CD: ' + FTeams.Items[i].Units[j].CritDamage.ToString;
 
         if FTeams.Items[i].Units[j].FisDam <> 0 then
           TmpStr := TmpStr + ' - Fis.Dam.: ' + FTeams.Items[i].Units[j].FisDam.ToString;

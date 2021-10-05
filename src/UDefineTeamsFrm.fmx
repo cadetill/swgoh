@@ -21,8 +21,8 @@ object DefineTeamsFrm: TDefineTeamsFrm
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnDragChange = lbTeamsDragChange
-    Viewport.Width = 636.000000000000000000
-    Viewport.Height = 422.000000000000000000
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 448.000000000000000000
     object ListBoxItem1: TListBoxItem
       ItemData.Detail = 'detail'
       ItemData.Accessory = aDetail

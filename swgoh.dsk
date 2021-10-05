@@ -13,25 +13,34 @@ File_10=TSourceModule,'D:\Documents\Dropbox\Programacio\SWGOH\src\UCheckGearFrm.
 File_11=TSourceModule,'D:\Documents\DropBox\Programacio\SWGOH\src\UCompGildsFrm.pas',0,1,279,12,292,0,0,,
 File_12=TSourceModule,'D:\Documents\DropBox\Programacio\SWGOH\src\Classes\uMessage.pas',0,1,56,21,64,0,0,,
 File_13=TSourceModule,'D:\Documents\DropBox\Programacio\SWGOH\src\UHomeFrm.pas',0,1,127,1,128,0,0,,
-File_14=TSourceModule,'c:\program files (x86)\embarcadero\studio\20.0\source\fmx\FMX.ListBox.pas',0,1,4544,1,4562,0,0,,
 
 [Modules]
-Module0=D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas
-Module1=default.htm
-Count=2
+Module0=D:\Documents\GitHub\swgoh\src\UDefineTeamsFrm.pas
+Module1=D:\Documents\GitHub\swgoh\src\UTeamFrm.pas
+Module2=default.htm
+Module3=D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas
+Count=4
 EditWindowCount=1
 
-[D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas]
+[D:\Documents\GitHub\swgoh\src\UDefineTeamsFrm.pas]
+ModuleType=TSourceModule
+
+[D:\Documents\GitHub\swgoh\src\UTeamFrm.pas]
 ModuleType=TSourceModule
 
 [default.htm]
 ModuleType=TURLModule
 
+[D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas]
+ModuleType=TSourceModule
+
 [EditWindow0]
-ViewCount=2
-CurrentEditView=D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas
+ViewCount=4
+CurrentEditView=D:\Documents\GitHub\swgoh\src\UDefineTeamsFrm.pas
 View0=0
 View1=1
+View2=2
+View3=3
 PercentageSizes=1
 Create=1
 Visible=1
@@ -55,8 +64,8 @@ RightPanelSize=2000
 RightPanelClients=DockSite2,DockSite4
 RightPanelData=00000800010100000000781300000000000001D00700000000000001000000004412000009000000446F636B536974653201000000009D22000009000000446F636B5369746534FFFFFFFF
 BottomPanelSize=0
-BottomPanelClients=MessageView,DockSite1
-BottomPanelData=000008000102020000000F0000004D65737361676556696577466F726D09000000446F636B53697465311534000000000000022606000000000000FFFFFFFF
+BottomPanelClients=DockSite1,MessageView
+BottomPanelData=0000080001020200000009000000446F636B53697465310F0000004D65737361676556696577466F726D1534000000000000022606000000000000FFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779F1D00000000000002F206000000000000FFFFFFFF
@@ -68,13 +77,35 @@ WelcomePageURL=bds:/default.htm
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas
-CursorX=13
-CursorY=65
+CursorX=26
+CursorY=71
 TopLine=51
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=D:\Documents\GitHub\swgoh\src\UCheckGuildsFrm.pas
+
+[View2]
+CustomEditViewType=TEditView
+Module=D:\Documents\GitHub\swgoh\src\UTeamFrm.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Borland.FormDesignerView
+
+[View3]
+CustomEditViewType=TEditView
+Module=D:\Documents\GitHub\swgoh\src\UDefineTeamsFrm.pas
+CursorX=77
+CursorY=242
+TopLine=208
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Documents\GitHub\swgoh\src\UDefineTeamsFrm.pas
 
 [UndockedDesigner]
 Count=0
@@ -176,8 +207,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=1040
+Left=1
+Top=871
 Width=2771
 Height=1413
 MaxLeft=-1
@@ -264,12 +295,12 @@ TBDockHeight=9029
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
-SplitPos=116
+SplitPos=111
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
-SelectedItem=,AfterApplyUpdates
-ExpandedItems="LiveBindings Designer=0",Font=0,LiveBindings=0,Margins=0,Padding=0,DataSource=1,Anchors=0,Constraints=0,Options=0,StyleElements=0,TitleFont=0,DataSource.DataSet=0,"DataSource.LiveBindings Designer=0",ProviderFlags=0,ActiveControl=0,BorderIcons=0,GlassFrame=0,Border=0,Fill=0,FormFactor=0,SystemStatusBar=0,Touch=0,Database=0,DefaultTransaction=0,TraceFlags=0,DataSource.LiveBindings=0,Title=0,Position=0
+SelectedItem=Name,Database
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,Font=0,GlassFrame=0,LiveBindings=0,"LiveBindings Designer=0",Margins=0,StyleElements=0,DataSource=0,BevelEdges=0,Database=0,Transaction=0,ProviderFlags=0,FieldOptions=0,Border=0,Fill=0,FormFactor=0,Padding=0,SystemStatusBar=0,Touch=0,Position=0,RotationCenter=0,Scale=0,Size=0
 
 [ClassBrowserTool]
 PercentageSizes=1
@@ -337,11 +368,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=5962
 LRDockWidth=2510
 Dockable=1
@@ -497,11 +528,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1000
+Height=1240
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1000
+ClientHeight=1240
 TBDockHeight=2317
 LRDockWidth=2823
 Dockable=1
@@ -562,11 +593,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=4885
 LRDockWidth=7151
 Dockable=1
@@ -740,11 +771,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8567
+Height=8788
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8567
+ClientHeight=8788
 TBDockHeight=4885
 LRDockWidth=5307
 Dockable=1
