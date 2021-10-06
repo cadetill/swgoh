@@ -76,9 +76,9 @@ class TBase {
     curl_setopt($ch, CURLOPT_USERAGENT, 'Apache-HttpClient/4.5.5 (Java/12.0.1)');
     $playerJson = curl_exec($ch);
     curl_close($ch);
-    $playerArr[0]['roster'] = json_decode($playerJson, true);
+    $playerArr[0]['roster'] = json_decode($playerJson, true); 
     
-    //file_put_contents("./player1", $playerJson);
+    file_put_contents("./guilds/player.json", $playerJson);
 	
     return $playerArr;
   }
@@ -478,6 +478,10 @@ class TBase {
     $maxCols = 2;
     if (count($arr) <= 2) {
       $maxCols = 1;
+    }
+    
+    if (($maxRowns == 0) || ($maxCols == 0)) {
+      return "";
     }
 
     // creem imatge

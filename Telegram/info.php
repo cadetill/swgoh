@@ -48,7 +48,9 @@ class TInfo extends TBase {
       //return array($res);
     }
     $this->sendMessage($res);
-    $this->sendPhoto('', $this->image, '', false);
+    if ($this->image != "") {
+      $this->sendPhoto('', $this->image, '', false);
+    }
   }
   
   /****************************************************
