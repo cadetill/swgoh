@@ -82,7 +82,7 @@ class TRank extends TBase {
     
     // agafem info del gremi
     $guild = $this->getInfoGuild();
-    $players = $this->getInfoGuildExtra($guild);
+    //$players = $this->getInfoGuildExtra($guild);
     
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "")

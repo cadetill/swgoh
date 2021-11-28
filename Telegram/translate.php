@@ -207,6 +207,7 @@ class TTranslate {
     $this->translated["ENG_US"]["txtCompareg32"] = "<b>10+</b>: %s vs %s\n";
     $this->translated["ENG_US"]["txtCompareg33"] = "<b>Units</b>\n";
     $this->translated["ENG_US"]["txtCompareg34"] = "<b>Tier 8</b>: %s vs %s\n";
+    $this->translated["ENG_US"]["txtCompareg35"] = "<b>Tier 9</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["ENG_US"]["txtGuild01"] = "<b>Guild</b>: %s\n";
@@ -680,6 +681,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtCompareg32"] = "<b>10+</b>: %s vs %s\n";
     $this->translated["SPA_XM"]["txtCompareg33"] = "<b>Unidades</b>\n";
     $this->translated["SPA_XM"]["txtCompareg34"] = "<b>Nivel 8</b>: %s vs %s\n";
+    $this->translated["SPA_XM"]["txtCompareg35"] = "<b>Nivel 9</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["SPA_XM"]["txtGuild01"] = "<b>Gremio</b>: %s\n";

@@ -136,11 +136,21 @@ class TBase {
     
     if ($players == "") { // si no existeix el fitxer o és més antic d'1h 
       $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
+      $project = array('allyCode' => 1,
+                       'name' => 1,
+                       'level' => 1,
+                       'guildRefId' => 1,
+                       'guildName' => 1,
+                       'roster' => 1,
+                       'grandArena' => 1,
+                       'grandArenaLifeTime' => 1
+          );
       $players = $swgoh->fetchPlayer( $roster, $this->dataObj->language );
       //file_put_contents("./guilds/".$guild[0]["id"], $players);
       //file_put_contents("./guilds/".$guild[0]["id"].'_', $players);
     }
     //json_decode($players, true);
+    file_put_contents("./guilds/".$guild[0]["id"], $players);
     $p = json_decode($players, true);
     return $p;
     
@@ -195,6 +205,7 @@ class TBase {
                   "g8" => 0,
                   "zetas" => 0,
                   "relics" => 0,
+                  "r9" => 0,
                   "r8" => 0,
                   "r7" => 0,
                   "r6" => 0,
@@ -344,6 +355,7 @@ class TBase {
             case 8: $data["r6"] = $data["r6"] + 1; break;
             case 9: $data["r7"] = $data["r7"] + 1; break;
             case 10: $data["r8"] = $data["r8"] + 1; break;
+            case 11: $data["r9"] = $data["r9"] + 1; break;
           }
         }
             

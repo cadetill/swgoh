@@ -13,27 +13,34 @@
             <url>translate.php</url>
             <bookmark id="9">
                 <name/>
-                <line>378</line>
+                <line>379</line>
                 <key/>
             </bookmark>
             <bookmark id="11">
                 <name/>
-                <line>416</line>
+                <line>417</line>
                 <key/>
             </bookmark>
             <bookmark id="8">
                 <name/>
-                <line>851</line>
+                <line>853</line>
                 <key/>
             </bookmark>
             <bookmark id="10">
                 <name/>
-                <line>852</line>
+                <line>854</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/translate.php</file>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/compareg.php</file>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/SwgohHelp.php</file>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/tbase_class.php</file>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/rank.php</file>
+            <file>file:/C:/Users/cadetill/Documents/GitHub/swgoh/Telegram/search.php</file>
+        </group>
     </open-files>
 </project-private>

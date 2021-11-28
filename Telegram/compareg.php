@@ -42,8 +42,6 @@ class TCompareg extends TBase {
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
     $idcon->query( $sql );
 
-
-
     $res = $this->compareGuilds();
 
     $finalTime = microtime(true);
@@ -136,6 +134,7 @@ class TCompareg extends TBase {
     $ret .= "\n";
     $ret .= $this->translatedText("txtCompareg18");                                                          // "<b>-----------RELICS-----------</b>\n";
     $ret .= $this->translatedText("txtCompareg19", array($guild1["relics"], $guild2["relics"]));             // "<b>Relics:</b> ".$guild1["relics"]." vs ".$guild2["relics"]."\n";
+    $ret .= $this->translatedText("txtCompareg35", array($guild1["r9"], $guild2["r9"]));                     // "<b>Tier 9:</b> ".$guild1["r9"]." vs ".$guild2["r9"]."\n";
     $ret .= $this->translatedText("txtCompareg34", array($guild1["r8"], $guild2["r8"]));                     // "<b>Tier 8:</b> ".$guild1["r8"]." vs ".$guild2["r8"]."\n";
     $ret .= $this->translatedText("txtCompareg20", array($guild1["r7"], $guild2["r7"]));                     // "<b>Tier 7:</b> ".$guild1["r7"]." vs ".$guild2["r7"]."\n";
     $ret .= $this->translatedText("txtCompareg21", array($guild1["r6"], $guild2["r6"]));                     // "<b>Tier 6:</b> ".$guild1["r6"]." vs ".$guild2["r6"]."\n";

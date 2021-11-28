@@ -95,18 +95,19 @@ class SwgohHelp
 		  
     public function fetchAPI( $fetchUrl, $payload ) {
         try {
-            $logintoken = file_get_contents('./tokenlocation');
-            if( !$logintoken ) { $logintoken = $this->login(); }
-
+            //$logintoken = file_get_contents('./tokenlocation');
+            //if( !$logintoken ) { $logintoken = $this->login(); }
+            $logintoken = $this->login();
+            
             $authorization = "Authorization: Bearer ".$logintoken;
             $request = $this->jwt_request($logintoken, $payload, $fetchUrl);
 
-            $temp = json_decode($request);
-            if (isset($temp->code) && $temp->code > 200){
-              $logintoken = $this->login();
-              $authorization = "Authorization: Bearer ".$logintoken;
-              $request = $this->jwt_request($logintoken, $payload, $fetchUrl);
-            }
+            //$temp = json_decode($request);
+            //if (isset($temp->code) && $temp->code > 200){
+            //  $logintoken = $this->login();
+            //  $authorization = "Authorization: Bearer ".$logintoken;
+            //  $request = $this->jwt_request($logintoken, $payload, $fetchUrl);
+            //}
 
             return $request;
 
