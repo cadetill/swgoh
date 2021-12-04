@@ -142,5 +142,8 @@ class TData
 
         $this->swgohUser = getenv('SWGOH_HELP_USER');
         $this->swgohPass = getenv('SWGOH_HELP_PWD');
+
+        $this->botToken = getenv('TELEGRAM_BOT_TOKEN');
+        $this->website = getenv('TELEGRAM_BOT_URL');
     }
 }
