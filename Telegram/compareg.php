@@ -151,6 +151,16 @@ class TCompareg extends TBase {
     $ret .= $this->translatedText("txtCompareg31", array($guild1["mods15"], $guild2["mods15"]));             // "<b>15+:</b> ".$guild1["mods15"]." vs ".$guild2["mods15"]."\n";
     $ret .= $this->translatedText("txtCompareg32", array($guild1["mods10"], $guild2["mods10"]));             // "<b>10+:</b> ".$guild1["mods10"]." vs ".$guild2["mods10"]."\n";
     $ret .= "\n";
+    $ret .= $this->translatedText("txtCompareg36");                                                          // "<b>-----------TW OMICRONS-----------</b>\n";
+    $ret .= $this->translatedText(
+        "txtCompareg37",
+        [ $guild1['tw_omicrons']['PHASMA'], $guild2['tw_omicrons']['PHASMA'] ]
+    );                                                                                                             // "<b>Phasma</b>: %s vs %s\n"
+    $ret .= $this->translatedText(
+        "txtCompareg38",
+        [ $guild1['tw_omicrons']['CHIEFNEBIT'], $guild2['tw_omicrons']['CHIEFNEBIT'] ]
+    );                                                                                                             // "<b>Nebit</b>: %s vs %s\n"
+    $ret .= "\n";
     $ret .= $this->translatedText("txtCompareg33");                                                    // "<b>Units</b>\n";
 
     //print_r($units);

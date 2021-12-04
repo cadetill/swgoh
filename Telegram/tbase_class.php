@@ -5,6 +5,47 @@ class TBase {
   public $trans;
   public $error = "";
 
+  private $TW_OMICRONS = [
+      'PHASMA'     => [
+          'unitId'    => 'PHASMA',
+          'skillId'   => 'leaderskill_PHASMA',
+          'skillTier' => 9,
+      ],
+      'CHIEFNEBIT' => [
+          'unitId'    => 'CHIEFNEBIT',
+          'skillId'   => 'leaderskill_CHIEFNEBIT',
+          'skillTier' => 8,
+      ],
+  ];
+
+    private $GA_OMICRONS = [
+        'QUIGONJINN' => [
+            'unitId'    => 'QUIGONJINN',
+            'skillId'   => 'leaderskill_QUIGONJINN',
+            'skillTier' => 9,
+        ],
+        'DASHRENDAR' => [
+            'unitId'    => 'DASHRENDAR',
+            'skillId'   => 'leaderskill_DASHRENDAR',
+            'skillTier' => 8,
+        ],
+        'ZAMWESELL'  => [
+            'unitId'    => 'ZAMWESELL',
+            'skillId'   => 'uniqueskill_ZAMWESELL01',
+            'skillTier' => 9,
+        ],
+        'ROSETICO'   => [
+            'unitId'    => 'ROSETICO',
+            'skillId'   => 'uniqueskill_ROSETICO01',
+            'skillTier' => 9,
+        ],
+        'DARTHTALON' => [
+            'unitId'    => 'DARTHTALON',
+            'skillId'   => 'uniqueskill_DARTHTALON02',
+            'skillTier' => 8,
+        ]
+    ];
+
   /****************************************************
     constructor de la classe. Inicialitza variables
   ****************************************************/
@@ -46,10 +87,39 @@ class TBase {
   protected function getInfoPlayer($allyCode = "") {
     if ($allyCode == "")
       $allyCode = $this->allyCode;
+    $cache = $this->getInfoPlayerCache($allyCode);
+    if (!is_null($cache)) {
+        return $cache;
+    }
+
     $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
     $p = $swgoh->fetchPlayer( $allyCode, $this->dataObj->language );
     $player = json_decode($p, true);
+    $this->infoPlayerCache($allyCode, $p);
     return $player;
+  }
+
+  private function getInfoPlayerCache($allyCode) {
+      $hash = md5($allyCode);
+      $targetFileName = "./players/".$hash;
+      if (file_exists($targetFileName)) {
+          $fileTime = filemtime($targetFileName);
+
+          $fecha = new DateTime();
+          $fecha->modify('-3 hours');
+
+          if ($fileTime > $fecha->getTimestamp()) {//echo 'eeeeeeeee'."\n\n\n";
+              $players = file_get_contents($targetFileName);
+              return json_decode($players, true);
+          }
+      }
+      return null;
+  }
+
+  private function infoPlayerCache($allyCode, $data) {
+      $hash = md5($allyCode);
+      $targetFileName = "./players/".$hash;
+      file_put_contents($targetFileName, $data);
   }
   
   /****************************************************
@@ -240,7 +310,18 @@ class TBase {
                   "ssquad8" => '',
                   "updated" => '',
                   "top80" => 0,
-                  "units" => array()
+                  "units" => array(),
+                  "tw_omicrons" => [
+                      'PHASMA'     => 0,
+                      'CHIEFNEBIT' => 0
+                  ],
+                  "ga_omicrons" => [
+                      'QUIGONJINN' => 0,
+                      'DASHRENDAR' => 0,
+                      'ZAMWESELL'  => 0,
+                      'ROSETICO'   => 0,
+                      'DARTHTALON' => 0
+                  ]
                  );
   }
 
@@ -301,6 +382,60 @@ class TBase {
         foreach ($unit["skills"] as $skill) {
           if (($skill["isZeta"]) && ($skill["tier"] == $skill["tiers"]))
             $data["zetas"] = $data["zetas"] + 1;
+        }
+
+        // check omicrons
+        switch ($unit['defId']) {
+            case $this->TW_OMICRONS['PHASMA']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['PHASMA']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['PHASMA']['skillTier']) {
+                    $data['tw_omicrons']['PHASMA'] = $data['tw_omicrons']['PHASMA'] + 1;
+                }
+                break;
+            case $this->TW_OMICRONS['CHIEFNEBIT']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['CHIEFNEBIT']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['CHIEFNEBIT']['skillTier']) {
+                    $data['tw_omicrons']['CHIEFNEBIT'] = $data['tw_omicrons']['CHIEFNEBIT'] + 1;
+                }
+                break;
+            case $this->GA_OMICRONS['QUIGONJINN']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['QUIGONJINN']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['QUIGONJINN']['skillTier']) {
+                    $data['ga_omicrons']['QUIGONJINN'] = $data['ga_omicrons']['QUIGONJINN'] + 1;
+                }
+                break;
+            case $this->GA_OMICRONS['DASHRENDAR']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['DASHRENDAR']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['DASHRENDAR']['skillTier']) {
+                    $data['ga_omicrons']['DASHRENDAR'] = $data['ga_omicrons']['DASHRENDAR'] + 1;
+                }
+                break;
+            case $this->GA_OMICRONS['ZAMWESELL']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['ZAMWESELL']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['ZAMWESELL']['skillTier']) {
+                    $data['ga_omicrons']['ZAMWESELL'] = $data['ga_omicrons']['ZAMWESELL'] + 1;
+                }
+                break;
+            case $this->GA_OMICRONS['ROSETICO']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['ROSETICO']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['ROSETICO']['skillTier']) {
+                    $data['ga_omicrons']['ROSETICO'] = $data['ga_omicrons']['ROSETICO'] + 1;
+                }
+                break;
+            case $this->TW_OMICRONS['DARTHTALON']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['DARTHTALON']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['DARTHTALON']['skillTier']) {
+                    $data['ga_omicrons']['DARTHTALON'] = $data['ga_omicrons']['DARTHTALON'] + 1;
+                }
+                break;
+            default: break;
         }
         
         // check gear
