@@ -171,7 +171,33 @@ class TGA extends TBase {
     }
     $res[1] .= "\n";
 
-    return $res;  
+      $res[1] .= $this->translatedText("txtCham89");                                                          // "<b>-----------GA OMICRONS-----------</b>\n";
+      $res[1] .= $this->translatedText(
+          "txtCham90",
+          [ $data0['ga_omicrons']['QUIGONJINN'], $data1['ga_omicrons']['QUIGONJINN'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham91",
+          [ $data0['ga_omicrons']['DASHRENDAR'], $data1['ga_omicrons']['DASHRENDAR'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham92",
+          [ $data0['ga_omicrons']['ZAMWESELL'], $data1['ga_omicrons']['ZAMWESELL'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham93",
+          [ $data0['ga_omicrons']['ROSETICO'], $data1['ga_omicrons']['ROSETICO'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham94",
+          [ $data0['ga_omicrons']['DARTHTALON'], $data1['ga_omicrons']['DARTHTALON'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham95",
+          [ $data0['ga_omicrons']['CHIEFCHIRPA'], $data1['ga_omicrons']['CHIEFCHIRPA'] ]
+      );
+
+      return $res;
   }
   
   /****************************************************

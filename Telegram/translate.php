@@ -171,6 +171,13 @@ class TTranslate {
     $this->translated["ENG_US"]["txtCham86"] = "<b>Top 80</b>: %s vs %s\n";
     $this->translated["ENG_US"]["txtCham87"] = "<b>Units</b>\n";
     $this->translated["ENG_US"]["txtCham88"] = "<b>Relic 8</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham89"] = "<b>-------GA OMICRONS-------</b>\n\n";
+      $this->translated["ENG_US"]["txtCham90"] = "<b>QGJ</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham91"] = "<b>DashRendar</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham92"] = "<b>Zam</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham93"] = "<b>Rose</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham94"] = "<b>Talon</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham95"] = "<b>Chirpa</b>: %s vs %s\n";
 
     // classe TCompareg
     $this->translated["ENG_US"]["txtCompareg01"] = "<b>-----------SUMMARY-----------</b>\n";
@@ -211,6 +218,9 @@ class TTranslate {
     $this->translated["ENG_US"]["txtCompareg36"] = "<b>-------TW OMICRONS-------</b>\n";
     $this->translated["ENG_US"]["txtCompareg37"] = "<b>Phasma</b>: %s vs %s\n";
     $this->translated["ENG_US"]["txtCompareg38"] = "<b>Nebit</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg39"] = "<b>Mara Jade</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg40"] = "<b>Sidious</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg41"] = "<b>Hera</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["ENG_US"]["txtGuild01"] = "<b>Guild</b>: %s\n";
@@ -648,6 +658,13 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtCham86"] = "<b>Top 80</b>: %s vs %s\n";
     $this->translated["SPA_XM"]["txtCham87"] = "<b>Unidades</b>\n";
     $this->translated["SPA_XM"]["txtCham88"] = "<b>Reliquia 8</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham89"] = "<b>-------GA OMICRONS-------</b>\n\n";
+      $this->translated["SPA_XM"]["txtCham90"] = "<b>QGJ</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham91"] = "<b>DashRendar</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham92"] = "<b>Zam</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham93"] = "<b>Rose</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham94"] = "<b>Talon</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham95"] = "<b>Chirpa</b>: %s vs %s\n";
 
     // classe TCompareg
     $this->translated["SPA_XM"]["txtCompareg01"] = "<b>-----------SUMARIO-----------</b>\n";
@@ -688,6 +705,9 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtCompareg36"] = "<b>-------TW OMICRONS-------</b>\n";
     $this->translated["SPA_XM"]["txtCompareg37"] = "<b>Phasma</b>: %s vs %s\n";
     $this->translated["SPA_XM"]["txtCompareg38"] = "<b>Nebit</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg39"] = "<b>Mara Jade</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg40"] = "<b>Sidious</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg41"] = "<b>Hera</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["SPA_XM"]["txtGuild01"] = "<b>Gremio</b>: %s\n";
