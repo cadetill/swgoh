@@ -176,7 +176,7 @@ class TTW extends TBase {
           case 1: $this->sort = $this->params[1]; break;
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
-        $res = $this->defenses();
+            $res = $this->defenses();
         break;
       case 'dates':
         switch (count($this->params)) {
@@ -1079,85 +1079,110 @@ class TTW extends TBase {
       return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
 
     $players = $this->getInfoGuild();
-    
+
     // mirem que haguem trobat Id Guild
-    if ($players[0]["id"] == "")
-      return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    
+    if ($players[0]["id"] == "") {
+        return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+    }
+
+    $guildName = $players[0]['name'];
     // creem array amb tots els jugadors
     $arr = array();
-    foreach ($players[0]['roster'] as $player) {
-      $arr[$player['name']] = array(
-                                    'name' => $player['name'],
-                                    'count' => 0,
-                                    'def' => 0
-                                   );    
-    }
-  
-    // conectem a la base de dades
+      foreach ($players[0]['roster'] as $player) {
+          $arr[$player['name']] = [
+              'playerName' => $player['name'],
+              'allyCode'   => $player['allyCode'],
+              'count'      => 0,
+              'def'        => 0,
+          ];
+      }
+
+      // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) 
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-      
     // cerquem registres
-    $sql  = "SELECT *
-             FROM tw 
+    $sql  = "SELECT 
+                tw.allyCode as allyCode
+                ,tw.unit as unitName
+                ,tw.name as playerName
+                ,users.username as telegramTag
+             FROM tw LEFT JOIN users ON tw.allyCode = users.allycode
              WHERE guildRefId = '".$players[0]["id"]."' and unittype in ('def')";
-      
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
-      return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
-      
+    if ($idcon->error) {
+        return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
+    }
+
     while ($row = $res->fetch_assoc()) {
-      if (!array_key_exists($row['name'], $arr)) 
-        $arr[$row['name']] = array(
-                                   'name' => $row['name'],
-                                   'count' => 0,
-                                   'def' => 0
-                                  );
-      
-      $arr[$row['name']]['count'] = $arr[$row['name']]['count'] + 1;
-      if (TUnits::isAShip($row['unit'], $this->dataObj)) 
-        $arr[$row['name']]['def'] = $arr[$row['name']]['def'] + 34;
-      else
-        $arr[$row['name']]['def'] = $arr[$row['name']]['def'] + 30;
+        $playerName            = $row['playerName'];
+        $record                = $arr[$playerName] ?? [
+                'playerName'  => $playerName,
+                'count' => 0,
+                'def'   => 0,
+            ];
+        $record['allyCode']    = $row['allyCode'];
+        $record['telegramTag'] = $row['telegramTag'];
+        $record['count']       += 1;
+        $record['def']         += TUnits::isAShip($row['unitName'], $this->dataObj)
+            ? 34
+            : 30;
+
+        $arr[$playerName] = $record;
     }	
-    $idcon->close(); 
-      
+
+    foreach ($arr as $index => $record) {
+        if (isset($record['telegramTag'])) {
+            continue;
+        }
+        $sql  = "SELECT username FROM users where allycode = '".$record['allyCode']."' limit 1";
+        $res = $idcon->query( $sql );
+        $row = $res->fetch_assoc();
+        $record['telegramTag'] = $row['username'] ?? '';
+        $arr[$index] = $record;
+    }
+    $idcon->close();
+
     // ordenem
     switch (strtolower($this->sort)) {
       case 'teams':
         usort($arr, function($a, $b) {
           if ($a['count'] == $b['count'])
-            return strtoupper($a['name']) <=> strtoupper($b['name']);
+            return strtoupper($a['playerName']) <=> strtoupper($b['playerName']);
           return $a['count'] < $b['count'];
         });
         break;
       case 'points':
         usort($arr, function($a, $b) {
           if ($a['def'] == $b['def'])
-            return strtoupper($a['name']) <=> strtoupper($b['name']);
+            return strtoupper($a['playerName']) <=> strtoupper($b['playerName']);
           return $a['def'] < $b['def'];
         });
         break;
       default:
         usort($arr, function($a, $b) {
-          return strtoupper($a['name']) <=> strtoupper($b['name']);
+          return strtoupper($a['playerName']) <=> strtoupper($b['playerName']);
         });
         break;
     }
     
     // imprimim   
-    $ret  = $this->translatedText("txtTw34", $player[0]["guildName"]);          // "TW defenses for ".$player[0]["guildName"]."\n\n";
+    $ret  = $this->translatedText("txtTw34", $guildName);          // "TW defenses for ".$player[0]["guildName"]."\n\n";
     $ret .= "teams|points \n";
-    $ret .= "<pre>";
-    
+
+    $lines = [];
     foreach ($arr as $data) {
-      $ret .= str_pad($data['count'], 2, " ", STR_PAD_LEFT)."|".
-              str_pad($data['def'], 3, " ", STR_PAD_LEFT)." - ".
-              $data['name']."\n";
+        $lines[] = sprintf(
+          '<code>%s|%s - [%s-%s]</code> @%s',
+          str_pad($data['count'], 2, " ", STR_PAD_LEFT),
+          str_pad($data['def'], 3, " ", STR_PAD_LEFT),
+          $data['playerName'],
+          $data['allyCode'],
+          $data['telegramTag'] ?? ''
+      );
     }
-    $ret .= "</pre>";
+    $ret .= join(" \n", $lines);
     $ret .= "\n";
     
     return $ret;
