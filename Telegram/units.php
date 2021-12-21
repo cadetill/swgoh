@@ -16,7 +16,7 @@ class TUnits extends TBase {
      
     // agafem el subcomando i l'extraem de $params
     $this->subcomand = explode(' ',trim($params[0]));
-    $this->subcomand = $this->subcomand[1];
+    $this->subcomand = $this->subcomand[1] ?? null;
     unset($params[0]);
     
     // actuem segons la quantitat de paràmetres
