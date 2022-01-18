@@ -221,6 +221,9 @@ class TTranslate {
       $this->translated["ENG_US"]["txtCompareg39"] = "<b>Mara Jade</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCompareg40"] = "<b>Sidious</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCompareg41"] = "<b>Hera</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg42"] = "<b>SoJ (special)</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg43"] = "<b>SoJ (leader)</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg44"] = "<b>SoJ (unique)</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["ENG_US"]["txtGuild01"] = "<b>Guild</b>: %s\n";
@@ -708,6 +711,9 @@ class TTranslate {
       $this->translated["SPA_XM"]["txtCompareg39"] = "<b>Mara Jade</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCompareg40"] = "<b>Sidious</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCompareg41"] = "<b>Hera</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg42"] = "<b>SoJ (especial)</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg43"] = "<b>SoJ (líder)</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg44"] = "<b>SoJ (única)</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["SPA_XM"]["txtGuild01"] = "<b>Gremio</b>: %s\n";

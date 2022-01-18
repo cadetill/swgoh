@@ -172,6 +172,18 @@ class TCompareg extends TBase {
           "txtCompareg41",
           [ $guild1['tw_omicrons']['HERASYNDULLAS3'], $guild2['tw_omicrons']['HERASYNDULLAS3'] ]
       );                                                                                                             // "<b>Hera</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg42",
+          [ $guild1['tw_omicrons']['BOBAFETTSCION_SPECIAL'], $guild2['tw_omicrons']['BOBAFETTSCION_SPECIAL'] ]
+      );                                                                                                             // "<b>SoJ (special)</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg43",
+          [ $guild1['tw_omicrons']['BOBAFETTSCION_LEADER'], $guild2['tw_omicrons']['BOBAFETTSCION_LEADER'] ]
+      );                                                                                                             // "<b>SoJ (leader)</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg44",
+          [ $guild1['tw_omicrons']['BOBAFETTSCION_UNIQUE'], $guild2['tw_omicrons']['BOBAFETTSCION_UNIQUE'] ]
+      );                                                                                                             // "<b>SoJ (unique)</b>: %s vs %s\n"
     $ret .= "\n";
     $ret .= $this->translatedText("txtCompareg33");                                                    // "<b>Units</b>\n";
 

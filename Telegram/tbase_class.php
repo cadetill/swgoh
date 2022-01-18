@@ -30,6 +30,21 @@ class TBase {
           'unitId'    => 'HERASYNDULLAS3',
           'skillId'   => 'leaderskill_HERASYNDULLAS3',
           'skillTier' => 9,
+      ],
+      'BOBAFETTSCION_SPECIAL' => [
+          'unitId'    => 'BOBAFETTSCION',
+          'skillId'   => 'specialskill_BOBAFETTSCION01',
+          'skillTier' => 8,
+      ],
+      'BOBAFETTSCION_LEADER' => [
+          'unitId'    => 'BOBAFETTSCION',
+          'skillId'   => 'leaderskill_BOBAFETTSCION',
+          'skillTier' => 8,
+      ],
+      'BOBAFETTSCION_UNIQUE' => [
+          'unitId'    => 'BOBAFETTSCION',
+          'skillId'   => 'uniqueskill_BOBAFETTSCION01',
+          'skillTier' => 8,
       ]
   ];
 
@@ -338,6 +353,9 @@ class TBase {
                       'MARAJADE' => 0,
                       'DARTHSIDIOUS' => 0,
                       'HERASYNDULLAS3' => 0,
+                      'BOBAFETTSCION_SPECIAL' => 0,
+                      'BOBAFETTSCION_LEADER' => 0,
+                      'BOBAFETTSCION_UNIQUE' => 0,
                   ],
                   "ga_omicrons" => [
                       'QUIGONJINN' => 0,
@@ -444,6 +462,25 @@ class TBase {
                 $omicronSkill = $unit['skills'][$omicronSkillIndex];
                 if ($omicronSkill['tier'] === $this->TW_OMICRONS['HERASYNDULLAS3']['skillTier']) {
                     $data['tw_omicrons']['HERASYNDULLAS3'] = $data['tw_omicrons']['HERASYNDULLAS3'] + 1;
+                }
+                break;
+            case $this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['unitId']:
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['skillTier']) {
+                    $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] = $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] + 1;
+                }
+
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_LEADER']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_LEADER']['skillTier']) {
+                    $data['tw_omicrons']['BOBAFETTSCION_LEADER'] = $data['tw_omicrons']['BOBAFETTSCION_LEADER'] + 1;
+                }
+
+                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_UNIQUE']['skillId'], array_column($unit['skills'], 'id'));
+                $omicronSkill = $unit['skills'][$omicronSkillIndex];
+                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_UNIQUE']['skillTier']) {
+                    $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] = $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['QUIGONJINN']['unitId']:
