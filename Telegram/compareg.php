@@ -185,11 +185,12 @@ class TCompareg extends TBase {
           [ $guild1['tw_omicrons']['BOBAFETTSCION_UNIQUE'], $guild2['tw_omicrons']['BOBAFETTSCION_UNIQUE'] ]
       );                                                                                                             // "<b>SoJ (unique)</b>: %s vs %s\n"
     $ret .= "\n";
-    $ret .= $this->translatedText("txtCompareg33");                                                    // "<b>Units</b>\n";
+
+    $ret2 = $this->translatedText("txtCompareg33");                                                    // "<b>Units</b>\n";
 
     //print_r($units);
     foreach ($units as $unit) {
-      $ret .= TUnits::unitNameFromUnitId($unit, $this->dataObj)."\n"; 
+      $ret2 .= TUnits::unitNameFromUnitId($unit, $this->dataObj)."\n";
       $numguild1 = 0;
       $g13guild1 = 0;
       $g12guild1 = 0;
@@ -211,17 +212,17 @@ class TCompareg extends TBase {
         $g12guild2 = $guild2["units"][$unit]["g12"];
         $r8guild2 = $guild2["units"][$unit]["r8"];
       }
-      $ret .= "  #: ".$numguild1." - ".$numguild2."\n";
-      $ret .= "  r8: ".$r8guild1." - ".$r8guild2."\n";
-      $ret .= "  g13: ".$g13guild1." - ".$g13guild2."\n";
-      $ret .= "  g12: ".$g12guild1." - ".$g12guild2."\n";
-      $ret .= "\n";
+      $ret2 .= "  #: ".$numguild1." - ".$numguild2."\n";
+      $ret2 .= "  r8: ".$r8guild1." - ".$r8guild2."\n";
+      $ret2 .= "  g13: ".$g13guild1." - ".$g13guild2."\n";
+      $ret2 .= "  g12: ".$g12guild1." - ".$g12guild2."\n";
+      $ret2 .= "\n";
     }
-    
-    $ret .= "\n";
-    $ret .= $this->translatedText("last_update", $guild1["updated"]);                                        // "<i>Last update: ".$guild1["updated"]."</i>\n";
+
+    $ret2 .= "\n";
+    $ret2 .= $this->translatedText("last_update", $guild1["updated"]);                                        // "<i>Last update: ".$guild1["updated"]."</i>\n";
   
-    return $ret;  
+    return [ $ret, $ret2 ];
   }
 }
 
