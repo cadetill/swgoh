@@ -78,4 +78,5 @@ test_.php
 # cache files
 Telegram/guilds/*
 Telegram/players/*
+Telegram/cache/*
 

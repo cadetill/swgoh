@@ -64,6 +64,7 @@ stats - stats for a list of units
   require_once 'panic.php';
   require_once 'rancor.php';
   require_once 'stats.php';
+  require_once 'statg.php';
   require_once './textimage/class.textPainter.php';
   
   $data = new TData;
@@ -277,6 +278,11 @@ stats - stats for a list of units
     case '/stats': 
     case '/stats@impman_bot':
       $stats = new TStats(explode(' +',trim($data->message)), $data);
+      $response = $stats->execCommand();
+      break;
+  case '/statg':
+  case '/statg@impman_bot':
+      $stats = new TStatg(explode(' +',trim($data->message)), $data);
       $response = $stats->execCommand();
       break;
   }

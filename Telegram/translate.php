@@ -479,6 +479,7 @@ class TTranslate {
     $this->translated["ENG_US"]["txtStats18"] = "critical damage";
     $this->translated["ENG_US"]["txtStats19"] = "special c.chance";
 
+    $this->translated["ENG_US"]["txtStatg1"] = "Member with <b>%s</b> <b>%s</b> under <b>%s</b>:";
     
     
     
@@ -914,5 +915,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["gferr1"] = "Sin unidades a controlar.\n\n";
     $this->translated["SPA_XM"]["txtGf01"] = "<b>Gremio</b>: %s\n\n";
     $this->translated["SPA_XM"]["txtGf02"] = "Información General \n\n";
+
+    $this->translated["SPA_XM"]["txtStatg1"] = "Miembros con <b>%s</b> con <b>%s</b> por debajo de <b>%s</b>:";
   } 
 }

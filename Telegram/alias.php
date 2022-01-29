@@ -93,8 +93,9 @@ class TAlias extends TBase {
       }
     }
       
-    if ($unitId == "")
-      $unitId = TUnits::unitIdFromUnitName($aliasunit, $dataObj);
+    if ($unitId == "") {
+        $unitId = TUnits::unitIdFromUnitName($aliasunit, $dataObj);
+    }
       
     return $unitId;
   }

@@ -184,7 +184,7 @@ class SwgohHelp
     {
         try {
           $myObj = new stdClass();
-          $myObj->allycode = array_map('intval', explode(',', $allycode));
+          $myObj->allycodes = array_map('intval', explode(',', $allycode));
           $myObj->enums = false;
           $myObj->structure = false;
           $myObj->project = $project;

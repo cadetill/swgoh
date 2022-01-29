@@ -135,6 +135,14 @@ function showHelp($command = "", $lang = "") {
     case '/stats+':
       $ret = getStatsHelp($lang, true);
       break;
+    case 'statg':
+    case '/statg':
+      $ret = getStatsGuildHelp($lang, false);
+      break;
+    case 'statg+':
+    case '/statg+':
+      $ret = getStatsGuildHelp($lang, true);
+      break;
     default:
       $ret = getGeneralHelp($lang);
       break;
@@ -142,9 +150,6 @@ function showHelp($command = "", $lang = "") {
 
   return array($ret);
 }
-
-
-
 
 /**************************************************************************
   retorna l'ajuda del comando /stats
@@ -246,6 +251,51 @@ function getStatsHelp($lang, $plus) {
       $ret .= "  Around 4 minutes \n\n";
   }
   return $ret;
+}
+
+/**************************************************************************
+    return help message for /statg
+ **************************************************************************/
+function getStatsGuildHelp($lang, $plus) {
+    switch ($lang) {
+        case "SPA_XM":
+            $ret = "<b>COMANDO: <i>statg</i></b> (by Liener)\n";
+            $ret .= "\n";
+            $ret .= "<b>Definición:</b> \n";
+            $ret .= "  Comando para obtener los jugadores que no cumplen un umbral de una estadística en una unidad.\n\n";
+            $ret .= "<b>Sintaxis:</b> \n";
+            $ret .= "  /statg +<i>aliasUnit</i> +<i>aliasStat</i> +<i>umbral</i> \n";
+            $ret .= "\n";
+            $ret .= "<b>Ejemplos:</b> \n";
+            if ($plus) {
+                $ret .= "<i>    Comprobar los miembros con velocidad de Piett por debajo de 325:</i> \n";
+                $ret .= "        /statg +piett +s +325 \n";
+            }
+            $ret .= "        /statg +piett +s +325 \n";
+            $ret .= "\n";
+            $ret .= "<b>Tiempo requerido</b>\n";
+            $ret .= "  Unos 4 minutos\n\n";
+            break;
+        default:
+            $ret = "<b>COMMAND: <i>statg</i></b> (by Liener)\n";
+            $ret .= "\n";
+            $ret .= "<b>Definition:</b> \n";
+            $ret .= "  Command for check guild members who don't complain unit stat.\n\n";
+            $ret .= "<b>Syntax:</b> \n";
+            $ret .= "  /statg +<i>aliasUnit</i> +<i>aliasStat</i> +<i>threshold</i> \n";
+            $ret .= "\n";
+            $ret .= "<b>Examples:</b> \n";
+            if ($plus) {
+                $ret .= "<i>    Check guild members with Piett speed under 325:</i> \n";
+                $ret .= "        /statg +piett +s +325 \n";
+            }
+            $ret .= "        /statg +piett +s +325 \n";
+            $ret .= "\n";
+            $ret .= "<b>Time required</b>\n";
+            $ret .= "  Around 4 minutes \n\n";
+            break;
+    }
+    return $ret;
 }
 
 /**************************************************************************
@@ -694,6 +744,7 @@ function getGeneralHelp($lang) {
       $ret .= "<a http=''>/here</a>: comando para mencionar a usuarios. Ver la ayuda detallada para más información.\n\n";
       $ret .= "<a http=''>/panic</a>: comando que mostrará los personajes necesarios para uno determinado. Ver la ayuda detallada para más información.\n\n";
       $ret .= "<a http=''>/stats</a>: comando para obtener las stats deseadas de una serie de personajes. Ver la ayuda detallada para más información.\n\n";
+      $ret .= "<a http=''>/statg</a>: comando para comprobar estadísticas de unidades en el gremio. Ver la ayuda detallada para más información.\n\n";
       break;
     default:
       $ret = "<b>COMMANDS</b> (by cadetill)\n";
@@ -718,6 +769,7 @@ function getGeneralHelp($lang) {
       $ret .= "<a http=''>/here</a>: command to tag users. See detailed help for more info.\n\n";
       $ret .= "<a http=''>/panic</a>: command that will show the necessary characters for a certain one. See detailed help for more info.\n\n";
       $ret .= "<a http=''>/stats</a>: command to obtain some stats from a list of units. See detailed help for more info.\n\n";
+      $ret .= "<a http=''>/statg</a>: command for check unit stat in guild. See detailed help for more info.\n\n";
   }
   return $ret;
 }

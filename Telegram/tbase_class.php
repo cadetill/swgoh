@@ -690,6 +690,10 @@ class TBase {
         if (is_dir($file)) {
           continue;
         }
+
+          if ($file === '.gitkeep') {
+              continue;
+          }
         
         $fileLastModified = filemtime($folder . $file);
         if ((time() - $fileLastModified) > $seconds) {

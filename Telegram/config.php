@@ -86,11 +86,13 @@ class TData
         '/rancor',
         '/rancor@impman_bot',                    // command for Rancor raid
         '/stats',
-        '/stats@impman_bot'                       // stats for a list of units
+        '/stats@impman_bot',                       // stats for a list of units
+        '/statg',
+        '/statg@impman_bot'
     ];
 
     // unitats noves o a eliminar del bot per a que funcioni la crinolo API
-    public $unitsToDelete = [ 'CAPITALEXECUTOR', 'MAULS7' ];
+    public $unitsToDelete = [ ];
 
     //màxim de caràcters per missatge
     public $maxChars = 3000;
