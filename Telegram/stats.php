@@ -19,6 +19,44 @@ class TStats extends TBase {
                             'scc', // special critical chance
                             'cd'   // critical damage
                             );
+
+  public static function crinoloAliasFromPre($pre) {
+      return [
+          's'   => 'Speed',   // speed
+          'hp'  => '',  // health+protection
+          'h'   => 'Health',   // health
+          'p'   => 'Protection',   // protection
+          'pd'  => 'Physical Damage',  // physical damage
+          'sd'  => 'Special Damage',  // special damage
+          'po'  => 'Potency',  // potency
+          't'   => 'Tenacity',   // tenacity
+          'a'   => 'Armor',   // armor
+          'pa'  => 'Physical Critical Avoidance',  // physical avoidance
+          'sa'  => 'Special Critical Avoidance',  // special avoidance
+          'pcc' => 'Physical Critical Chance', // physical critical chance
+          'scc' => 'Special Critical Chance', // special critical chance
+          'cd'  => 'Critical Damage'   // critical damage
+      ][$pre];
+  }
+
+    public static function isPercentual($pre) {
+        return [
+            's'   => false,   // speed
+            'hp'  => false,  // health+protection
+            'h'   => false,   // health
+            'p'   => false,   // protection
+            'pd'  => false,  // physical damage
+            'sd'  => false,  // special damage
+            'po'  => true,  // potency
+            't'   => false,   // tenacity
+            'a'   => true,   // armor
+            'pa'  => false,  // physical avoidance
+            'sa'  => false,  // special avoidance
+            'pcc' => true, // physical critical chance
+            'scc' => true, // special critical chance
+            'cd'  => false   // critical damage
+        ][$pre];
+    }
  
   /****************************************************
     constructor de la classe. Inicialitza variables

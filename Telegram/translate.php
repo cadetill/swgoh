@@ -60,7 +60,7 @@ class TTranslate {
     $this->translated["ENG_US"]["error6"] = "Ooooops! API server may have shut down. Try again later.\n\n";
 
     // misstges generals
-    $this->translated["ENG_US"]["elapsed_time"] = "<i>Elapsed time: %s</i>\n";
+    $this->translated["ENG_US"]["elapsed_time"] = "\n<i>Elapsed time: %s</i>\n";
     $this->translated["ENG_US"]["last_update"] = "<i>Last update: %s</i>\n";
 
     // classe TAlias
@@ -551,7 +551,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["error6"] = "Ooooops! Es posible que el servidor del API haya caído. Inténtalo más tarde.\n\n";
 
     // misstges generals
-    $this->translated["SPA_XM"]["elapsed_time"] = "<i>Tiempo transcurrido: %s</i>\n";
+    $this->translated["SPA_XM"]["elapsed_time"] = "\n<i>Tiempo transcurrido: %s</i>\n";
     $this->translated["SPA_XM"]["last_update"] = "<i>Última actualización: %s</i>\n";
 
     // classe TAlias

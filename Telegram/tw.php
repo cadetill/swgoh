@@ -8,7 +8,7 @@ class TTW extends TBase {
   private $points = 0;
   private $date = "";
   private $all = false;
-  
+
   /****************************************************
     constructor de la classe. Inicialitza variables
   ****************************************************/
@@ -188,7 +188,13 @@ class TTW extends TBase {
         break; 
       case 'noreg':
         $res = $this->noreg();
-        break; 
+        break;
+      case 'check':
+          $res = $this->check();
+          break;
+      case 'checkg':
+          $res = $this->checkg();
+          break;
       default:
         return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
     }
@@ -1789,4 +1795,152 @@ class TTW extends TBase {
     $row = $res->fetch_assoc();
     return explode(',', $row['noreg']);
   }
+
+    private function check()
+    {
+        if (!$this->checkAllyCode($this->allyCode)) {
+            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+        }
+
+        $responses = [ 'TW Check' ];
+
+        $stats = $this->loadStats();
+        $unitsToLoadStats = $this->unitsInStats($stats);
+
+        $playerStats = $this->playerStats($unitsToLoadStats);
+
+        $findUnit = function ($unitId) use ($playerStats) {
+            $unitKey = array_search($unitId, array_column($playerStats, 'defId'));
+            $unit = $playerStats[$unitKey];
+            return $unit;
+        };
+
+        $getRelic = function ($unit) {
+            return max($unit['relic']['currentTier'] - 2, 0);
+        };
+
+        foreach ($stats as $group) {
+            $groupResponse = [];
+            $allComplain = true;
+
+            if ($order = $group['order'] ?? null) {
+                $lastUnitSpeed = PHP_INT_MAX;
+                $fail = false;
+                $playerSpeeds = [];
+                foreach ($order as $unitId) {
+                    $playerUnit = $findUnit($unitId);
+                    $playerUnitSpeed = $playerUnit['stats']['final']['Speed'];
+                    $playerSpeeds[$playerUnitSpeed] = $unitId;
+                    if ($playerUnitSpeed < $lastUnitSpeed) {
+                        $lastUnitSpeed = $playerUnitSpeed;
+                    } else {
+                        $fail = true;
+                    }
+                }
+                $expectedOrder = join(' > ', $order);
+                $playerOrder = join(' > ', array_values($playerSpeeds));
+
+                $complain = !$fail;
+                $allComplain = $allComplain && $complain;
+                $groupResponse[] = $complain
+                    ? "\xF0\x9F\x94\xB9 El orden de las unidades es correcto [".join(' > ', $order)."]"
+                    : "\xF0\x9F\x94\xBB El orden de las unidades no es correcto [".$playerOrder." en vez de ".$expectedOrder."]";
+            }
+
+            if ($checks = $group['checks'] ?? null) {
+                foreach ($checks as $check) {
+                    $unitId = $check['unit_id'];
+                    $playerUnit = $findUnit($unitId);
+                    $unitAlias = TUnits::unitNameFromUnitId($unitId, $this->dataObj);
+
+                    if ($relic = $check['relic'] ?? null) {
+                        $playerUnitRelic = $getRelic($playerUnit);
+                        $complain = $playerUnitRelic >= $relic;
+                        $groupResponse[] = $complain
+                            ? "\xF0\x9F\x94\xB9 El nivel de reliquia de ".$unitAlias." es adecuado [".$playerUnitRelic." >= ".$relic."]"
+                            : "\xF0\x9F\x94\xBB El nivel de reliquia de ".$unitAlias." es insuficiente [".$playerUnitRelic." < ".$relic."]";
+                    }
+
+                    if ($stat = $check['stat'] ?? null) {
+                        $statKey = TStats::crinoloAliasFromPre($stat);
+                        $playerUnitStatValue = $playerUnit['stats']['final'][$statKey];
+                        if (TStats::isPercentual($stat)) {
+                            $playerUnitStatValue = round($playerUnitStatValue * 100, 2);
+                        }
+                        $statValueExpected = $check['value'] ?? null;
+                        if (!$statValueExpected) {
+                            $calc = $check['calc'];
+                            $referenceUnitId = $calc['unit_id'];
+                            $referenceUnit = $findUnit($referenceUnitId);
+                            $referencePlayerUnitStatValue = $referenceUnit['stats']['final'][$statKey];
+
+                            $expression = $calc['expression'];
+                            $value = $playerUnitStatValue;
+                            $reference = $referencePlayerUnitStatValue;
+                            eval('$complain = '.$expression.';');
+                            $message = str_replace([ '$value', '$reference' ], [ $value, $reference ], $calc['info']);
+                            $groupResponse[] = $complain
+                                ? "\xF0\x9F\x94\xB9 El valor de ".$statKey." de ".$unitAlias." [".$value."] es correcto [".$message."]"
+                                : "\xF0\x9F\x94\xBB El valor de ".$statKey." de ".$unitAlias." [".$value."] es incorrecto [".$message."]";
+                        } else {
+                            $complain = $playerUnitStatValue >= $statValueExpected;
+                            $groupResponse[] = $complain
+                                ? "\xF0\x9F\x94\xB9 El valor de ".$statKey." de ".$unitAlias." es adecuado [".$playerUnitStatValue." >= ".$statValueExpected."]"
+                                : "\xF0\x9F\x94\xBB El valor de ".$statKey." de ".$unitAlias." es insuficiente [".$playerUnitStatValue." >= ".$statValueExpected."]";
+                        }
+                        $allComplain = $allComplain && $complain;
+                    }
+                }
+            }
+
+            $header = $allComplain ? "<b>\xF0\x9F\x94\xB5 ".$group['name']."</b>" : "<b>\xF0\x9F\x94\xB4 ".$group['name']."</b>";
+            $response = $header."\n   ".join("\n   ", $groupResponse)."\n";
+            $responses[] = $response;
+        }
+
+        return $responses;
+    }
+
+    private function checkg()
+    {
+        if (!$this->checkAllyCode($this->allyCode)) {
+            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+        }
+
+        $responses = [];
+
+        $stats = $this->loadStats();
+        $unitsToLoadStats = $this->unitsInStats($stats);
+
+        $guildStats = $this->guildStats($unitsToLoadStats);
+
+        return $responses;
+    }
+
+    private function loadStats()
+    {
+        $content = file_get_contents('./json/stats.json');
+        $data = json_decode($content, true);
+
+        return $data;
+    }
+
+    private function unitsInStats($stats)
+    {
+        $unitIds = [];
+        foreach ($stats as $group) {
+            if ($order = $group['order'] ?? null) {
+                $unitIds = array_merge($unitIds, $order);
+            }
+            if ($checks = $group['checks'] ?? null) {
+                foreach ($checks as $check) {
+                    $unitIds[] = $check['unit_id'];
+                    if ($comparision = $check['calc'] ?? null) {
+                        $unitIds[] = $comparision['unit_id'];
+                    }
+                }
+            }
+        }
+        return array_unique($unitIds);
+    }
 }

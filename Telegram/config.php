@@ -25,6 +25,7 @@ class TData
     public $messageId   = "";
     public $messageDate = "";
     public $guildId     = "";
+    public $debugChatId = "";
 
     // noms d'arxius
     public $unitsFile = "./json/units.json";
@@ -147,5 +148,7 @@ class TData
 
         $this->botToken = getenv('TELEGRAM_BOT_TOKEN');
         $this->website = getenv('TELEGRAM_BOT_URL');
+
+        $this->debugChatId = getenv('DEBUG_CHAT_ID');
     }
 }

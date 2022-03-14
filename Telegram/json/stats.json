@@ -1,0 +1,175 @@
+[
+  {
+    "name": "Droides locos",
+    "order": [
+      "BB8",
+      "IMPERIALPROBEDROID",
+      "T3_M4",
+      "IG88",
+      "GRIEVOUS"
+    ]
+  },
+  {
+    "name": "BFat ataque",
+    "checks": [
+      { "unit_id": "BOBAFETTSCION", "relic": 7 },
+      { "unit_id": "BOBAFETTSCION", "stat": "scc", "value": 100 },
+      { "unit_id": "BOBAFETTSCION", "stat": "sd", "value": 10000 },
+      { "unit_id": "FENNECSHAND", "relic": 6 },
+      { "unit_id": "FENNECSHAND", "stat": "scc", "value": 100 },
+      { "unit_id": "FENNECSHAND", "stat": "sd", "value": 8000 },
+      { "unit_id": "THEMANDALORIAN", "stat": "pcc", "value": 100 },
+      { "unit_id": "BOSSK", "relic": 5 },
+      { "unit_id": "BOSSK", "stat": "s", "value": 325 },
+      {
+        "unit_id": "GREEFKARGA",
+        "stat": "s",
+        "calc": {
+          "unit_id": "BOSSK",
+          "expression": "($value < $reference) && ($value > ($reference - 10))",
+          "info": "< BOSSK ($reference) [~10]"
+        },
+        "threshold": 10
+      }
+    ]
+  },
+  {
+    "name": "BAM",
+    "checks": [
+      { "unit_id": "KUIIL", "stat": "s", "value": 340 },
+      {
+        "unit_id": "IG11",
+        "stat": "s",
+        "calc": {
+          "unit_id": "KUIIL",
+          "expression": "($value < ($reference * 0.75)) && ((($reference * 0.75) - $value) < 10)",
+          "info": "< KUIIL * 0.75 ($reference) [~10]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "IT",
+    "checks": [
+      { "unit_id": "ADMIRALPIETT", "stat": "s", "value": 350 },
+      {
+        "unit_id": "COLONELSTARCK",
+        "stat": "s",
+        "calc": {
+          "unit_id": "ADMIRALPIETT",
+          "expression": "$value > ((($reference + 20) * 0.8) - 20)",
+          "info": "> (((ADMIRALPIETT + 20) * 0.8) - 20)"
+        }
+      },
+      { "unit_id": "DARKTROOPER", "stat": "pd", "value": 9000 }
+    ]
+  },
+  {
+    "name": "Rebeldes",
+    "checks": [
+      { "unit_id": "CHEWBACCALEGENDARY", "stat": "t", "value": 150 },
+      { "unit_id": "HANSOLO", "stat": "s", "value": 275 },
+      { "unit_id": "HANSOLO", "stat": "pd", "value": 10000 }
+    ]
+  },
+  {
+    "name": "SEE",
+    "checks": [
+      { "unit_id": "SITHPALPATINE", "stat": "s", "value": 460 },
+      { "unit_id": "SITHPALPATINE", "stat": "h", "value": 190000 }
+    ]
+  },
+  {
+    "name": "SLKR",
+    "checks": [
+      { "unit_id": "SUPREMELEADERKYLOREN", "stat": "s", "value": 560 }
+    ]
+  },
+  {
+    "name": "Rey",
+    "checks": [
+      { "unit_id": "GLREY", "relic": 8 },
+      { "unit_id": "GLREY", "stat": "pd", "value": 11000 }
+    ]
+  },
+  {
+    "name": "JKR vs SLKR",
+    "checks": [
+      { "unit_id": "JEDIKNIGHTREVAN", "stat": "s", "value": 320 },
+      { "unit_id": "HERMITYODA", "stat": "s", "value": 319 },
+      { "unit_id": "OLDBENKENOBI", "stat": "s", "value": 270 },
+      { "unit_id": "OLDBENKENOBI", "stat": "po", "value": 80 },
+      { "unit_id": "BASTILASHAN", "stat": "s", "value": 275 },
+      { "unit_id": "BASTILASHAN", "stat": "po", "value": 30 },
+      { "unit_id": "JEDIKNIGHTLUKE", "stat": "pd", "value": 10000 },
+      { "unit_id": "JEDIKNIGHTLUKE", "stat": "s", "value": 235 }
+    ]
+  },
+  {
+    "name": "JML",
+    "checks": [
+      { "unit_id": "GRANDMASTERLUKE", "relic": 8 },
+      { "unit_id": "GRANDMASTERLUKE", "stat": "s", "value": 540 },
+      { "unit_id": "GRANDMASTERLUKE", "stat": "p", "value": 110000 },
+      { "unit_id": "GRANDMASTERLUKE", "stat": "po", "value": 75 },
+      { "unit_id": "KIADIMUNDI", "stat": "pd", "value": 10000 }
+    ]
+  },
+  {
+    "name": "Palpatine",
+    "checks": [
+      { "unit_id": "MARAJADE", "skill": "uniqueskill_MARAJADE01" }
+    ]
+  },
+  {
+    "name": "501",
+    "checks": [
+      { "unit_id": "GENERALSKYWALKER", "stat": "pd", "value": 10000 },
+      { "unit_id": "GENERALSKYWALKER", "stat": "p", "value": 110000 },
+      { "unit_id": "GENERALSKYWALKER", "stat": "s", "calc": {
+        "unit_id": "CT7567",
+        "expression": "$value > ($reference * 0.7)",
+        "info": "> REX * 0,7 ($reference)" }
+      },
+      { "unit_id": "CT5555", "stat": "p", "value": 120000 },
+      { "unit_id": "CT5555", "stat": "a", "value": 79 },
+      { "unit_id": "CT7567", "stat": "s", "value": 290 }
+    ]
+  },
+  {
+    "name": "Lord Vader",
+    "checks": [
+      { "unit_id": "LORDVADER", "stat": "s", "value": 560 },
+      { "unit_id": "LORDVADER", "stat": "p", "value": 170000 },
+      { "unit_id": "LORDVADER", "stat": "pd", "value": 11000 },
+      { "unit_id": "ROYALGUARD", "stat": "h", "value": 110000 }
+    ]
+  },
+  {
+    "name": "JMK",
+    "checks": [
+      { "unit_id": "JEDIMASTERKENOBI", "stat": "s", "value": 540 },
+      { "unit_id": "COMMANDERAHSOKA", "stat": "h", "value": 110000 },
+      { "unit_id": "COMMANDERAHSOKA", "stat": "s", "value": 290 }
+    ]
+  },
+  {
+    "name": "DR",
+    "checks": [
+      { "unit_id": "DARTHREVAN", "stat": "s", "value": 350 }
+    ]
+  },
+  {
+    "name": "BB",
+    "checks": [
+      { "unit_id": "BADBATCHECHO", "stat": "s", "value": 345 },
+      { "unit_id": "BADBATCHTECH", "stat": "s", "value": 293 }
+    ]
+  },
+  {
+    "name": "Plug & Play",
+    "checks": [
+      { "unit_id": "ARMORER", "stat": "s", "value": 330 }
+    ]
+  }
+]
