@@ -1,0 +1,33 @@
+{
+  "name": "im/telegram-bot",
+  "type": "project",
+  "description": "The IM Telegram Bot.",
+  "require": {
+    "ext-json": "*",
+    "halaxa/json-machine": "^1.1"
+  },
+  "require-dev": {
+    "pestphp/pest": "^1.21",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Im\\": ["src"]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "IM\\Tests\\": "tests/src"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}

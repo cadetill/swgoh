@@ -1,6 +1,26 @@
 <?php
-    if ($_REQUEST['json'] == "") {
+
+use Im\Shared\Infrastructure\SwgohHelpRepository;
+
+set_time_limit(600);
+    ini_set('memory_limit', '-1');
+
+    require __DIR__.'/vendor/autoload.php';
+
+    if (!isset($_REQUEST['json'])) {
       echo '<!DOCTYPE html><html lang="en"><body></br>';
+
+    // STATG
+    echo '
+      <form action="test.php" method="post"></br>
+        <strong>Statg Command</strong></br>
+        <label for="unit">Unit:</label><input type="text" name="unit" value="piett" /></br>
+        <label for="stat">Dependences:</label><input type="text" name="stat" value="s" /></br>
+        <label for="threshold">Threshold:</label><input type="text" name="threshold" value="325" /></br>
+	    <input type="hidden" name="json" value="21" />
+        <input type="submit" />
+      </form></br>
+    ';
 
     // HELP 
     echo '
@@ -87,6 +107,7 @@
              <option value="chars">chars</option>
              <option value="ships">ships</option>
              <option value="registered">registered</option>
+             <option value="mods">mods</option>
              <option value="nothing"> </option>
         </select></br>
         <label for="allycode">*AllyCode:</label><input type="text" name="allycode" /></br>
@@ -189,7 +210,16 @@
              <option value="history">history</option>
              <option value="dates">dates</option>
              <option value="noreg">noreg</option>
+             <option value="check">check</option>
         </select></br>
+        <label for="sort">
+            Ordenar:
+            <select name="sort">
+                <option value=""></option>
+                <option value="teams">Teams</option>
+                <option value="points">Points</option>
+            </select>
+        </label><br>
         <label for="unit">Unit/Alias:</label><input type="text" name="unit" /></br>
         <label for="points">Points:</label><input type="text" name="points" /></br>
         <label for="allycode">AllyCode:</label><input type="text" name="allycode" /></br>
@@ -383,11 +413,14 @@
   require_once 'panic.php';
   require_once 'rancor.php';
   require_once 'stats.php';
+  require_once 'statg.php';
   require_once './textimage/class.textPainter.php';
-  
-  $data = new TData;
-  
-  print_r($_REQUEST);
+
+  echo '<!DOCTYPE html><html lang="en"><body>';
+
+  $start = microtime(true);
+  $data                 = new TData;
+  // @print_r($_REQUEST);
   switch ($_REQUEST['json']) {
     case 0:  // HELP
       $json = str_replace("%comando%", $_REQUEST['comando'], '{"update_id":430390988,"message":{"message_id":7782,"from":{"id":345381881,"is_bot":false,"first_name":"cadetill Ne\'tra","username":"cadetill","language_code":"es"},"chat":{"id":345381881,"first_name":"cadetill Ne\'tra","username":"cadetill","type":"private"},"date":1582148554,"text":"/help %comando%","entities":[{"offset":0,"length":5,"type":"bot_command"}]}}');
@@ -453,9 +486,11 @@
       if ($_REQUEST['points'] != "") $_REQUEST['points'] = "+".$_REQUEST['points'];
       if ($_REQUEST['allycode'] != "") $_REQUEST['allycode'] = "+".$_REQUEST['allycode'];
       $json = str_replace("%subcomand%", $_REQUEST['subcomand'], '{"update_id":430564378,"message":{"message_id":68863,"from":{"id":345381881,"is_bot":false,"first_name":"cadetill Ne\'tra","username":"cadetill","language_code":"es"},"chat":{"id":345381881,"first_name":"cadetill Ne\'tra","username":"cadetill","type":"private"},"date":1592941609,"text":"/tw %subcomand% %unit% %points% %allycode%","entities":[{"offset":0,"length":3,"type":"bot_command"}]}}');
+      if ($_REQUEST['sort'] != "") $_REQUEST['sort'] = "+".$_REQUEST['sort'];
       $json = str_replace("%unit%", $_REQUEST['unit'], $json);
       $json = str_replace("%points%", $_REQUEST['points'], $json);
       $json = str_replace("%allycode%", $_REQUEST['allycode'], $json);
+      $json = str_replace("%sort%", $_REQUEST['sort'], $json);
       break;
     case 10:  // Alias
       if ($_REQUEST['subcomand'] == "") break;
@@ -531,11 +566,22 @@
       $json = str_replace("%unit%", $_REQUEST['unit'], $json);
       $json = str_replace("%dependences%", $_REQUEST['dependences'], $json);
       break;
+    case 21: // STATG
+      $text = '/statg %unit% %stat% %threshold%';
+      if ($_REQUEST['unit'] != "") $_REQUEST['unit'] = "+".$_REQUEST['unit'];
+      if ($_REQUEST['stat'] != "") $_REQUEST['stat'] = "+".$_REQUEST['stat'];
+      if ($_REQUEST['threshold'] != "") $_REQUEST['threshold'] = "+".$_REQUEST['threshold'];
+      $jsonText = str_replace("%unit%", $_REQUEST['unit'], $text);
+      $jsonText = str_replace("%stat%", $_REQUEST['stat'], $jsonText);
+      $jsonText = str_replace("%threshold%", $_REQUEST['threshold'], $jsonText);
+      $baseJson['message']['text'] = $jsonText;
+      $json = json_encode($baseJson);
+      break;
   }
 
 //  $json = '{"update_id":430537549,"message":{"message_id":59625,"from":{"id":387607721,"is_bot":false,"first_name":"An GeL","username":"Botrytis","language_code":"es"},"chat":{"id":387607721,"first_name":"An GeL","username":"Botrytis","type":"private"},"date":1590689920,"text":"/tw review","entities":[{"offset":0,"length":3,"type":"bot_command"}]}}';
   
-  echo "\n\n".$json."\n\n";
+  debug(json_decode($json));
   $json = json_decode($json, TRUE);
   //print_r($json); 
   // agafem Id del xat que ens fa la petició
@@ -555,16 +601,16 @@
  
   // agafem el text que ens envia
   $data->message = $json["message"]["text"];
-  
+  debug($data->message);
+
   $arr = explode(' ',trim($data->message));
   $command = $arr[0];
- 
+
   // agafem informació del jugador per saber de quin gremi és
-  $swgoh = new SwgohHelp(array($data->swgohUser, $data->swgohPass));
-  $playerJson = $swgoh->fetchPlayer( $data->allycode, $data->language );
-  $player = json_decode($playerJson, true);  
+  $player = getPlayer($data);
   $data->guildId = $player[0]["guildRefId"];
 
+  debug($data->allycode);
   if ((isCorrectCommand($command, $data)) and ($command != '/register') && ($command != '/register@impman_bot') && ($data->allycode == "")) {
     sendMessage($data, array("You must register before using the bot.\n\n"));
     return;
@@ -714,11 +760,27 @@
       $stats = new TStats(explode(' +',trim($data->message)), $data);
       $response = $stats->execCommand();
       break;
+    case '/statg':
+    case '/statg@impman_bot':
+      $stats = new TStatg(explode(' +',trim($data->message)), $data);
+      $response = $stats->execCommand();
+      break;
   }
 
-  if (!is_array($response)) 
-    $response = array($response);
-  sendMessage($data, $response);
+  if (!is_array($response)) {
+      $response = [ $response ];
+  }
+sendMessage($data, $response);
+
+  echo '<pre>';
+    $end = microtime(true);
+    $time = $end - $start;
+    debug('Time: '.gmdate("H:i:s", $time));
+    debug('Memory usage: '.(memory_get_peak_usage(true) / 1024 / 1024).' Mb');
+  echo '</pre>';
+  die;
+
+echo '</body></html>';
  
 /***********************************************************************************************************************************************************
   Funcions de caràcter general
@@ -731,8 +793,8 @@ function sendMessage($data, $response, $keyboard = NULL) {
   if (isset($keyboard)) {
     $teclado = '&reply_markup={"keyboard":['.$keyboard.'], "resize_keyboard":true, "one_time_keyboard":true}';
   }
-  echo "\n\n";
-  print_r($response);
+  // echo "\n\n";
+  debug($response);
 }
 
 /**************************************************************************
@@ -759,5 +821,17 @@ function getDataFromId($data) {
   $idcon->close();
 
   return $ret;
+}
+
+function debug ($content) {
+    echo '<pre>';
+    echo print_r($content, true);
+    echo '</pre>';
+}
+
+function getPlayer($data)
+{
+    $repository = new SwgohHelpRepository($data->swgohUser, $data->swgohPass);
+    return $repository->player(intval($data->allycode));
 }
  

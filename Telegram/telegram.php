@@ -34,8 +34,11 @@ stats - stats for a list of units
 //error_reporting( E_ALL );
 //ini_set('display_errors', 1);
 
+require __DIR__.'/vendor/autoload.php';
 
-  http_response_code(200);
+use Im\Shared\Infrastructure\SwgohHelpRepository;
+
+http_response_code(200);
   fastcgi_finish_request();
   
   require_once 'translate.php';
@@ -76,7 +79,7 @@ stats - stats for a list of units
         $response          = array_merge([ $ex->getMessage() ], $ex->getTrace());
         sendMessage($debugData, $response, false);
     } finally {
-        debug($data, [ $data->message ]);
+        // debug($data, [ $data->message ]);
     }
 
 /***********************************************************************************************************************************************************
@@ -137,9 +140,7 @@ function processRequest ($data) {
     }
     else {
         // agafem informació del jugador per saber de quin gremi és
-        $swgoh = new SwgohHelp(array($data->swgohUser, $data->swgohPass));
-        $playerJson = $swgoh->fetchPlayer( $data->allycode, $data->language );
-        $player = json_decode($playerJson, true);
+        $player = getPlayer($data);
         $data->guildId = $player[0]["guildRefId"];
 
         //sendMessage($data, array("RefId: ".$player[0]["guildRefId"]."\n\n"));
@@ -307,12 +308,12 @@ function processRequest ($data) {
         $response = array($response);
     }
 
-    debug($data, [ 'Responses count: '.count($response) ]);
-    debug($data, [ 'Responses size: '.strlen(json_encode($response)) ]);
-    $tgResponses = sendMessage($data, $response, $reply);
-    debug($data, [ 'Telegram responses count: '.count($tgResponses) ]);
-    debug($data, [ 'Telegram responses size: '.strlen(json_encode($tgResponses)) ]);
-    debug($data, [ 'Telegram responses: '. json_encode($tgResponses) ]);
+    // debug($data, [ 'Responses count: '.count($response) ]);
+    // debug($data, [ 'Responses size: '.strlen(json_encode($response)) ]);
+    sendMessage($data, $response, $reply);
+    // debug($data, [ 'Telegram responses count: '.count($tgResponses) ]);
+    // debug($data, [ 'Telegram responses size: '.strlen(json_encode($tgResponses)) ]);
+    // debug($data, [ 'Telegram responses: '. json_encode($tgResponses) ]);
 }
 
 /**************************************************************************
@@ -417,4 +418,10 @@ function debug ($data, $response) {
     $logData         = new TData();
     $logData->chatId = $logData->debugChatId;
     sendMessage($logData, array_merge([ 'debug: ' ], $response), false);
+}
+
+function getPlayer($data)
+{
+    $repository = new SwgohHelpRepository($data->swgohUser, $data->swgohPass);
+    return $repository->player(intval($data->allycode));
 }

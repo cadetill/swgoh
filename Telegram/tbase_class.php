@@ -1,4 +1,8 @@
 <?php
+
+use JsonMachine\Items;
+use JsonMachine\JsonDecoder\ExtJsonDecoder;
+
 class TBase {
   public $dataObj;
   public $allyCode;
@@ -115,48 +119,59 @@ class TBase {
       $ret = $message.$ret[0]; 
     return $ret;
   }
-  
-  /****************************************************
-    recupera la info d'un jugador
-  ****************************************************/
-  protected function getInfoPlayer($allyCode = "") {
-    if ($allyCode == "")
-      $allyCode = $this->allyCode;
 
-    $cache = $this->getInfoPlayerCache($allyCode);
-    if (!is_null($cache)) {
-        return $cache;
+    /****************************************************
+     * recupera la info d'un jugador
+     ****************************************************/
+    protected function getInfoPlayer($allyCode = "")
+    {
+        if ($allyCode == "") {
+            $allyCode = $this->allyCode;
+        }
+
+        $allyCodes = explode(',', $allyCode);
+        sort($allyCodes);
+        $strAllyCodes = join(',', $allyCodes);
+        $cache        = $this->getInfoPlayerCache($strAllyCodes);
+        if (!is_null($cache)) {
+            return $cache;
+        }
+
+        $swgoh  = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+        $p      = $swgoh->fetchPlayer($allyCode, $this->dataObj->language);
+        $player = json_decode($p, true);
+        $this->infoPlayerCache($strAllyCodes, $p);
+
+        return $player;
     }
 
-    $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
-    $p = $swgoh->fetchPlayer( $allyCode, $this->dataObj->language );
-    $player = json_decode($p, true);
-    $this->infoPlayerCache($allyCode, $p);
-    return $player;
-  }
+    private function getInfoPlayerCache($allyCode)
+    {
+        $this->deleteOlderFiles(10800, "./cache/");
+        $hash           = md5($allyCode);
+        $targetFileName = "./cache/players_" . $hash;
+        if (file_exists($targetFileName)) {
+            $fileTime = filemtime($targetFileName);
 
-  private function getInfoPlayerCache($allyCode) {
-      $hash = md5($allyCode);
-      $targetFileName = "./cache/player_".$hash;
-      if (file_exists($targetFileName)) {
-          $fileTime = filemtime($targetFileName);
+            $fecha = new DateTime();
+            $fecha->modify('-3 hours');
 
-          $fecha = new DateTime();
-          $fecha->modify('-3 hours');
+            if ($fileTime > $fecha->getTimestamp()) {
+                $players = file_get_contents($targetFileName);
 
-          if ($fileTime > $fecha->getTimestamp()) {//echo 'eeeeeeeee'."\n\n\n";
-              $players = file_get_contents($targetFileName);
-              return json_decode($players, true);
-          }
-      }
-      return null;
-  }
+                return json_decode($players, true);
+            }
+        }
 
-  private function infoPlayerCache($allyCode, $data) {
-      $hash = md5($allyCode);
-      $targetFileName = "./cache/player_".$hash;
-      file_put_contents($targetFileName, $data);
-  }
+        return null;
+    }
+
+    private function infoPlayerCache($allyCode, $data)
+    {
+        $hash           = md5($allyCode);
+        $targetFileName = "./cache/players_" . $hash;
+        file_put_contents($targetFileName, $data);
+    }
   
   /****************************************************
     recupera la info d'un jugador
@@ -192,98 +207,130 @@ class TBase {
   /****************************************************
     recupera la info dels membres d'un gremi
   ****************************************************/
-  protected function getInfoGuild($allyCode = "") {
-    if ($allyCode == "")
-      $allyCode = $this->allyCode;
-    $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
-    $g = $swgoh->fetchGuild( $allyCode, $this->dataObj->language );
-    //file_put_contents("./guilds/".$guild[0]["id"]."_", $g);
-    $guild = json_decode($g, true);
-    return $guild;
-  }
-  
-  /****************************************************
+    protected function getInfoGuild($allyCode = "")
+    {
+        if ($allyCode == "") {
+            $allyCode = $this->allyCode;
+        }
+
+        $this->deleteOlderFiles(10800, "./cache/");
+        $cacheByAllyCodeFilename = "./cache/guild_" . $allyCode;
+        $guild = null;
+        if (file_exists($cacheByAllyCodeFilename)) {
+            $fileTime = filemtime($cacheByAllyCodeFilename);
+
+            $fecha = new DateTime();
+            $fecha->modify('-3 hours');
+
+            if ($fileTime > $fecha->getTimestamp()) {
+                $guildData = file_get_contents($cacheByAllyCodeFilename);
+                $guild = json_decode($guildData, true);
+            }
+        }
+
+        if (is_null($guild)) {
+            $swgoh     = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+            $guildData = $swgoh->fetchGuild($allyCode, $this->dataObj->language);
+            file_put_contents($cacheByAllyCodeFilename, $guildData);
+            $guild                  = json_decode($guildData, true);
+            $guildId                = $guild[0]["id"];
+            $cacheByGuildIdFilename = "./cache/guild_" . $guildId;
+            file_put_contents($cacheByGuildIdFilename, $guildData);
+        }
+
+        return $guild;
+    }
+
+    /****************************************************
     recupera la info detallada dels membres d'un gremi
   ****************************************************/
-  protected function getInfoGuildExtra($guild = array()) {
-    $this->deleteOlderFiles(10800, "./guilds/");
-            
-    if (count($guild) == 0) {
-      $guild = $this->getInfoGuild();
-    }
+    protected function getInfoGuildExtra($guild = [])
+    {
+        $this->deleteOlderFiles(10800, "./cache/");
 
-    if ( (!is_array($guild[0]["roster"])) || (count($guild[0]["roster"]) == 0) ) {
-      return "Not members found into the guild.";
-    }
-    
-    // generem string amb els AllyCode
-    $roster = ""; 
-    foreach ($guild[0]["roster"] as $member) {
-      if ($roster != "") {
-        $roster .= ",";
-      }
-      $roster .= $member["allyCode"];
-    }
-  
-    // comprovem si existeix el fitxer i, en cas d'existir, si té menys d'1h -> en tal cas el carreguem
-    $players = "";
-    if (file_exists("./guilds/".$guild[0]["id"])) {
-      $fileTime = filemtime("./guilds/".$guild[0]["id"]);
-      
-      $fecha = new DateTime();
-      $fecha->modify('-3 hours');
-      
-      if ($fileTime > $fecha->getTimestamp()) {//echo 'eeeeeeeee'."\n\n\n";
-        $players = file_get_contents("./guilds/".$guild[0]["id"]);
-        $playersArr = json_decode($players, true);
+        if (count($guild) == 0) {
+            $guild = $this->getInfoGuild();
+        }
+
+        if (( !is_array($guild[0]["roster"]) ) || ( count($guild[0]["roster"]) == 0 )) {
+            return "Not members found into the guild.";
+        }
+
+        // generem string amb els AllyCode
+        $allyCodes = array_column($guild[0]["roster"], 'allyCode');
+        $allyCodes = array_slice($allyCodes, 0, 5);
+        sort($allyCodes);
+        $strAllyCodes = join(',', $allyCodes);
+        $allyCodesHash = md5($strAllyCodes);
+
+        // comprovem si existeix el fitxer i, en cas d'existir, si té menys d'1h -> en tal cas el carreguem
+        $players                = "";
+        $cacheByAllyCodesFilename = "./cache/players_" . $allyCodesHash;
+        if (file_exists($cacheByAllyCodesFilename)) {
+            $fileTime = filemtime($cacheByAllyCodesFilename);
+
+            $fecha = new DateTime();
+            $fecha->modify('-3 hours');
+
+            if ($fileTime > $fecha->getTimestamp()) {
+                $items = Items::fromFile($cacheByAllyCodesFilename, [ 'decoder' => new ExtJsonDecoder(true) ]);
+                $playersArr = [];
+                foreach ($items as $id => $player) {
+                    $playersArr[] = $player;
+                }
+                return $playersArr;
+            }
+        }
+
+        if ($players == "") { // si no existeix el fitxer o és més antic d'1h
+            $swgoh   = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+            $project = [
+                'allyCode'           => 1,
+                'name'               => 1,
+                'level'              => 1,
+                'guildRefId'         => 1,
+                'guildName'          => 1,
+                'roster'             => 1,
+                'grandArena'         => 1,
+                'grandArenaLifeTime' => 1,
+            ];
+            $players = $swgoh->fetchPlayer($strAllyCodes, $this->dataObj->language);
+        }
+        file_put_contents($cacheByAllyCodesFilename, $players);
+        $items = Items::fromString($players, [ 'decoder' => new ExtJsonDecoder(true) ]);
+        $playersArr = [];
+        foreach ($items as $id => $player) {
+            $playersArr[] = $player;
+        }
         return $playersArr;
-      }
-    }
-    
-    if ($players == "") { // si no existeix el fitxer o és més antic d'1h 
-      $swgoh = new SwgohHelp(array($this->dataObj->swgohUser, $this->dataObj->swgohPass));
-      $project = array('allyCode' => 1,
-                       'name' => 1,
-                       'level' => 1,
-                       'guildRefId' => 1,
-                       'guildName' => 1,
-                       'roster' => 1,
-                       'grandArena' => 1,
-                       'grandArenaLifeTime' => 1
-          );
-      $players = $swgoh->fetchPlayer( $roster, $this->dataObj->language );
-      //file_put_contents("./guilds/".$guild[0]["id"], $players);
-      //file_put_contents("./guilds/".$guild[0]["id"].'_', $players);
-    }
-    //json_decode($players, true);
-    file_put_contents("./guilds/".$guild[0]["id"], $players);
-    $p = json_decode($players, true);
-    return $p;
-    
-    $finalPlayers = $this->deleteUnitsToDelete($players);
-    //file_put_contents("./guilds/".$guild[0]["id"].'__', $finalPlayers);
-    
-    $url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle,calcGP";
-    //$url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle";
-    $ch = curl_init(); 
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $finalPlayers);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Apache-HttpClient/4.5.5 (Java/12.0.1)');
-    $playersJson = curl_exec($ch);
-    //echo $playersJson;
-    curl_close($ch);
 
-    file_put_contents("./guilds/".$guild[0]["id"], $playersJson);
-    $playersArr = json_decode($playersJson, true);
-    return $playersArr;
-  }
+        /*
+        $finalPlayers = $this->deleteUnitsToDelete($players);
+        //file_put_contents("./cache/".$guild[0]["id"].'__', $finalPlayers);
 
-  /****************************************************
+        $url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle,calcGP";
+        //$url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [ 'Content-type: application/json' ]);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $finalPlayers);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Apache-HttpClient/4.5.5 (Java/12.0.1)');
+        $playersJson = curl_exec($ch);
+        //echo $playersJson;
+        curl_close($ch);
+
+        file_put_contents("./cache/" . $guild[0]["id"], $playersJson);
+        $playersArr = json_decode($playersJson, true);
+
+        return $playersArr;
+        */
+    }
+
+    /****************************************************
     funció que inicialitza la traducció dels texts
   ****************************************************/
   protected function translatedText($code, $arr = '') {
@@ -599,10 +646,11 @@ class TBase {
       }
     } // ---> fi foreach roster
             
-    if ($data["g12"] + $data["g11"] == 0) 
-      $data["g13vs12"] = 0;
-    else 
-      $data["g13vs12"] = number_format(($data["g13"] * 100) / ($data["g12"] + $data["g11"]), 2);
+    if ($data["g12"] + $data["g11"] == 0) {
+        $data["g13vs12"] = 0;
+    } else {
+        $data["g13vs12"] = number_format(( $data["g13"] * 100 ) / ( $data["g12"] + $data["g11"] ), 2);
+    }
             
     // arenas
     $data["avarena"] = $data["avarena"] + $player["arena"]["char"]["rank"]; 
@@ -619,7 +667,7 @@ class TBase {
       $data["csquad4"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][3]["defId"], $this->dataObj); 
     if (isset($player["arena"]["char"]["squad"][4]))
       $data["csquad5"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][4]["defId"], $this->dataObj); 
-            
+
     // arena ships squand
     if (isset($player["arena"]["ship"]["squad"][0]))
       $data["ssquad1"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][0]["defId"], $this->dataObj); 
@@ -637,7 +685,7 @@ class TBase {
       $data["ssquad7"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][6]["defId"], $this->dataObj);
     if (isset($player["arena"]["ship"]["squad"][3]))
       $data["ssquad8"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][7]["defId"], $this->dataObj);
-            
+
     // chars +80
     arsort($chars);
     $count = 0;
@@ -1097,11 +1145,11 @@ class TBase {
     $first = true;
     foreach ($response as $res) {
       if (($first) && ($reply)) {
-        $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&reply_to_message_id='.$this->dataObj->messageId.'&parse_mode=HTML&text='.urlencode($res).$teclado;
+        $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&reply_to_message_id='.$this->dataObj->messageId.'&parse_mode=HTML&text='.urlencode($res).$keyboard;
         $first = false;
       } 
       else {
-        $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&text='.urlencode($res).$teclado;
+        $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&text='.urlencode($res).$keyboard;
       }
           
       file_get_contents($url);

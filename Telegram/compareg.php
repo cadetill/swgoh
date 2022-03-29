@@ -67,10 +67,11 @@ class TCompareg extends TBase {
     
     // agafem unitats que ha de controlar el comando
     $units = TUnits::unitsForCommand($this->dataObj->guildId, 'units', 'compareg', $this->dataObj);
-    if (!is_array($units))
-      $units = array();
-    
-    $allyCodes = explode(',', $this->allyCode);
+    if (!is_array($units)) {
+        $units = [];
+    }
+
+      $allyCodes = explode(',', $this->allyCode);
     // busquem info dels gremis
     $g1 = $this->getInfoGuild( $allyCodes[0] );
     $g2 = $this->getInfoGuild( $allyCodes[1] );

@@ -1,4 +1,7 @@
 <?php
+
+use Im\Shared\Infrastructure\SwgohHelpRepository;
+
 class TGuild extends TBase {
   private $subcomand;
   private $sortBy = "";
@@ -95,7 +98,7 @@ class TGuild extends TBase {
     $time = $finalTime - $initialTime;
     $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));  // "<i>Elapsed time: ".gmdate("H:i:s", $time)."</i>\n";
     
-    $this->sendMessage(array($res));
+    return $res;
   }
   
   /****************************************************
@@ -342,29 +345,51 @@ class TGuild extends TBase {
     mostra els mods dels membres del gremi
   ****************************************************/
   private function getMods() {
-    $guild = $this->getInfoGuild();
-    $players = $this->getInfoGuildExtra($guild);
-    
+    $repository = new SwgohHelpRepository($this->dataObj->swgohUser, $this->dataObj->swgohPass, $this->dataObj->language);
+    $guild = $repository->guild(intval($this->allyCode));
+    $allyCodes = array_column($guild[0]["roster"], 'allyCode');
+    $players = $repository->playersForMods($allyCodes);
+
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
     
-    if (!is_array($players)) {
-      return $players;
-    }
-    
     $arrGuild = array();
     $resume = array("mods6" => 0, "mods25" => 0, "mods20" => 0, "mods15" => 0, "avg" => 0);
     foreach ($players as $player) {
-      $arrGuild[$player["name"]] = array();
-      $this->processPlayer($player, $arrGuild[$player["name"]]);
-      $arrGuild[$player["name"]]["name"] = $player["name"];
-      $arrGuild[$player["name"]]["avg"] = number_format($arrGuild[$player["name"]]["mods6"] / ($arrGuild[$player["name"]]["mods25"] + $arrGuild[$player["name"]]["mods20"] + $arrGuild[$player["name"]]["mods15"]), 2);
-      $resume["mods6"] = $resume["mods6"] + $arrGuild[$player["name"]]["mods6"];
-      $resume["mods25"] = $resume["mods25"] + $arrGuild[$player["name"]]["mods25"];
-      $resume["mods20"] = $resume["mods20"] + $arrGuild[$player["name"]]["mods20"];
-      $resume["mods15"] = $resume["mods15"] + $arrGuild[$player["name"]]["mods15"];
+        $playerData = ['name' => $player['name'], "mods6" => 0, "mods25" => 0, "mods20" => 0, "mods15" => 0];
+        foreach ($player["roster"] as $unit) {
+            foreach ($unit["mods"] as $mod) {
+                if ($mod["pips"] == 6) {
+                    $playerData["mods6"]++;
+                }
+
+                foreach ($mod["secondaryStat"] as $second) {
+                    if ($second["unitStat"] == 5) {
+                        $value = $second["value"];
+                        switch ($value) {
+                            case ($value >= 25):
+                                $playerData["mods25"]++;
+                                break;
+                            case ($value >= 20):
+                                $playerData["mods20"]++;
+                                break;
+                            case ($value >= 15):
+                                $playerData["mods15"]++;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        $playerData["avg"] = number_format($playerData["mods6"] / ($playerData["mods25"] + $playerData["mods20"] + $playerData["mods15"]), 2);
+
+        $resume['mods6'] += $playerData['mods6'];
+        $resume['mods25'] += $playerData['mods25'];
+        $resume['mods20'] += $playerData['mods20'];
+        $resume['mods15'] += $playerData['mods15'];
+        $arrGuild[] = $playerData;
     }
     
     // ordenem
@@ -423,11 +448,11 @@ class TGuild extends TBase {
     $ret .= $this->translatedText("txtGuild22", number_format($resume["mods20"], 0));   // "<b>G11</b>: ".number_format($resume["g11"], 0)."\n";
     $ret .= $this->translatedText("txtGuild23", number_format($resume["mods15"], 0));   // "<b>Avg</b>: ".number_format(($resume["g13"] * 100) / ($resume["g12"]+$resume["g11"]), 2)."\n";
     $ret .= "<b>----------------------------------------</b>\n";
-    $ret .= "m6|m25|m20|m15|avg\n";
+    $ret .= "  m6|m25|m20|m15|avg\n";
     $ret .= "<pre>";
-  
+
     foreach ($arrGuild as $data) {
-      $ret .= str_pad($data['mods6'], 3, " ", STR_PAD_LEFT)."|".
+      $ret .= str_pad($data['mods6'], 4, " ", STR_PAD_LEFT)."|".
               str_pad($data['mods25'], 3, " ", STR_PAD_LEFT)."|".
               str_pad($data['mods20'], 3, " ", STR_PAD_LEFT)."|".
               str_pad($data['mods15'], 3, " ", STR_PAD_LEFT)."|".

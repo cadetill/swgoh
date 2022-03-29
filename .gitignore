@@ -80,3 +80,5 @@ Telegram/guilds/*
 Telegram/players/*
 Telegram/cache/*
 
+Telegram/vendor/*
+
