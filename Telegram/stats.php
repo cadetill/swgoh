@@ -48,7 +48,7 @@ class TStats extends TBase {
             'pd'  => false,  // physical damage
             'sd'  => false,  // special damage
             'po'  => true,  // potency
-            't'   => false,   // tenacity
+            't'   => true,   // tenacity
             'a'   => true,   // armor
             'pa'  => false,  // physical avoidance
             'sa'  => false,  // special avoidance
