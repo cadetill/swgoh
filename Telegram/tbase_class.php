@@ -11,152 +11,202 @@ class TBase {
 
   private $TW_OMICRONS = [
       'PHASMA'     => [
-          'unitId'    => 'PHASMA',
-          'skillId'   => 'leaderskill_PHASMA',
-          'skillTier' => 9,
+          [
+              'alias' => 'PHASMA',
+              'skillId'   => 'leaderskill_PHASMA',
+              'skillTier' => 9,
+          ]
       ],
       'CHIEFNEBIT' => [
-          'unitId'    => 'CHIEFNEBIT',
-          'skillId'   => 'leaderskill_CHIEFNEBIT',
-          'skillTier' => 8,
+          [
+              'alias' => 'CHIEFNEBIT',
+              'skillId'   => 'leaderskill_CHIEFNEBIT',
+              'skillTier' => 8,
+          ]
       ],
       'MARAJADE' => [
-          'unitId'    => 'MARAJADE',
-          'skillId'   => 'uniqueskill_MARAJADE01',
-          'skillTier' => 8,
+          [
+              'alias' => 'MARAJADE',
+              'skillId'   => 'uniqueskill_MARAJADE01',
+              'skillTier' => 8,
+          ]
       ],
       'DARTHSIDIOUS' => [
-          'unitId'    => 'DARTHSIDIOUS',
-          'skillId'   => 'uniqueskill_DARTHSIDIOUS01',
-          'skillTier' => 9,
+          [
+              'alias' => 'DARTHSIDIOUS',
+              'skillId'   => 'uniqueskill_DARTHSIDIOUS01',
+              'skillTier' => 9,
+          ]
       ],
       'HERASYNDULLAS3' => [
-          'unitId'    => 'HERASYNDULLAS3',
-          'skillId'   => 'leaderskill_HERASYNDULLAS3',
-          'skillTier' => 9,
+          [
+              'alias' => 'HERASYNDULLAS3',
+              'skillId'   => 'leaderskill_HERASYNDULLAS3',
+              'skillTier' => 9,
+          ]
       ],
-      'BOBAFETTSCION_SPECIAL' => [
-          'unitId'    => 'BOBAFETTSCION',
-          'skillId'   => 'specialskill_BOBAFETTSCION01',
-          'skillTier' => 8,
-      ],
-      'BOBAFETTSCION_LEADER' => [
-          'unitId'    => 'BOBAFETTSCION',
-          'skillId'   => 'leaderskill_BOBAFETTSCION',
-          'skillTier' => 8,
-      ],
-      'BOBAFETTSCION_UNIQUE' => [
-          'unitId'    => 'BOBAFETTSCION',
-          'skillId'   => 'uniqueskill_BOBAFETTSCION01',
-          'skillTier' => 8,
+      'BOBAFETTSCION' => [
+          [
+              'alias' => 'BOBAFETTSCION_SPECIAL',
+              'skillId'   => 'specialskill_BOBAFETTSCION01',
+              'skillTier' => 8,
+          ],
+          [
+              'alias' => 'BOBAFETTSCION_LEADER',
+              'skillId'   => 'leaderskill_BOBAFETTSCION',
+              'skillTier' => 8,
+          ],
+          [
+              'alias' => 'BOBAFETTSCION_UNIQUE',
+              'skillId'   => 'uniqueskill_BOBAFETTSCION01',
+              'skillTier' => 8,
+          ]
       ],
       'MACEWINDU' => [
-          'unitId'    => 'MACEWINDU',
-          'skillId'   => 'uniqueskill_MACEWINDU02',
-          'skillTier' => 9,
+          [
+              'alias' => 'MACEWINDU',
+              'skillId'   => 'uniqueskill_MACEWINDU02',
+              'skillTier' => 9,
+          ]
       ],
       'EMBO' => [
-          'unitId'    => 'EMBO',
-          'skillId'   => 'uniqueskill_EMBO01',
-          'skillTier' => 9,
+          [
+              'alias' => 'EMBO',
+              'skillId'   => 'uniqueskill_EMBO01',
+              'skillTier' => 9,
+          ]
       ],
       'SECONDSISTER' => [
-          'unitId'    => 'SECONDSISTER',
-          'skillId'   => 'leaderskill_SECONDSISTER',
-          'skillTier' => 8,
+          [
+              'alias' => 'SECONDSISTER',
+              'skillId'   => 'leaderskill_SECONDSISTER',
+              'skillTier' => 8,
+          ]
       ],
       'T3_M4' => [
-          'unitId'    => 'T3_M4',
-          'skillId'   => 'uniqueskill_t3_m4_02',
-          'skillTier' => 9,
+          [
+              'alias' => 'T3_M4',
+              'skillId'   => 'uniqueskill_t3_m4_02',
+              'skillTier' => 9,
+          ]
       ],
       'NINTHSISTER' => [
-          'unitId'    => 'NINTHSISTER',
-          'skillId'   => 'leaderskill_NINTHSISTER',
-          'skillTier' => 8,
+          [
+              'alias' => 'NINTHSISTER',
+              'skillId'   => 'leaderskill_NINTHSISTER',
+              'skillTier' => 8,
+          ]
       ],
       'EIGHTHBROTHER' => [
-          'unitId'    => 'EIGHTHBROTHER',
-          'skillId'   => 'leaderskill_EIGHTHBROTHER',
-          'skillTier' => 8,
+          [
+              'alias' => 'EIGHTHBROTHER',
+              'skillId'   => 'leaderskill_EIGHTHBROTHER',
+              'skillTier' => 8,
+          ]
       ],
       'SEVENTHSISTER' => [
-          'unitId'    => 'SEVENTHSISTER',
-          'skillId'   => 'leaderskill_SEVENTHSISTER',
-          'skillTier' => 8,
+          [
+              'alias' => 'SEVENTHSISTER',
+              'skillId'   => 'leaderskill_SEVENTHSISTER',
+              'skillTier' => 8,
+          ]
       ]
   ];
 
     private $GA_OMICRONS = [
         'QUIGONJINN' => [
-            'unitId'    => 'QUIGONJINN',
-            'skillId'   => 'leaderskill_QUIGONJINN',
-            'skillTier' => 9,
+            [
+                'alias' => 'QUIGONJINN',
+                'skillId'   => 'leaderskill_QUIGONJINN',
+                'skillTier' => 9,
+            ]
         ],
         'DASHRENDAR' => [
-            'unitId'    => 'DASHRENDAR',
-            'skillId'   => 'leaderskill_DASHRENDAR',
-            'skillTier' => 8,
+            [
+                'alias' => 'DASHRENDAR',
+                'skillId'   => 'leaderskill_DASHRENDAR',
+                'skillTier' => 8,
+            ]
         ],
         'ZAMWESELL'  => [
-            'unitId'    => 'ZAMWESELL',
-            'skillId'   => 'uniqueskill_ZAMWESELL01',
-            'skillTier' => 9,
+            [
+                'alias' => 'ZAMWESELL',
+                'skillId'   => 'uniqueskill_ZAMWESELL01',
+                'skillTier' => 9,
+            ]
         ],
         'ROSETICO'   => [
-            'unitId'    => 'ROSETICO',
-            'skillId'   => 'uniqueskill_ROSETICO01',
-            'skillTier' => 9,
+            [
+                'alias' => 'ROSETICO',
+                'skillId'   => 'uniqueskill_ROSETICO01',
+                'skillTier' => 9,
+            ]
         ],
         'DARTHTALON' => [
-            'unitId'    => 'DARTHTALON',
-            'skillId'   => 'uniqueskill_DARTHTALON02',
-            'skillTier' => 8,
+            [
+                'alias' => 'DARTHTALON',
+                'skillId'   => 'uniqueskill_DARTHTALON02',
+                'skillTier' => 8,
+            ]
         ],
         'CHIEFCHIRPA' => [
-            'unitId'    => 'CHIEFCHIRPA',
-            'skillId'   => 'leaderskill_DARTHSIDIOUS',
-            'skillTier' => 9,
+            [
+                'alias' => 'CHIEFCHIRPA',
+                'skillId'   => 'leaderskill_DARTHSIDIOUS',
+                'skillTier' => 9,
+            ]
         ],
         'WAMPA' => [
-            'unitId'    => 'WAMPA',
-            'skillId'   => 'uniqueskill_WAMPA02',
-            'skillTier' => 9,
+            [
+                'alias' => 'WAMPA',
+                'skillId'   => 'uniqueskill_WAMPA02',
+                'skillTier' => 9,
+            ]
         ],
         'IDENVERSIOEMPIRE' => [
-            'unitId'    => 'IDENVERSIOEMPIRE',
-            'skillId'   => 'leaderskill_IDENVERSIOEMPIRE',
-            'skillTier' => 8,
+            [
+                'alias' => 'IDENVERSIOEMPIRE',
+                'skillId'   => 'leaderskill_IDENVERSIOEMPIRE',
+                'skillTier' => 8,
+            ]
         ],
         'ADMIRALACKBAR' => [
-            'unitId'    => 'ADMIRALACKBAR',
-            'skillId'   => 'leaderskill_ADMIRALACKBAR',
-            'skillTier' => 8,
+            [
+                'alias' => 'ADMIRALACKBAR',
+                'skillId'   => 'leaderskill_ADMIRALACKBAR',
+                'skillTier' => 8,
+            ]
         ],
         'PRINCESSLEIA' => [
-            'unitId'    => 'PRINCESSLEIA',
-            'skillId'   => 'uniqueskill_PRINCESSLEIA01',
-            'skillTier' => 9,
+            [
+                'alias' => 'PRINCESSLEIA',
+                'skillId'   => 'uniqueskill_PRINCESSLEIA01',
+                'skillTier' => 9,
+            ]
         ],
         'DIRECTORKRENNIC' => [
-            'unitId'    => 'DIRECTORKRENNIC',
-            'skillId'   => 'uniqueskill_DIRECTORKRENNIC01',
-            'skillTier' => 8,
+            [
+                'alias' => 'DIRECTORKRENNIC',
+                'skillId'   => 'uniqueskill_DIRECTORKRENNIC01',
+                'skillTier' => 8,
+            ]
         ],
-        'STARKILLER_SPECIAL_1' => [
-            'unitId'    => 'STARKILLER',
-            'skillId'   => 'specialskill_STARKILLER01',
-            'skillTier' => 8,
-        ],
-        'STARKILLER_SPECIAL_2' => [
-            'unitId'    => 'STARKILLER',
-            'skillId'   => 'specialskill_STARKILLER02',
-            'skillTier' => 8,
-        ],
-        'STARKILLER_UNIQUE' => [
-            'unitId'    => 'STARKILLER',
-            'skillId'   => 'uniqueskill_STARKILLER02',
-            'skillTier' => 8,
+        'STARKILLER' => [
+            [
+                'alias' => 'STARKILLER_SPECIAL_1',
+                'skillId'   => 'specialskill_STARKILLER01',
+                'skillTier' => 8,
+            ],
+            [
+                'alias' => 'STARKILLER_SPECIAL_2',
+                'skillId'   => 'specialskill_STARKILLER02',
+                'skillTier' => 8,
+            ],
+            [
+                'alias' => 'STARKILLER_UNIQUE',
+                'skillId'   => 'uniqueskill_STARKILLER02',
+                'skillTier' => 8,
+            ]
         ]
     ];
 
@@ -469,24 +519,8 @@ class TBase {
                   "updated" => '',
                   "top80" => 0,
                   "units" => array(),
-                  "tw_omicrons" => [
-                      'PHASMA'     => 0,
-                      'CHIEFNEBIT' => 0,
-                      'MARAJADE' => 0,
-                      'DARTHSIDIOUS' => 0,
-                      'HERASYNDULLAS3' => 0,
-                      'BOBAFETTSCION_SPECIAL' => 0,
-                      'BOBAFETTSCION_LEADER' => 0,
-                      'BOBAFETTSCION_UNIQUE' => 0,
-                  ],
-                  "ga_omicrons" => [
-                      'QUIGONJINN' => 0,
-                      'DASHRENDAR' => 0,
-                      'ZAMWESELL'  => 0,
-                      'ROSETICO'   => 0,
-                      'DARTHTALON' => 0,
-                      'CHIEFCHIRPA' => 0,
-                  ]
+                  "tw_omicrons" => array_fill_keys($this->twOmicronsAliases(), 0),
+                  "ga_omicrons" => array_fill_keys($this->gaOmicronsAliases(), 0)
                  );
   }
 
@@ -496,10 +530,19 @@ class TBase {
   protected function processPlayer($player, &$data, $units = array()) {
     $data["updated"] = date("d-m-Y H:i:s", substr($player["updated"], 0, -3));
         
-    $chars = [];    
-    
+    $chars = [];
+      $hasOmicron = function ($skillTarget, $unitSkills) {
+          $skillTargetId   = $skillTarget['skillId'];
+          $skillTierTarget = $skillTarget['skillTier'];
+
+          $omicronSkillIndex = array_search($skillTargetId, array_column($unitSkills, 'id'));
+          $omicronSkill      = $unitSkills[$omicronSkillIndex] ?? null;
+
+          return !is_null($omicronSkill) && $omicronSkill['tier'] === $skillTierTarget;
+      };
+
     foreach ($player["roster"] as $unit) {
-      // control units to show 
+      // control units to show
       if (in_array($unit["defId"], $units)) {
         if (!array_key_exists($unit["defId"], $data["units"])) {
           $data["units"][$unit["defId"]]["count"] = 0;
@@ -513,27 +556,29 @@ class TBase {
         }
         $data["units"][$unit["defId"]]["count"] = $data["units"][$unit["defId"]]["count"] + 1;
         // agafem valores màxims
-        if ($data["units"][$unit["defId"]]["gear"] < $unit["gear"]) {
-          $data["units"][$unit["defId"]]["gear"] = $unit["gear"];
-        }
-        if ($data["units"][$unit["defId"]]["level"] < $unit["level"]) {
-          $data["units"][$unit["defId"]]["level"] = $unit["level"];
-        }
         if ($data["units"][$unit["defId"]]["rarity"] < $unit["rarity"]) {
           $data["units"][$unit["defId"]]["rarity"] = $unit["rarity"];
         }
-        if ($data["units"][$unit["defId"]]["relic"] < $unit["relic"]["currentTier"]-2) {
-          $data["units"][$unit["defId"]]["relic"] = $unit["relic"]["currentTier"]-2;
-        }
-        // contem valors específics
-        if ($unit["gear"] == 12) {
-          $data["units"][$unit["defId"]]["g12"] = $data["units"][$unit["defId"]]["g12"] + 1;
-        }
-        if ($unit["gear"] == 13) {
-          $data["units"][$unit["defId"]]["g13"] = $data["units"][$unit["defId"]]["g13"] + 1;
-        }
-        if ($unit["relic"]["currentTier"] == 10) {
-          $data["units"][$unit["defId"]]["r8"] = $data["units"][$unit["defId"]]["r8"] + 1;
+        if ($unit['combatType'] === 1) {
+            if ($data["units"][$unit["defId"]]["gear"] < $unit["gear"]) {
+                $data["units"][$unit["defId"]]["gear"] = $unit["gear"];
+            }
+            if ($data["units"][$unit["defId"]]["level"] < $unit["level"]) {
+                $data["units"][$unit["defId"]]["level"] = $unit["level"];
+            }
+            if ($data["units"][$unit["defId"]]["relic"] < $unit["relic"]["currentTier"] - 2) {
+                $data["units"][$unit["defId"]]["relic"] = $unit["relic"]["currentTier"] - 2;
+            }
+            // contem valors específics
+            if ($unit["gear"] == 12) {
+                $data["units"][$unit["defId"]]["g12"] = $data["units"][$unit["defId"]]["g12"] + 1;
+            }
+            if ($unit["gear"] == 13) {
+                $data["units"][$unit["defId"]]["g13"] = $data["units"][$unit["defId"]]["g13"] + 1;
+            }
+            if ($unit["relic"]["currentTier"] == 10) {
+                $data["units"][$unit["defId"]]["r8"] = $data["units"][$unit["defId"]]["r8"] + 1;
+            }
         }
       }
       
@@ -548,89 +593,25 @@ class TBase {
           if (($skill["isZeta"]) && ($skill["tier"] == $skill["tiers"]))
             $data["zetas"] = $data["zetas"] + 1;
         }
-
-          $hasOmicron = function ($skillTarget, $unitSkills) {
-              $skillTargetId   = $skillTarget['skillId'];
-              $skillTierTarget = $skillTarget['skillTier'];
-
-              $omicronSkillIndex = array_search($skillTargetId, array_column($unitSkills, 'id'));
-              $omicronSkill      = $unitSkills[$omicronSkillIndex] ?? null;
-
-              return !is_null($omicronSkill) && $omicronSkill['tier'] === $skillTierTarget;
-          };
-
-        // check omicrons
-        switch ($unit['defId']) {
-            case $this->TW_OMICRONS['PHASMA']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['PHASMA'], $unit['skills'])) {
-                    $data['tw_omicrons']['PHASMA'] = $data['tw_omicrons']['PHASMA'] + 1;
-                }
-                break;
-            case $this->TW_OMICRONS['CHIEFNEBIT']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['CHIEFNEBIT'], $unit['skills'])) {
-                    $data['tw_omicrons']['CHIEFNEBIT'] = $data['tw_omicrons']['CHIEFNEBIT'] + 1;
-                }
-                break;
-            case $this->TW_OMICRONS['MARAJADE']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['MARAJADE'], $unit['skills'])) {
-                    $data['tw_omicrons']['MARAJADE'] = $data['tw_omicrons']['MARAJADE'] + 1;
-                }
-                break;
-            case $this->TW_OMICRONS['DARTHSIDIOUS']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['DARTHSIDIOUS'], $unit['skills'])) {
-                    $data['tw_omicrons']['DARTHSIDIOUS'] = $data['tw_omicrons']['DARTHSIDIOUS'] + 1;
-                }
-                break;
-            case $this->TW_OMICRONS['HERASYNDULLAS3']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['HERASYNDULLAS3'], $unit['skills'])) {
-                    $data['tw_omicrons']['HERASYNDULLAS3'] = $data['tw_omicrons']['HERASYNDULLAS3'] + 1;
-                }
-                break;
-            case $this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['unitId']:
-                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_SPECIAL'], $unit['skills'])) {
-                    $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] = $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] + 1;
-                }
-
-                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_LEADER'], $unit['skills'])) {
-                    $data['tw_omicrons']['BOBAFETTSCION_LEADER'] = $data['tw_omicrons']['BOBAFETTSCION_LEADER'] + 1;
-                }
-
-                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_UNIQUE'], $unit['skills'])) {
-                    $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] = $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['QUIGONJINN']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['QUIGONJINN'], $unit['skills'])) {
-                    $data['ga_omicrons']['QUIGONJINN'] = $data['ga_omicrons']['QUIGONJINN'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['DASHRENDAR']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['DASHRENDAR'], $unit['skills'])) {
-                    $data['ga_omicrons']['DASHRENDAR'] = $data['ga_omicrons']['DASHRENDAR'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['ZAMWESELL']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['ZAMWESELL'], $unit['skills'])) {
-                    $data['ga_omicrons']['ZAMWESELL'] = $data['ga_omicrons']['ZAMWESELL'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['ROSETICO']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['ROSETICO'], $unit['skills'])) {
-                    $data['ga_omicrons']['ROSETICO'] = $data['ga_omicrons']['ROSETICO'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['DARTHTALON']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['DARTHTALON'], $unit['skills'])) {
-                    $data['ga_omicrons']['DARTHTALON'] = $data['ga_omicrons']['DARTHTALON'] + 1;
-                }
-                break;
-            case $this->GA_OMICRONS['CHIEFCHIRPA']['unitId']:
-                if ($hasOmicron($this->GA_OMICRONS['CHIEFCHIRPA'], $unit['skills'])) {
-                    $data['ga_omicrons']['CHIEFCHIRPA'] = $data['ga_omicrons']['CHIEFCHIRPA'] + 1;
-                }
-                break;
-            default: break;
-        }
+          // check TW omicrons
+          if ($unitGaOmicrons = $this->TW_OMICRONS[$unit['defId']] ?? null) {
+              foreach ($unitGaOmicrons as $unitTwOmicron) {
+                  if ($hasOmicron($unitTwOmicron, $unit['skills'])) {
+                      $alias                       = $unitTwOmicron['alias'];
+                      $data['tw_omicrons'][$alias] = $data['tw_omicrons'][$alias] + 1;
+                  }
+              }
+          }
+          
+          // check GA omicrons
+          if ($unitGaOmicrons = $this->GA_OMICRONS[$unit['defId']] ?? null) {
+              foreach ($unitGaOmicrons as $unitGaOmicron) {
+                  if ($hasOmicron($unitGaOmicron, $unit['skills'])) {
+                      $alias                       = $unitGaOmicron['alias'];
+                      $data['ga_omicrons'][$alias] = $data['ga_omicrons'][$alias] + 1;
+                  }
+              }
+          }
         
         // check gear
         switch ($unit["gear"]) {
@@ -667,9 +648,6 @@ class TBase {
               }
             }
           }
-                
-          if (($mod["isZeta"]) && ($mod["tier"] == $mod["tiers"]))
-            $data["zetas"] = $data["zetas"] + 1;
         }
                 
         // check relic
@@ -714,34 +692,47 @@ class TBase {
     $data["avships"] = $data["avships"] + $player["arena"]["ship"]["rank"]; 
             
     // arena characters squand
-    if (isset($player["arena"]["char"]["squad"][0]))
-      $data["csquad1"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][0]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["char"]["squad"][1]))
-      $data["csquad2"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][1]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["char"]["squad"][2]))
-      $data["csquad3"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][2]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["char"]["squad"][3]))
-      $data["csquad4"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][3]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["char"]["squad"][4]))
-      $data["csquad5"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][4]["defId"], $this->dataObj); 
+    if (isset($player["arena"]["char"]["squad"][0])) {
+        $data["csquad1"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][0]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["char"]["squad"][1])) {
+        $data["csquad2"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][1]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["char"]["squad"][2])) {
+        $data["csquad3"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][2]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["char"]["squad"][3])) {
+        $data["csquad4"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][3]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["char"]["squad"][4])) {
+        $data["csquad5"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][4]["defId"], $this->dataObj);
+    }
 
     // arena ships squand
-    if (isset($player["arena"]["ship"]["squad"][0]))
-      $data["ssquad1"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][0]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["ship"]["squad"][1]))
-      $data["ssquad2"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][1]["defId"], $this->dataObj); 
-    if (isset($player["arena"]["ship"]["squad"][2]))
+    if (isset($player["arena"]["ship"]["squad"][0])) {
+      $data["ssquad1"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][0]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["ship"]["squad"][1])) {
+      $data["ssquad2"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][1]["defId"], $this->dataObj);
+    }
+    if (isset($player["arena"]["ship"]["squad"][2])) {
       $data["ssquad3"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][2]["defId"], $this->dataObj);
-    if (isset($player["arena"]["ship"]["squad"][3]))
+    }
+    if (isset($player["arena"]["ship"]["squad"][3])) {
       $data["ssquad4"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][3]["defId"], $this->dataObj);
-    if (isset($player["arena"]["ship"]["squad"][4]))
+    }
+    if (isset($player["arena"]["ship"]["squad"][4])) {
       $data["ssquad5"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][4]["defId"], $this->dataObj);
-    if (isset($player["arena"]["ship"]["squad"][5]))
+    }
+    if (isset($player["arena"]["ship"]["squad"][5])) {
       $data["ssquad6"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][5]["defId"], $this->dataObj);
-    if (isset($player["arena"]["ship"]["squad"][4]))
+    }
+    if (isset($player["arena"]["ship"]["squad"][6])) {
       $data["ssquad7"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][6]["defId"], $this->dataObj);
-    if (isset($player["arena"]["ship"]["squad"][3]))
+    }
+    if (isset($player["arena"]["ship"]["squad"][7])) {
       $data["ssquad8"] = TUnits::unitNameFromUnitId($player["arena"]["ship"]["squad"][7]["defId"], $this->dataObj);
+    }
 
     // chars +80
     arsort($chars);
@@ -1459,5 +1450,15 @@ class TBase {
 
         $stats = json_decode($statsResponse, true);
         return $stats;
+    }
+
+    private function twOmicronsAliases()
+    {
+        return array_column(array_merge(...array_values($this->TW_OMICRONS)), 'alias');
+    }
+
+    private function gaOmicronsAliases()
+    {
+        return array_column(array_merge(...array_values($this->GA_OMICRONS)), 'alias');
     }
 }

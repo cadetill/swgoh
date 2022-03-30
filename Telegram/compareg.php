@@ -36,7 +36,7 @@ class TCompareg extends TBase {
 
     $timestamp = date("Y-m-d H:i:s");  
     $sql = "insert into queue (insdate, message_id, date) VALUES ('".$timestamp."', '".$this->dataObj->messageId."', '".$this->dataObj->messageDate."')";
-    echo $sql;
+    // echo $sql;
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) 
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
