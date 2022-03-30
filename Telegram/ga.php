@@ -196,6 +196,38 @@ class TGA extends TBase {
           "txtCham95",
           [ $data0['ga_omicrons']['CHIEFCHIRPA'], $data1['ga_omicrons']['CHIEFCHIRPA'] ]
       );
+      $res[1] .= $this->translatedText(
+          "txtCham96",
+          [ $data0['ga_omicrons']['WAMPA'], $data1['ga_omicrons']['WAMPA'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham97",
+          [ $data0['ga_omicrons']['IDENVERSIOEMPIRE'], $data1['ga_omicrons']['IDENVERSIOEMPIRE'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham98",
+          [ $data0['ga_omicrons']['ADMIRALACKBAR'], $data1['ga_omicrons']['ADMIRALACKBAR'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham99",
+          [ $data0['ga_omicrons']['PRINCESSLEIA'], $data1['ga_omicrons']['PRINCESSLEIA'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham100",
+          [ $data0['ga_omicrons']['DIRECTORKRENNIC'], $data1['ga_omicrons']['DIRECTORKRENNIC'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham101",
+          [ $data0['ga_omicrons']['STARKILLER_SPECIAL_1'], $data1['ga_omicrons']['STARKILLER_SPECIAL_1'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham102",
+          [ $data0['ga_omicrons']['STARKILLER_SPECIAL_2'], $data1['ga_omicrons']['STARKILLER_SPECIAL_2'] ]
+      );
+      $res[1] .= $this->translatedText(
+          "txtCham103",
+          [ $data0['ga_omicrons']['STARKILLER_UNIQUE'], $data1['ga_omicrons']['STARKILLER_UNIQUE'] ]
+      );
 
       return $res;
   }

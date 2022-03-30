@@ -178,6 +178,14 @@ class TTranslate {
       $this->translated["ENG_US"]["txtCham93"] = "<b>Rose</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCham94"] = "<b>Talon</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCham95"] = "<b>Chirpa</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham96"] = "<b>Wampa</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham97"] = "<b>Iden Versio</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham98"] = "<b>Ackbar</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham99"] = "<b>Leia</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham100"] = "<b>Krennic</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham101"] = "<b>Starkiller (special 1)</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham102"] = "<b>Starkiller (special 2)</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCham103"] = "<b>Starkiller (unique)</b>: %s vs %s\n";
 
     // classe TCompareg
     $this->translated["ENG_US"]["txtCompareg01"] = "<b>-----------SUMMARY-----------</b>\n";
@@ -224,6 +232,13 @@ class TTranslate {
       $this->translated["ENG_US"]["txtCompareg42"] = "<b>SoJ (special)</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCompareg43"] = "<b>SoJ (leader)</b>: %s vs %s\n";
       $this->translated["ENG_US"]["txtCompareg44"] = "<b>SoJ (unique)</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg45"] = "<b>Windu</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg46"] = "<b>Embo</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg47"] = "<b>Second Sister</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg48"] = "<b>T3-M4</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg49"] = "<b>Ninth Sister</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg50"] = "<b>Eight Brother</b>: %s vs %s\n";
+      $this->translated["ENG_US"]["txtCompareg51"] = "<b>Seventh Sister</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["ENG_US"]["txtGuild01"] = "<b>Guild</b>: %s\n";
@@ -669,6 +684,14 @@ class TTranslate {
       $this->translated["SPA_XM"]["txtCham93"] = "<b>Rose</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCham94"] = "<b>Talon</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCham95"] = "<b>Chirpa</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham96"] = "<b>Wampa</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham97"] = "<b>Iden Versio</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham98"] = "<b>Ackbar</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham99"] = "<b>Leia</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham100"] = "<b>Krennic</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham101"] = "<b>Starkiller (especial 1)</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham102"] = "<b>Starkiller (especial 2)</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCham103"] = "<b>Starkiller (única)</b>: %s vs %s\n";
 
     // classe TCompareg
     $this->translated["SPA_XM"]["txtCompareg01"] = "<b>-----------SUMARIO-----------</b>\n";
@@ -715,6 +738,13 @@ class TTranslate {
       $this->translated["SPA_XM"]["txtCompareg42"] = "<b>SoJ (especial)</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCompareg43"] = "<b>SoJ (líder)</b>: %s vs %s\n";
       $this->translated["SPA_XM"]["txtCompareg44"] = "<b>SoJ (única)</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg45"] = "<b>Windu</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg46"] = "<b>Embo</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg47"] = "<b>Segunda Hermana</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg48"] = "<b>T3-M4</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg49"] = "<b>Novena Hermana</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg50"] = "<b>Octavo Hermano</b>: %s vs %s\n";
+      $this->translated["SPA_XM"]["txtCompareg51"] = "<b>Séptima Hermana</b>: %s vs %s\n";
 
     // classe TGuild
     $this->translated["SPA_XM"]["txtGuild01"] = "<b>Gremio</b>: %s\n";

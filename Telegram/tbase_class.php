@@ -49,6 +49,41 @@ class TBase {
           'unitId'    => 'BOBAFETTSCION',
           'skillId'   => 'uniqueskill_BOBAFETTSCION01',
           'skillTier' => 8,
+      ],
+      'MACEWINDU' => [
+          'unitId'    => 'MACEWINDU',
+          'skillId'   => 'uniqueskill_MACEWINDU02',
+          'skillTier' => 9,
+      ],
+      'EMBO' => [
+          'unitId'    => 'EMBO',
+          'skillId'   => 'uniqueskill_EMBO01',
+          'skillTier' => 9,
+      ],
+      'SECONDSISTER' => [
+          'unitId'    => 'SECONDSISTER',
+          'skillId'   => 'leaderskill_SECONDSISTER',
+          'skillTier' => 8,
+      ],
+      'T3_M4' => [
+          'unitId'    => 'T3_M4',
+          'skillId'   => 'uniqueskill_t3_m4_02',
+          'skillTier' => 9,
+      ],
+      'NINTHSISTER' => [
+          'unitId'    => 'NINTHSISTER',
+          'skillId'   => 'leaderskill_NINTHSISTER',
+          'skillTier' => 8,
+      ],
+      'EIGHTHBROTHER' => [
+          'unitId'    => 'EIGHTHBROTHER',
+          'skillId'   => 'leaderskill_EIGHTHBROTHER',
+          'skillTier' => 8,
+      ],
+      'SEVENTHSISTER' => [
+          'unitId'    => 'SEVENTHSISTER',
+          'skillId'   => 'leaderskill_SEVENTHSISTER',
+          'skillTier' => 8,
       ]
   ];
 
@@ -82,6 +117,46 @@ class TBase {
             'unitId'    => 'CHIEFCHIRPA',
             'skillId'   => 'leaderskill_DARTHSIDIOUS',
             'skillTier' => 9,
+        ],
+        'WAMPA' => [
+            'unitId'    => 'WAMPA',
+            'skillId'   => 'uniqueskill_WAMPA02',
+            'skillTier' => 9,
+        ],
+        'IDENVERSIOEMPIRE' => [
+            'unitId'    => 'IDENVERSIOEMPIRE',
+            'skillId'   => 'leaderskill_IDENVERSIOEMPIRE',
+            'skillTier' => 8,
+        ],
+        'ADMIRALACKBAR' => [
+            'unitId'    => 'ADMIRALACKBAR',
+            'skillId'   => 'leaderskill_ADMIRALACKBAR',
+            'skillTier' => 8,
+        ],
+        'PRINCESSLEIA' => [
+            'unitId'    => 'PRINCESSLEIA',
+            'skillId'   => 'uniqueskill_PRINCESSLEIA01',
+            'skillTier' => 9,
+        ],
+        'DIRECTORKRENNIC' => [
+            'unitId'    => 'DIRECTORKRENNIC',
+            'skillId'   => 'uniqueskill_DIRECTORKRENNIC01',
+            'skillTier' => 8,
+        ],
+        'STARKILLER_SPECIAL_1' => [
+            'unitId'    => 'STARKILLER',
+            'skillId'   => 'specialskill_STARKILLER01',
+            'skillTier' => 8,
+        ],
+        'STARKILLER_SPECIAL_2' => [
+            'unitId'    => 'STARKILLER',
+            'skillId'   => 'specialskill_STARKILLER02',
+            'skillTier' => 8,
+        ],
+        'STARKILLER_UNIQUE' => [
+            'unitId'    => 'STARKILLER',
+            'skillId'   => 'uniqueskill_STARKILLER02',
+            'skillTier' => 8,
         ]
     ];
 
@@ -474,101 +549,83 @@ class TBase {
             $data["zetas"] = $data["zetas"] + 1;
         }
 
+          $hasOmicron = function ($skillTarget, $unitSkills) {
+              $skillTargetId   = $skillTarget['skillId'];
+              $skillTierTarget = $skillTarget['skillTier'];
+
+              $omicronSkillIndex = array_search($skillTargetId, array_column($unitSkills, 'id'));
+              $omicronSkill      = $unitSkills[$omicronSkillIndex] ?? null;
+
+              return !is_null($omicronSkill) && $omicronSkill['tier'] === $skillTierTarget;
+          };
+
         // check omicrons
         switch ($unit['defId']) {
             case $this->TW_OMICRONS['PHASMA']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['PHASMA']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['PHASMA']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['PHASMA'], $unit['skills'])) {
                     $data['tw_omicrons']['PHASMA'] = $data['tw_omicrons']['PHASMA'] + 1;
                 }
                 break;
             case $this->TW_OMICRONS['CHIEFNEBIT']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['CHIEFNEBIT']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['CHIEFNEBIT']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['CHIEFNEBIT'], $unit['skills'])) {
                     $data['tw_omicrons']['CHIEFNEBIT'] = $data['tw_omicrons']['CHIEFNEBIT'] + 1;
                 }
                 break;
             case $this->TW_OMICRONS['MARAJADE']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['MARAJADE']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['MARAJADE']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['MARAJADE'], $unit['skills'])) {
                     $data['tw_omicrons']['MARAJADE'] = $data['tw_omicrons']['MARAJADE'] + 1;
                 }
                 break;
             case $this->TW_OMICRONS['DARTHSIDIOUS']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['DARTHSIDIOUS']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['DARTHSIDIOUS']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['DARTHSIDIOUS'], $unit['skills'])) {
                     $data['tw_omicrons']['DARTHSIDIOUS'] = $data['tw_omicrons']['DARTHSIDIOUS'] + 1;
                 }
                 break;
             case $this->TW_OMICRONS['HERASYNDULLAS3']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['HERASYNDULLAS3']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['HERASYNDULLAS3']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['HERASYNDULLAS3'], $unit['skills'])) {
                     $data['tw_omicrons']['HERASYNDULLAS3'] = $data['tw_omicrons']['HERASYNDULLAS3'] + 1;
                 }
                 break;
             case $this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['unitId']:
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_SPECIAL']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_SPECIAL'], $unit['skills'])) {
                     $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] = $data['tw_omicrons']['BOBAFETTSCION_SPECIAL'] + 1;
                 }
 
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_LEADER']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_LEADER']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_LEADER'], $unit['skills'])) {
                     $data['tw_omicrons']['BOBAFETTSCION_LEADER'] = $data['tw_omicrons']['BOBAFETTSCION_LEADER'] + 1;
                 }
 
-                $omicronSkillIndex = array_search($this->TW_OMICRONS['BOBAFETTSCION_UNIQUE']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->TW_OMICRONS['BOBAFETTSCION_UNIQUE']['skillTier']) {
+                if ($hasOmicron($this->TW_OMICRONS['BOBAFETTSCION_UNIQUE'], $unit['skills'])) {
                     $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] = $data['tw_omicrons']['BOBAFETTSCION_UNIQUE'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['QUIGONJINN']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['QUIGONJINN']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['QUIGONJINN']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['QUIGONJINN'], $unit['skills'])) {
                     $data['ga_omicrons']['QUIGONJINN'] = $data['ga_omicrons']['QUIGONJINN'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['DASHRENDAR']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['DASHRENDAR']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['DASHRENDAR']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['DASHRENDAR'], $unit['skills'])) {
                     $data['ga_omicrons']['DASHRENDAR'] = $data['ga_omicrons']['DASHRENDAR'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['ZAMWESELL']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['ZAMWESELL']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['ZAMWESELL']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['ZAMWESELL'], $unit['skills'])) {
                     $data['ga_omicrons']['ZAMWESELL'] = $data['ga_omicrons']['ZAMWESELL'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['ROSETICO']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['ROSETICO']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['ROSETICO']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['ROSETICO'], $unit['skills'])) {
                     $data['ga_omicrons']['ROSETICO'] = $data['ga_omicrons']['ROSETICO'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['DARTHTALON']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['DARTHTALON']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['DARTHTALON']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['DARTHTALON'], $unit['skills'])) {
                     $data['ga_omicrons']['DARTHTALON'] = $data['ga_omicrons']['DARTHTALON'] + 1;
                 }
                 break;
             case $this->GA_OMICRONS['CHIEFCHIRPA']['unitId']:
-                $omicronSkillIndex = array_search($this->GA_OMICRONS['CHIEFCHIRPA']['skillId'], array_column($unit['skills'], 'id'));
-                $omicronSkill = $unit['skills'][$omicronSkillIndex];
-                if ($omicronSkill['tier'] === $this->GA_OMICRONS['CHIEFCHIRPA']['skillTier']) {
+                if ($hasOmicron($this->GA_OMICRONS['CHIEFCHIRPA'], $unit['skills'])) {
                     $data['ga_omicrons']['CHIEFCHIRPA'] = $data['ga_omicrons']['CHIEFCHIRPA'] + 1;
                 }
                 break;

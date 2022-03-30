@@ -185,6 +185,34 @@ class TCompareg extends TBase {
           "txtCompareg44",
           [ $guild1['tw_omicrons']['BOBAFETTSCION_UNIQUE'], $guild2['tw_omicrons']['BOBAFETTSCION_UNIQUE'] ]
       );                                                                                                             // "<b>SoJ (unique)</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg45",
+          [ $guild1['tw_omicrons']['MACEWINDU'], $guild2['tw_omicrons']['MACEWINDU'] ]
+      );                                                                                                             // "<b>Windu</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg46",
+          [ $guild1['tw_omicrons']['EMBO'], $guild2['tw_omicrons']['EMBO'] ]
+      );                                                                                                             // "<b>Embo</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg47",
+          [ $guild1['tw_omicrons']['SECONDSISTER'], $guild2['tw_omicrons']['SECONDSISTER'] ]
+      );                                                                                                             // "<b>Second Sister</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg48",
+          [ $guild1['tw_omicrons']['T3_M4'], $guild2['tw_omicrons']['T3_M4'] ]
+      );                                                                                                             // "<b>T3-M4</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg49",
+          [ $guild1['tw_omicrons']['NINTHSISTER'], $guild2['tw_omicrons']['NINTHSISTER'] ]
+      );                                                                                                             // "<b>Ninth Sister</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg50",
+          [ $guild1['tw_omicrons']['EIGHTHBROTHER'], $guild2['tw_omicrons']['EIGHTHBROTHER'] ]
+      );                                                                                                             // "<b>Eight Brother</b>: %s vs %s\n"
+      $ret .= $this->translatedText(
+          "txtCompareg51",
+          [ $guild1['tw_omicrons']['SEVENTHSISTER'], $guild2['tw_omicrons']['SEVENTHSISTER'] ]
+      );                                                                                                             // "<b>Seventh Sister</b>: %s vs %s\n"
     $ret .= "\n";
 
     $ret2 = $this->translatedText("txtCompareg33");                                                    // "<b>Units</b>\n";
