@@ -383,7 +383,6 @@ class TBase {
 
         // generem string amb els AllyCode
         $allyCodes = array_column($guild[0]["roster"], 'allyCode');
-        $allyCodes = array_slice($allyCodes, 0, 5);
         sort($allyCodes);
         $strAllyCodes = join(',', $allyCodes);
         $allyCodesHash = md5($strAllyCodes);
@@ -602,7 +601,7 @@ class TBase {
                   }
               }
           }
-          
+
           // check GA omicrons
           if ($unitGaOmicrons = $this->GA_OMICRONS[$unit['defId']] ?? null) {
               foreach ($unitGaOmicrons as $unitGaOmicron) {
