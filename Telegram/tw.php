@@ -206,7 +206,7 @@ class TTW extends TBase {
       return $res;
     } 
     else {
-      $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));
+      $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", intval($time)));
       return array($res);
     }
   }
@@ -318,7 +318,7 @@ class TTW extends TBase {
     if (!$this->checkAllyCode($this->allyCode)) {
       return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
     }
-        
+
     // agafem ID de la unitat (llista de alias o llista d'unitats)
     if ($this->alias == "rogue") {
       $unitId = $this->alias;
@@ -326,7 +326,7 @@ class TTW extends TBase {
     else {
       $unitId = TAlias::aliasSearch($this->alias, $this->dataObj);
     }
-    
+
     // si la unitat no la trobem, sortim amb error
     if ($unitId == "") {
       return $this->translatedText("twerr1", $this->alias);                     // "Unit <i>%s</i> not found.\n\n";
@@ -365,7 +365,6 @@ class TTW extends TBase {
       $players = $tmp;
       $players = array_values($players);
     }
-    echo 'players: '.count($players)."\n";
     
     // mirem que haguem trobat Id Guild  
     if ($players[0]["guildRefId"] == "") {
@@ -424,12 +423,13 @@ class TTW extends TBase {
     }
     
     $arrNo = array();
+
     foreach ($players as $player) {
       if (!in_array($player['allyCode'], $arrNoReg)) {
         $sql  = "SELECT * FROM users where allycode = '".$player['allyCode']."' limit 1";
         $res = $idcon->query( $sql );
-        $row = $res->fetch_assoc();
-        array_push($arrNo, '<code>'.$player['name'].'-'.$player['allyCode'].'</code> @'.$row['username']);
+        $row = $res->fetch_assoc() ?? [];
+        array_push($arrNo, '<code>'.$player['name'].'-'.$player['allyCode'].'</code> @'.($row['username'] ?? ''));
       }
     }
     
@@ -440,8 +440,8 @@ class TTW extends TBase {
     usort($arrUsed, 'strnatcasecmp');
     usort($arrNo, 'strnatcasecmp');    
     usort($arrRogue, 'strnatcasecmp');
-            
-    $ret  = $this->translatedText("txtTw07", $players[0]["guildName"]);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
+
+    $ret  = $this->translatedText("txtTw07", $players[array_key_first($players)]["guildName"]);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
     if ($this->alias != "rogue") {
       $ret .= $this->translatedText("txtTw08", TUnits::unitNameFromUnitId($unitId, $this->dataObj));  // "<b>Unit</b>: ".$this->alias."\n";
       $ret .= $this->translatedText("txtTw14", $this->alias);                   // "<b>Alias</b>: ".$this->alias."\n";
@@ -617,10 +617,13 @@ class TTW extends TBase {
       
     $ret  = $this->translatedText("txtTw17", $player[0]["guildName"]);          // "TW for ".$player[0]["guildName"]."\n\n";
     $ret .= $this->translatedText("txtTw18", $player[0]["name"]);               // "Units used by ".$player[0]["name"]."\n\n";
-      
-    $ret .= $this->translatedText("txtTw19", array($sumOff, 
-                                                   $sumOffTot, 
-                                                   number_format(($sumOffTot * 100) / $maxPoints, 2)));       // "<b>Offense</b>: (%s/%s - %s/%s%)\n<pre>";
+
+      $arr = [
+          $sumOff,
+          $sumOffTot,
+          ($maxPoints === 0) ? '-' : number_format(( $sumOffTot * 100 ) / $maxPoints, 2)
+      ];
+      $ret .= $this->translatedText("txtTw19", $arr);       // "<b>Offense</b>: (%s/%s - %s/%s%)\n<pre>";
     foreach ($arrOff as $unit) {
       $ret .= " - ".$unit."\n";
     }
@@ -1792,8 +1795,9 @@ class TTW extends TBase {
     }
     
     // busquem noms
-    $row = $res->fetch_assoc();
-    return explode(',', $row['noreg']);
+    $row = $res->fetch_assoc() ?? [];
+
+    return explode(',', $row['noreg'] ?? '');
   }
 
     private function check()

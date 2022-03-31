@@ -30,7 +30,7 @@ class TTranslate {
       }
     }
     else
-      $tmp = str_replace('%s', $arr, $tmp);
+      $tmp = str_replace('%s', $arr ?? '', $tmp ?? '');
     return $tmp;
   }
   

@@ -14,7 +14,7 @@ class TAlias extends TBase {
      
     // agafem el subcomando i l'extraem de $params
     $this->subcomand = explode(' ',trim($params[0]));
-    $this->subcomand = $this->subcomand[1];
+    $this->subcomand = $this->subcomand[1] ?? null;
     unset($params[0]);
     
     // actuem segons la quantitat de paràmetres
@@ -81,18 +81,18 @@ class TAlias extends TBase {
     verifica si existeix un alias en la llista
   **************************************************************************/
   public static function aliasSearch($aliasunit, $dataObj) {
-    // carreguem fitxer JSON de alias  
+    // carreguem fitxer JSON de alias
+    $aliasunit = trim($aliasunit);
     $al = new TAlias(array(""), $dataObj);
     $alias = $al->loadFile();
-      
     $unitId = "";
     foreach($alias as $key => $units) {
       foreach($units as $unit) {
-        if (strcasecmp($unit, $aliasunit) == 0) 
+        if (strcasecmp($unit, $aliasunit) == 0)
           $unitId = $key;
       }
     }
-      
+
     if ($unitId == "") {
         $unitId = TUnits::unitIdFromUnitName($aliasunit, $dataObj);
     }
