@@ -157,7 +157,7 @@ function showHelp($command = "", $lang = "") {
 function getStatsHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>stats</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>stats</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para obtener los stats de diferentes unidades.\n\n";
@@ -204,7 +204,7 @@ function getStatsHelp($lang, $plus) {
       $ret .= "  Unos 4 minutos\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>stats</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>stats</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command to obtain the stats of a set of units.\n\n";
@@ -304,7 +304,7 @@ function getStatsGuildHelp($lang, $plus) {
 function getRancorHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>rancor</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>rancor</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para gestionar el progreso del rancor.\n\n";
@@ -335,7 +335,7 @@ function getRancorHelp($lang, $plus) {
       $ret .= "  Unos 30 segundos\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>rancor</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>rancor</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command to manage rancor progress.\n\n";
@@ -374,7 +374,7 @@ function getRancorHelp($lang, $plus) {
 function getPanicHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>panic</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>panic</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando que mostrará los personajes necesarios para uno determinado.\n\n";
@@ -417,7 +417,7 @@ function getPanicHelp($lang, $plus) {
       $ret .= "  Unos 4 segundos\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>panic</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>panic</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command that will show the necessary characters for a certain one.\n\n";
@@ -468,7 +468,7 @@ function getPanicHelp($lang, $plus) {
 function getHereHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>here</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>here</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para mencionar a usuarios.\n\n";
@@ -516,7 +516,7 @@ function getHereHelp($lang, $plus) {
       $ret .= "  Unos 4 segundos\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>here</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>here</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command to tag users.\n\n";
@@ -572,7 +572,7 @@ function getHereHelp($lang, $plus) {
 function getGFHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>gf</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>gf</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comandos para la comprobación de unidades en el gremio.\n\n";
@@ -603,7 +603,7 @@ function getGFHelp($lang, $plus) {
       $ret .= "  Unos 6 min (1h caché -> 30seg)\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>gf</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>gf</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Commands for checking units in the guild.\n\n";
@@ -642,7 +642,7 @@ function getGFHelp($lang, $plus) {
 function getTeamsHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>teams</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>teams</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para la gestión de equipos.\n\n";
@@ -678,7 +678,7 @@ function getTeamsHelp($lang, $plus) {
       $ret .= "        /teams get +501 +gp +123456789\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>teams</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>teams</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Commands for manage teams.\n\n";
@@ -722,7 +722,7 @@ function getTeamsHelp($lang, $plus) {
 function getGeneralHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDOS</b> (by cadetill)\n";
+      $ret = "<b>COMANDOS</b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<a http=''>/help</a>: muestra esta ayuda\nPara más ayuda de un comando específico: /help comando\n\n";
       $ret .= "<a http=''>/register</a>: registra tu AllyCode.\n\n";
@@ -747,7 +747,7 @@ function getGeneralHelp($lang) {
       $ret .= "<a http=''>/statg</a>: comando para comprobar estadísticas de unidades en el gremio. Ver la ayuda detallada para más información.\n\n";
       break;
     default:
-      $ret = "<b>COMMANDS</b> (by cadetill)\n";
+      $ret = "<b>COMMANDS</b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<a http=''>/help</a>: shows this help\nMore help for a specific command: /help command\n\n";
       $ret .= "<a http=''>/register</a>: registers your AllyCode.\n\n";
@@ -780,7 +780,7 @@ function getGeneralHelp($lang) {
 function getTWHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>tw</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>tw</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para gestionar las Guerras de Territorio.\n\n";
@@ -871,7 +871,7 @@ function getTWHelp($lang, $plus) {
       $ret .= "  Unos 5 seg\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>tw</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>tw</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Commands for a Territory War.\n\n";
@@ -970,7 +970,7 @@ function getTWHelp($lang, $plus) {
 function getZetasHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>zetas</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>zetas</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Muestra las zetas desbloqueadas por un jugador.\n\n";
@@ -984,7 +984,7 @@ function getZetasHelp($lang) {
       $ret .= "  Unos 5 seg\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>zetas</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>zetas</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Shows zetas unlocked from a player.\n\n";
@@ -1006,7 +1006,7 @@ function getZetasHelp($lang) {
 function getInfoHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>info</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>info</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Muestra información a cerca de una cuenta.\n\n";
@@ -1020,7 +1020,7 @@ function getInfoHelp($lang) {
       $ret .= "  Unos 5 seg\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>info</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>info</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Shows info about an account.\n\n";
@@ -1042,7 +1042,7 @@ function getInfoHelp($lang) {
 function getUnRegisterHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>unregister</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>unregister</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Borra el registro de tu AllyCode del bot.\n\n";
@@ -1052,7 +1052,7 @@ function getUnRegisterHelp($lang) {
       $ret .= "  /unregister \n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>unregister</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>unregister</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Unregisters your AllyCode from bot.\n\n";
@@ -1070,7 +1070,7 @@ function getUnRegisterHelp($lang) {
 function getRegisterHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>register</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>register</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Registra tu AllyCode en el bot.\n\n";
@@ -1097,7 +1097,7 @@ function getRegisterHelp($lang) {
       $ret .= "  /register 123456789 SPA_XM \n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>register</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>register</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Registers your AllyCode to bot.\n\n";
@@ -1132,7 +1132,7 @@ function getRegisterHelp($lang) {
 function getSearch2Help($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>search2</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>search2</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Busca una unidad en los miembros del gremio. Si no se especifica un AllyCode, se buscará la estadística en el gremio del usuario. Si se especifica, se buscará en el gremio del AllyCode especificado.\n\n";
@@ -1148,7 +1148,7 @@ function getSearch2Help($lang) {
       $ret .= "  Unos 2 min (1h caché -> 30seg)\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>search2</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>search2</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Search an unit into the guild members. If the AllyCode is not specified, the unit will be searched in the user's guild. If specified, it will be searched in the specified AllyCode guild. You can sort the result using an extra param (column title)\n\n";
@@ -1172,7 +1172,7 @@ function getSearch2Help($lang) {
 function getSearchHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>search</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>search</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Busca una unidad en los miembros del gremio. Si no se especifica un AllyCode, se buscará la estadística en el gremio del usuario. Si se especifica, se buscará en el gremio del AllyCode especificado.\n\n";
@@ -1186,7 +1186,7 @@ function getSearchHelp($lang) {
       $ret .= "  Unos 2 min (1h caché -> 30seg)\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>search</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>search</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Search an unit into the guild members. If the AllyCode is not specified, the unit will be searched in the user's guild. If specified, it will be searched in the specified AllyCode guild.\n\n";
@@ -1208,7 +1208,7 @@ function getSearchHelp($lang) {
 function getRankHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>rank</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>rank</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Muestra la unidad o el jugador ordenado por la estadística especificada. Si no se especifica un AllyCode, se buscará la estadística en el gremio del usuario. Si se especifica, se buscará en el gremio del AllyCode especificado.\n\n";
@@ -1247,7 +1247,7 @@ function getRankHelp($lang) {
       $ret .= "  Unos 2 min (1h cache -> 30sec)\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>rank</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>rank</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Shows the unit or player ordered by the specified stat. If the AllyCode is not specified, the stat will be searched in the user's guild. If specified, it will be searched in the specified AllyCode guild.\n\n";
@@ -1294,7 +1294,7 @@ function getRankHelp($lang) {
 function getIMHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>im</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>im</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para gestionar los gremios de IM.\n\n";
@@ -1327,7 +1327,7 @@ function getIMHelp($lang, $plus) {
       break;
 	  
     default: // ENG_US
-      $ret = "<b>COMMAND: <i>im</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>im</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command to manage IM guilds.\n\n";
@@ -1368,7 +1368,7 @@ function getIMHelp($lang, $plus) {
 function getGuildHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>guild</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>guild</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para obtener información de un gremio.\n\n";
@@ -1422,7 +1422,7 @@ function getGuildHelp($lang) {
       $ret .= "  Unos 2 min\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>guild</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>guild</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Command to get guild info.\n\n";
@@ -1484,7 +1484,7 @@ function getGuildHelp($lang) {
 function getGAHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>ga</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>ga</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Compara una cuenta con otra. Si sólo se especifica un AllyCode, el AllyCode del usuario se usara como segundo AllyCode.\n\n";
@@ -1498,7 +1498,7 @@ function getGAHelp($lang) {
       $ret .= "  Unos 10 seg\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>ga</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>ga</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Compare an account with another. If only one AllyCode is specified, the user's one will be used as the second AllyCode.\n\n";
@@ -1520,7 +1520,7 @@ function getGAHelp($lang) {
 function getComparegHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>compareg</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>compareg</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Compara dos gremios. Si sólo se especifica un AllyCode, el AllyCode del usuario se usara como segundo AllyCode.\n\n";
@@ -1534,7 +1534,7 @@ function getComparegHelp($lang) {
       $ret .= "  Unos 6 min\n\n";
       break;
     default:
-      $ret = "<b>COMMAND: <i>compareg</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>compareg</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Compare two guilds. If only one AllyCode is specified, the user's one will be used as the second AllyCode.\n\n";
@@ -1556,7 +1556,7 @@ function getComparegHelp($lang) {
 function getChampionsHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>champions</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>champions</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Compara dos AllyCodes para una Champions interna.\n\n";
@@ -1569,7 +1569,7 @@ function getChampionsHelp($lang) {
       $ret .= "  Unos 10 seg.\n\n";
        break;
    default:
-      $ret = "<b>COMMAND: <i>champions</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>champions</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Compare two AllyCodes for a internal Champions.\n\n";
@@ -1590,7 +1590,7 @@ function getChampionsHelp($lang) {
 function getAliasHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret = "<b>COMANDO: <i>alias</i></b> (by cadetill)\n";
+      $ret = "<b>COMANDO: <i>alias</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para la gestión de alias.\n\n";
@@ -1617,7 +1617,7 @@ function getAliasHelp($lang, $plus) {
       break;
 	  
     default: // ENG_US
-      $ret = "<b>COMMAND: <i>alias</i></b> (by cadetill)\n";
+      $ret = "<b>COMMAND: <i>alias</i></b> (by cadetill & Liener)\n";
       $ret .= "\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Commands for alias management.\n\n";
@@ -1652,7 +1652,7 @@ function getAliasHelp($lang, $plus) {
 function getUnitsHelp($lang, $plus) {
   switch ($lang) {
     case "SPA_XM":
-      $ret  = "<b>COMANDO: <i>units</i></b> (by cadetill)\n\n";
+      $ret  = "<b>COMANDO: <i>units</i></b> (by cadetill & Liener)\n\n";
       $ret .= "<b>Definición:</b> \n";
       $ret .= "  Comando para la gestión de las unidades.\n\n";
       $ret .= "<b>Sintaxis:</b> \n";
@@ -1691,7 +1691,7 @@ function getUnitsHelp($lang, $plus) {
       break;
 	  
     default: // ENG_US
-      $ret  = "<b>COMMAND: <i>units</i></b> (by cadetill)\n\n";
+      $ret  = "<b>COMMAND: <i>units</i></b> (by cadetill & Liener)\n\n";
       $ret .= "<b>Definition:</b> \n";
       $ret .= "  Commands for units management.\n\n";
       $ret .= "<b>Syntax:</b> \n";
@@ -1734,7 +1734,7 @@ function getUnitsHelp($lang, $plus) {
 
 // ajuda pels administradors
 function adminHelp() {
-  $ret = "<b>ADMIN COMMANDS</b> (by cadetill)\n";
+  $ret = "<b>ADMIN COMMANDS</b> (by cadetill & Liener)\n";
   $ret .= "\n";
   $ret .= "<b>----------UNITS TO CHECK COMMANDS----------</b>\n";
   $ret .= "<b>/help +unitToCheckAdd</b>\n";
