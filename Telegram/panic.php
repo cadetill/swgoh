@@ -234,12 +234,40 @@ class TPanic extends TBase {
     
     // busquem les unitats dependents en el rooster del jugador
     $roster = array();
+    foreach ($panic[$defId] as $u) {
+      $find = false;
+      foreach ($player[0]['roster'] as $r) {
+        if ($r['defId'] == $u['id']) {
+          $find = true;
+          $r["botpre"] = $u["pre"];
+          array_push($roster, $r);
+          break;
+        }
+      }
+      if (!$find) {
+        $r = $player[0]['roster'][0];
+        $r['defId'] = $u['id'];
+        $r['rarity'] = 0;
+        $r['level'] = 0;
+        $r['gear'] = 0;
+        $r['skills'] = array();
+        $r['mods'] = array();
+        $r['gp'] = 0;
+        $r["botpre"] = $u["pre"];
+        array_push($roster, $r);
+      }
+    }
+    
+    //print_r($roster);
+    /*
+    $roster = array();
     foreach ($player[0]['roster'] as $unit) {
       if (array_key_exists($unit['defId'], $panic[$defId])) {
         $unit["botpre"] = $panic[$defId][$unit["defId"]]["pre"];
         array_push($roster, $unit);
       }
     }
+     */
     
     // generem imatge
     if (count($roster) > 0) {

@@ -250,24 +250,24 @@ class TBase {
      ****************************************************/
     protected function getInfoPlayer($allyCode = "")
     {
-        if ($allyCode == "") {
-            $allyCode = $this->allyCode;
-        }
+      if ($allyCode == "") {
+        $allyCode = $this->allyCode;
+      }
 
-        $allyCodes = explode(',', $allyCode);
-        sort($allyCodes);
-        $strAllyCodes = join(',', $allyCodes);
-        $cache        = $this->getInfoPlayerCache($strAllyCodes);
-        if (!is_null($cache)) {
-            return $cache;
-        }
+      $allyCodes = explode(',', $allyCode);
+      sort($allyCodes);
+      $strAllyCodes = join(',', $allyCodes);
+      $cache        = $this->getInfoPlayerCache($strAllyCodes);
+      if (!is_null($cache)) {
+        return $cache;
+      }
 
-        $swgoh  = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-        $p      = $swgoh->fetchPlayer($allyCode, $this->dataObj->language);
-        $player = json_decode($p, true);
-        $this->infoPlayerCache($strAllyCodes, $p);
+      $swgoh  = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+      $p      = $swgoh->fetchPlayer($allyCode, $this->dataObj->language);
+      $player = json_decode($p, true);
+      $this->infoPlayerCache($strAllyCodes, $p);
 
-        return $player;
+      return $player;
     }
 
     private function getInfoPlayerCache($allyCode)
@@ -989,6 +989,7 @@ class TBase {
     foreach ($arr as $unit) {
       // superposem imatge unitat
       $imgUrl = $this->getImageUrl($units, $unit['defId']);
+      //echo '<br>'.$imgUrl.'<br>';
       $info_imagen = getimagesize($imgUrl);
       if (($info_imagen[0] != 128) && ($info_imagen[1] != 128)) {
         $file = $this->redimensionarPNG($imgUrl, 128, 128, "");
@@ -997,6 +998,10 @@ class TBase {
       else {
         $a = imagecreatefrompng($imgUrl);
       }
+      
+      if (($unit['rarity'] == 0) && ($unit['level'] == 0) && ($unit['gear'] == 0) && ($unit['gp'] == 0)) 
+        $a = $this->imageSetOpacity($a, 0.45);
+      
       imagecopy($dest_image, $a, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($a);
 
@@ -1021,6 +1026,18 @@ class TBase {
       }
       imagecopy($dest_image, $b, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($b);
+      
+      if (($unit['rarity'] == 0) && ($unit['level'] == 0) && ($unit['gear'] == 0) && ($unit['gp'] == 0)) {
+        // control de la fila i columna
+        $col++;
+        if ($col >= $maxCols) {
+          $col = 0;
+          $rown++;
+          if ($rown >= $maxRowns)  
+            $rown = 0;
+        }
+        continue;
+      }
 
       // superposem imatge de zetas
       $zetas = 0;
@@ -1158,6 +1175,7 @@ class TBase {
 
     $tempName = tempnam('./tmp/', 'FINAL_');
     imagepng($dest_image, $tempName.'.png');
+    //echo '<br><br><br>'.'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png'.'<br><br><br>';
     return 'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png';
   }
   
@@ -1177,7 +1195,7 @@ class TBase {
     else {
       $url = $this->dataObj->website.'/sendPhoto?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&caption='.urlencode($photoText).'&photo='.$photo;
     }
-     //echo $url."\n\n";       
+     echo "\n\n"."\n\n".$url."\n\n"."\n\n";       
     file_get_contents($url);
   }
 
