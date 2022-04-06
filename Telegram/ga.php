@@ -125,6 +125,7 @@ class TGA extends TBase {
     $res[0] .= $this->translatedText("txtCham86", array($data0["top80"], $data1["top80"]));                                 // "<b>Top 80</b>: ".$data0["top80"]." vs ".$data1["top80"]."\n";
     $res[0] .= $this->translatedText("txtCham29");                                                                          // "<b>----------- Reliquias -----------</b>\n";
     $res[0] .= $this->translatedText("txtCham30", array($data0["relics"], $data1["relics"]));                               // "<b>Total</b>: ".$data0["relics"]." vs ".$data1["relics"]."\n";
+    $res[0] .= $this->translatedText("txtCham104", array($data0["r9"], $data1["r9"]));                                       // "<b>Reliquia 9</b>: ".$data0["r7"]." vs ".$data1["r7"]."\n";
     $res[0] .= $this->translatedText("txtCham88", array($data0["r8"], $data1["r8"]));                                       // "<b>Reliquia 8</b>: ".$data0["r7"]." vs ".$data1["r7"]."\n";
     $res[0] .= $this->translatedText("txtCham31", array($data0["r7"], $data1["r7"]));                                       // "<b>Reliquia 7</b>: ".$data0["r7"]." vs ".$data1["r7"]."\n";
     $res[0] .= $this->translatedText("txtCham32", array($data0["r6"], $data1["r6"]));                                       // "<b>Reliquia 6</b>: ".$data0["r6"]." vs ".$data1["r6"]."\n";
@@ -147,23 +148,28 @@ class TGA extends TBase {
       $g13data0 = 0;
       $g12data0 = 0;
       $r8data0 = 0;
+      $r9data0 = 0;
       $numdata1 = 0;
       $g13data1 = 0;
       $g12data1 = 0;
       $r8data1 = 0;
+      $r9data1 = 0;
       if (array_key_exists($unit, $data0["units"])) {
         $numdata0 = $data0["units"][$unit]["count"];
         $g13data0 = $data0["units"][$unit]["g13"];
         $g12data0 = $data0["units"][$unit]["g12"];
         $r8data0 = $data0["units"][$unit]["r8"];
+        $r9data0 = $data0["units"][$unit]["r9"];
       }
       if (array_key_exists($unit, $data1["units"])) {
         $numdata1 = $data1["units"][$unit]["count"];
         $g13data1 = $data1["units"][$unit]["g13"];
         $g12data1 = $data1["units"][$unit]["g12"];
         $r8data1 = $data1["units"][$unit]["r8"];
+        $r9data1 = $data1["units"][$unit]["r9"];
       }
       $res[1] .= "  #: ".$numdata0." - ".$numdata1."\n";
+      $res[1] .= "  r9: ".$r9data0." - ".$r9data1."\n";
       $res[1] .= "  r8: ".$r8data0." - ".$r8data1."\n";
       $res[1] .= "  g13: ".$g13data0." - ".$g13data1."\n";
       $res[1] .= "  g12: ".$g12data0." - ".$g12data1."\n";
