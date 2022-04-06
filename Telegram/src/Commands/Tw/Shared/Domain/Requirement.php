@@ -138,6 +138,30 @@ class Requirement
         return [];
     }
 
+    public function show()
+    {
+        switch ($this->type) {
+            case self::ORDER_TYPE:
+                $show = str_replace('(%s)', '', $this->report);
+                break;
+            case self::REFERAL_TYPE:
+                $show = str_replace([ ':value ', ':target ', '[:referal]' ], '', $this->report);
+                break;
+            case self::STAT_TYPE:
+            case self::RELIC_TYPE:
+                $show = str_replace(':value ', '', $this->report);
+                break;
+            case self::SKILL_TYPE:
+                $show = str_replace(':skill', $this->skillId, $this->report);
+                break;
+            default:
+                $show = '';
+                break;
+        }
+
+        return '<b>'.$this->definition."</b>\n".$show;
+    }
+
     private function guard()
     {
         $firstBracketIndex = strpos($this->definition, '(');

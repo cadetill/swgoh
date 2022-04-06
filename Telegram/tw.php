@@ -22,7 +22,6 @@ class TTW extends TBase {
     parent::__construct($dataObj);
     
     $this->allyCode = $dataObj->allycode;
-     
     // agafem el subcomando i l'extraem de $params
     $this->subcomand = explode(' ', trim($params[0]));
     $this->subcomand = $this->subcomand[1];
@@ -196,12 +195,26 @@ class TTW extends TBase {
         $res = $this->noreg();
         break;
       case 'check':
+          $res = [];
+
           switch (count($this->params)) {
-              case 0: break;
-              case 1: $this->allyCode = $this->params[1]; break;
+              case 0:
+                  $res = $this->check();
+                  break;
+              case 1:
+                  if ($this->checkAllyCode($this->params[1])) {
+                      $this->allyCode = $this->params[1];
+                      $res = $this->check();
+                      break;
+                  }
+                  switch ($this->params[1]) {
+                      case 'show':
+                          $res = $this->checkShow();
+                          break;
+                  }
+                  break;
               default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
           }
-          $res = $this->check();
           break;
       case 'checkg':
           $res = $this->checkg();
@@ -1814,7 +1827,7 @@ class TTW extends TBase {
     private function check()
     {
         if (!$this->checkAllyCode($this->allyCode)) {
-            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));
         }
 
         $player = $this->getInfoPlayer();
@@ -1829,6 +1842,20 @@ class TTW extends TBase {
         return [
             $header,
             ...$stats->checkPlayer($playerRosterWithStats)
+        ];
+    }
+
+    private function checkShow()
+    {
+        if (!$this->checkAllyCode($this->allyCode)) {
+            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));
+        }
+
+        $stats = $this->loadGuildRequirements($this->dataObj->guildId);
+        $header = $this->translatedText('txtTwCheckShow1', [ $this->dataObj->guildName ]);
+        return [
+            $header,
+            ...$stats->show()
         ];
     }
 
@@ -1909,4 +1936,6 @@ class TTW extends TBase {
 
         return $res;
     }
+
+
 }

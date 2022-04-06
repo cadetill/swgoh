@@ -25,6 +25,7 @@ class TData
     public $messageId   = "";
     public $messageDate = "";
     public $guildId     = "";
+    public $guildName   = "";
     public $debugChatId = "";
 
     // noms d'arxius

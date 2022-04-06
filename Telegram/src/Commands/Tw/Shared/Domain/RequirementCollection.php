@@ -8,10 +8,12 @@ use Im\Shared\Infrastructure\UnitRepository;
 class RequirementCollection
 {
     /** @var Requirement[]  */
-    private array $requirements;
+    private array  $requirements;
+    private string $definitions;
 
     public function __construct(string $definitions, UnitRepository $aliasRepository, StatService $statService)
     {
+        $this->definitions = $definitions;
         $requirementsDefinitions = explode('),', $definitions);
         $requirements = [];
         foreach ($requirementsDefinitions as $definition) {
@@ -44,5 +46,14 @@ class RequirementCollection
         }
 
         return array_unique($unitIds);
+    }
+
+    public function show()
+    {
+        $reports = [ '<b>'.$this->definitions."</b>\n\n" ];
+        foreach ($this->requirements as $requirement) {
+            $reports[] = $requirement->show();
+        }
+        return $reports;
     }
 }

@@ -45,4 +45,21 @@ class GuildRequirements
 
         return $responses;
     }
+
+    public function show()
+    {
+        $responses = [];
+
+        foreach ($this->requirementCollections as $requirementCollection) {
+            /** @var RequirementCollection $collection */
+            [ $alias, $collection ] = $requirementCollection;
+            $result = $collection->show();
+
+            $header = $alias;
+
+            $responses[] = join("\n", [ $header, ...$result ]);
+        }
+
+        return $responses;
+    }
 }

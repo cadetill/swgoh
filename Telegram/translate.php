@@ -498,7 +498,8 @@ class TTranslate {
     $this->translated["ENG_US"]["txtStatg1"] = "Member with <b>%s</b> <b>%s</b> under <b>%s</b>:";
 
     $this->translated["ENG_US"]["txtTwCheck1"] = "[%s][%s] TW Check\n\n";
-    
+    $this->translated["ENG_US"]["txtTwCheckShow1"] = "[%s][%s] List of TW Check\n\n";
+
     
     
     // -------------------------------------------------------------------------
@@ -953,5 +954,6 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtStatg1"] = "Miembros con <b>%s</b> con <b>%s</b> por debajo de <b>%s</b>:";
 
     $this->translated["SPA_XM"]["txtTwCheck1"] = "[%s][%s] GT Check\n\n";
+    $this->translated["SPA_XM"]["txtTwCheckShow1"] = "[%s][%s] Lista de comprobaciones para GT\n\n";
   } 
 }

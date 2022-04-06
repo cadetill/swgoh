@@ -142,6 +142,7 @@ function processRequest ($data) {
         // agafem informació del jugador per saber de quin gremi és
         $player = getPlayer($data);
         $data->guildId = $player[0]["guildRefId"];
+        $data->guildName = $player[0]["guildName"];
 
         //sendMessage($data, array("RefId: ".$player[0]["guildRefId"]."\n\n"));
         // si no és un gremi IM, sortim
