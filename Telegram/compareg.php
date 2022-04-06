@@ -224,24 +224,29 @@ class TCompareg extends TBase {
       $g13guild1 = 0;
       $g12guild1 = 0;
       $r8guild1 = 0;
+      $r9guild1 = 0;
       $numguild2 = 0;
       $g13guild2 = 0;
       $g12guild2 = 0;
       $r8guild2 = 0;
+      $r9guild2 = 0;
       if (array_key_exists($unit, $guild1["units"])) {
           //print_r($guild1["units"]);
         $numguild1 = $guild1["units"][$unit]["count"];
         $g13guild1 = $guild1["units"][$unit]["g13"];
         $g12guild1 = $guild1["units"][$unit]["g12"];
         $r8guild1 = $guild1["units"][$unit]["r8"];
+        $r9guild1 = $guild1["units"][$unit]["r9"];
       }
       if (array_key_exists($unit, $guild2["units"])) {
         $numguild2 = $guild2["units"][$unit]["count"];
         $g13guild2 = $guild2["units"][$unit]["g13"];
         $g12guild2 = $guild2["units"][$unit]["g12"];
         $r8guild2 = $guild2["units"][$unit]["r8"];
+        $r9guild2 = $guild2["units"][$unit]["r9"];
       }
       $ret2 .= "  #: ".$numguild1." - ".$numguild2."\n";
+      $ret2 .= "  r9: ".$r9guild1." - ".$r9guild2."\n";
       $ret2 .= "  r8: ".$r8guild1." - ".$r8guild2."\n";
       $ret2 .= "  g13: ".$g13guild1." - ".$g13guild2."\n";
       $ret2 .= "  g12: ".$g12guild1." - ".$g12guild2."\n";
