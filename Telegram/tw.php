@@ -1,4 +1,10 @@
 <?php
+
+use Im\Commands\Tw\Shared\Domain\GuildRequirements;
+use Im\Commands\Tw\Shared\Domain\RequirementCollection;
+use Im\Shared\Infrastructure\ApiUnitRepository;
+use Im\Shared\Infrastructure\MemoryStatService;
+
 class TTW extends TBase {
   private $params = array();
   private $subcomand;
@@ -190,6 +196,11 @@ class TTW extends TBase {
         $res = $this->noreg();
         break;
       case 'check':
+          switch (count($this->params)) {
+              case 0: break;
+              case 1: $this->allyCode = $this->params[1]; break;
+              default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
+          }
           $res = $this->check();
           break;
       case 'checkg':
@@ -1806,103 +1817,19 @@ class TTW extends TBase {
             return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
         }
 
-        $responses = [ 'TW Check' ];
+        $player = $this->getInfoPlayer();
 
-        $stats = $this->loadStats();
-        $unitsToLoadStats = $this->unitsInStats($stats);
+        $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
 
-        $playerStats = $this->playerStats($unitsToLoadStats);
+        $stats = $this->loadGuildRequirements($this->dataObj->guildId);
+        $unitsToLoadStats = $stats->unitIds();
 
-        $findUnit = function ($unitId) use ($playerStats) {
-            $unitKey = array_search($unitId, array_column($playerStats, 'defId'));
-            $unit = $playerStats[$unitKey];
-            return $unit;
-        };
+        $playerRosterWithStats = $this->playerStats($unitsToLoadStats);
 
-        $getRelic = function ($unit) {
-            return max($unit['relic']['currentTier'] - 2, 0);
-        };
-
-        foreach ($stats as $group) {
-            $groupResponse = [];
-            $allComplain = true;
-
-            if ($order = $group['order'] ?? null) {
-                $lastUnitSpeed = PHP_INT_MAX;
-                $fail = false;
-                $playerSpeeds = [];
-                foreach ($order as $unitId) {
-                    $playerUnit = $findUnit($unitId);
-                    $playerUnitSpeed = $playerUnit['stats']['final']['Speed'];
-                    $playerSpeeds[$playerUnitSpeed] = $unitId;
-                    if ($playerUnitSpeed < $lastUnitSpeed) {
-                        $lastUnitSpeed = $playerUnitSpeed;
-                    } else {
-                        $fail = true;
-                    }
-                }
-                $expectedOrder = join(' > ', $order);
-                $playerOrder = join(' > ', array_values($playerSpeeds));
-
-                $complain = !$fail;
-                $allComplain = $allComplain && $complain;
-                $groupResponse[] = $complain
-                    ? "\xF0\x9F\x94\xB9 El orden de las unidades es correcto [".join(' > ', $order)."]"
-                    : "\xF0\x9F\x94\xBB El orden de las unidades no es correcto [".$playerOrder." en vez de ".$expectedOrder."]";
-            }
-
-            if ($checks = $group['checks'] ?? null) {
-                foreach ($checks as $check) {
-                    $unitId = $check['unit_id'];
-                    $playerUnit = $findUnit($unitId);
-                    $unitAlias = TUnits::unitNameFromUnitId($unitId, $this->dataObj);
-
-                    if ($relic = $check['relic'] ?? null) {
-                        $playerUnitRelic = $getRelic($playerUnit);
-                        $complain = $playerUnitRelic >= $relic;
-                        $groupResponse[] = $complain
-                            ? "\xF0\x9F\x94\xB9 El nivel de reliquia de ".$unitAlias." es adecuado [".$playerUnitRelic." >= ".$relic."]"
-                            : "\xF0\x9F\x94\xBB El nivel de reliquia de ".$unitAlias." es insuficiente [".$playerUnitRelic." < ".$relic."]";
-                    }
-
-                    if ($stat = $check['stat'] ?? null) {
-                        $statKey = TStats::crinoloAliasFromPre($stat);
-                        $playerUnitStatValue = $playerUnit['stats']['final'][$statKey];
-                        if (TStats::isPercentual($stat)) {
-                            $playerUnitStatValue = round($playerUnitStatValue * 100, 2);
-                        }
-                        $statValueExpected = $check['value'] ?? null;
-                        if (!$statValueExpected) {
-                            $calc = $check['calc'];
-                            $referenceUnitId = $calc['unit_id'];
-                            $referenceUnit = $findUnit($referenceUnitId);
-                            $referencePlayerUnitStatValue = $referenceUnit['stats']['final'][$statKey];
-
-                            $expression = $calc['expression'];
-                            $value = $playerUnitStatValue;
-                            $reference = $referencePlayerUnitStatValue;
-                            eval('$complain = '.$expression.';');
-                            $message = str_replace([ '$value', '$reference' ], [ $value, $reference ], $calc['info']);
-                            $groupResponse[] = $complain
-                                ? "\xF0\x9F\x94\xB9 El valor de ".$statKey." de ".$unitAlias." [".$value."] es correcto [".$message."]"
-                                : "\xF0\x9F\x94\xBB El valor de ".$statKey." de ".$unitAlias." [".$value."] es incorrecto [".$message."]";
-                        } else {
-                            $complain = $playerUnitStatValue >= $statValueExpected;
-                            $groupResponse[] = $complain
-                                ? "\xF0\x9F\x94\xB9 El valor de ".$statKey." de ".$unitAlias." es adecuado [".$playerUnitStatValue." >= ".$statValueExpected."]"
-                                : "\xF0\x9F\x94\xBB El valor de ".$statKey." de ".$unitAlias." es insuficiente [".$playerUnitStatValue." >= ".$statValueExpected."]";
-                        }
-                        $allComplain = $allComplain && $complain;
-                    }
-                }
-            }
-
-            $header = $allComplain ? "<b>\xF0\x9F\x94\xB5 ".$group['name']."</b>" : "<b>\xF0\x9F\x94\xB4 ".$group['name']."</b>";
-            $response = $header."\n   ".join("\n   ", $groupResponse)."\n";
-            $responses[] = $response;
-        }
-
-        return $responses;
+        return [
+            $header,
+            ...$stats->checkPlayer($playerRosterWithStats)
+        ];
     }
 
     private function checkg()
@@ -1913,7 +1840,7 @@ class TTW extends TBase {
 
         $responses = [];
 
-        $stats = $this->loadStats();
+        $stats = $this->loadGuildRequirements();
         $unitsToLoadStats = $this->unitsInStats($stats);
 
         $guildStats = $this->guildStats($unitsToLoadStats);
@@ -1921,12 +1848,29 @@ class TTW extends TBase {
         return $responses;
     }
 
-    private function loadStats()
+    private function loadGuildRequirements(string $guildId): GuildRequirements
     {
-        $content = file_get_contents('./json/stats.json');
-        $data = json_decode($content, true);
+        $sql = <<<EOF
+            SELECT alias, definition
+            FROM guild_requirements as gr
+            WHERE guildRefId = '%s'
+        EOF;
+        $query = sprintf($sql, $guildId);
 
-        return $data;
+        $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
+        $statService = new MemoryStatService($this->dataObj);
+
+        $result = $this->fetchFromDb($query);
+
+        $teamRequirements = [];
+        while ($row = $result->fetch_assoc()) {
+            $teamRequirements[] = [
+                $row['alias'],
+                new RequirementCollection($row['definition'], $unitRepository, $statService)
+            ];
+        }
+
+        return new GuildRequirements(...$teamRequirements);
     }
 
     private function unitsInStats($stats)
@@ -1946,5 +1890,23 @@ class TTW extends TBase {
             }
         }
         return array_unique($unitIds);
+    }
+
+    private function fetchFromDb(string $query)
+    {
+        $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
+        if ($idcon->connect_error) {
+            throw new \Exception($this->translatedText("error4"));
+        }
+
+        $res = $idcon->query($query);
+
+        if ($idcon->error) {
+            throw new \Exception($this->translatedText("error4"));
+        }
+
+        $idcon->close();
+
+        return $res;
     }
 }

@@ -3,11 +3,16 @@
   "type": "project",
   "description": "The IM Telegram Bot.",
   "require": {
+    "php": "7.4",
+    "ext-curl": "*",
+    "ext-gd": "*",
     "ext-json": "*",
+    "ext-mysqli": "*",
     "halaxa/json-machine": "^1.1"
   },
   "require-dev": {
     "pestphp/pest": "^1.21",
+    "pestphp/pest-plugin-mock": "^1.0",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {
@@ -17,7 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "IM\\Tests\\": "tests/src"
+      "Im\\Tests\\": "tests/src"
     }
   },
   "minimum-stability": "dev",

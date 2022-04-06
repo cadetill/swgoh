@@ -318,6 +318,7 @@ class TUnits extends TBase {
         foreach ($chars as $char) {
           if (strcasecmp($char['base_id'], $unit['baseId']) == 0) {
             $units[$key]['alignment'] = $char['alignment'];
+            $units[$key]['ENG_US'] = $char['name'];
             break;
           }
         }
@@ -326,6 +327,7 @@ class TUnits extends TBase {
         foreach ($fleets as $fleet) {
           if (strcasecmp($fleet['base_id'], $fleet['baseId']) == 0) {
             $units[$key]['alignment'] = $fleet['alignment'];
+            $units[$key]['ENG_US'] = $fleet['name'];
             break;
           }
         }

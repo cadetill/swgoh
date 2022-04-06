@@ -20,6 +20,25 @@ class TStats extends TBase {
                             'cd'   // critical damage
                             );
 
+  public static function exists($pre) {
+      return [
+          's'   => true,
+          'hp'  => true,
+          'h'   => true,
+          'p'   => true,
+          'pd'  => true,
+          'sd'  => true,
+          'po'  => true,
+          't'   => true,
+          'a'   => true,
+          'pa'  => true,
+          'sa'  => true,
+          'pcc' => true,
+          'scc' => true,
+          'cd'  => true
+      ][$pre] ?? false;
+  }
+
   public static function crinoloAliasFromPre($pre) {
       return [
           's'   => 'Speed',   // speed
@@ -130,6 +149,28 @@ class TStats extends TBase {
       return array($res);
     }
   }
+
+    /****************************************************
+    retorna la descripció de l'habilitat
+     ****************************************************/
+    public function getDescHability($hab) {
+        switch ($hab) {
+            case 's' : return $this->translatedText("txtStats5");    // speed
+            case 'hp': return $this->translatedText("txtStats6");    // health+protection
+            case 'h' : return $this->translatedText("txtStats7");    // health
+            case 'p' : return $this->translatedText("txtStats8");    // protection
+            case 'pd': return $this->translatedText("txtStats9");    // physical damage
+            case 'sd': return $this->translatedText("txtStats10");   // special damage
+            case 'po': return $this->translatedText("txtStats11");   // potency
+            case 't' : return $this->translatedText("txtStats12");   // tenacity
+            case 'a' : return $this->translatedText("txtStats13");   // armor
+            case 'pa': return $this->translatedText("txtStats14");   // physical avoidance
+            case 'sa': return $this->translatedText("txtStats15");   // special avoidance
+            case 'pcc': return $this->translatedText("txtStats17");  // physical critical chance
+            case 'scc': return $this->translatedText("txtStats19");  // special critical chance
+            case 'cd': return $this->translatedText("txtStats18");   // critical damage
+        }
+    }
 
   /****************************************************
     FUNCIONS PRIVADES
@@ -443,27 +484,4 @@ class TStats extends TBase {
     fclose($file);
     return 'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.csv';
   }
-  
-  /****************************************************
-    retorna la descripció de l'habilitat
-  ****************************************************/
-  private function getDescHability($hab) {
-    switch ($hab) {
-      case 's' : return $this->translatedText("txtStats5");    // speed
-      case 'hp': return $this->translatedText("txtStats6");    // health+protection
-      case 'h' : return $this->translatedText("txtStats7");    // health
-      case 'p' : return $this->translatedText("txtStats8");    // protection
-      case 'pd': return $this->translatedText("txtStats9");    // physical damage
-      case 'sd': return $this->translatedText("txtStats10");   // special damage
-      case 'po': return $this->translatedText("txtStats11");   // potency
-      case 't' : return $this->translatedText("txtStats12");   // tenacity
-      case 'a' : return $this->translatedText("txtStats13");   // armor
-      case 'pa': return $this->translatedText("txtStats14");   // physical avoidance
-      case 'sa': return $this->translatedText("txtStats15");   // special avoidance
-      case 'pcc': return $this->translatedText("txtStats17");  // physical critical chance
-      case 'scc': return $this->translatedText("txtStats19");  // special critical chance
-      case 'cd': return $this->translatedText("txtStats18");   // critical damage
-    }
-  }
-
 }

@@ -24,7 +24,7 @@ class SwgohHelpRepository
         $this->lang   = $lang;
     }
 
-    public function player(int $allyCode)
+    public function player(int $allyCode): array
     {
         $cacheFile = sprintf(
             '%s/players_%s',

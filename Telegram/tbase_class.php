@@ -1,5 +1,6 @@
 <?php
 
+use Im\Shared\Infrastructure\SwgohHelpRepository;
 use JsonMachine\Items;
 use JsonMachine\JsonDecoder\ExtJsonDecoder;
 
@@ -1398,50 +1399,7 @@ class TBase {
 
     protected function playerStats($unitsToFilter = [])
     {
-        $this->deleteOlderFiles(10800, "./cache/");
-
         $playerArr = $this->getInfoPlayer();
-
-        /*
-        $rosterCacheFile = "./cache/roster_" . $this->allyCode;
-        $roster          = null;
-        if (file_exists($rosterCacheFile)) {
-            $fileTime = filemtime($rosterCacheFile);
-
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                $data   = file_get_contents($rosterCacheFile);
-                $roster = json_decode($data, true);
-            }
-        }
-
-        if (is_null($roster)) {
-            $swgohHelpClient = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-
-            $response  = $swgohHelpClient->fetchRoster($this->allyCode, $this->dataObj->language);
-
-            $roster = json_decode($response, true);
-
-            file_put_contents($rosterCacheFile, json_encode($roster));
-        }
-        */
-
-        /*
-        $rosterFiltered = array_map(
-            function ($roster) use ($unitsToFilter) {
-                return array_filter(
-                    $roster,
-                    function ($unitDefId) use ($unitsToFilter) {
-                        return in_array($unitDefId, $unitsToFilter);
-                    },
-                    ARRAY_FILTER_USE_KEY
-                );
-            },
-            $roster
-        );
-        */
 
         $rosterFiltered = array_values(
             array_filter(
