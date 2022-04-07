@@ -195,32 +195,93 @@ class TTW extends TBase {
         $res = $this->noreg();
         break;
       case 'check':
-          $res = [];
-
-          switch (count($this->params)) {
-              case 0:
+          $defaults = [ null, null, null, null, null ];
+          [ $_, $first, $second, $third, $fourth ] = $this->params + $defaults;
+          switch ($first) {
+              case null:
+                  // /tw check
+                  if (!is_null($second) || !is_null($third) || !is_null($fourth)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
                   $res = $this->check();
                   break;
-              case 1:
-                  if ($this->checkAllyCode($this->params[1])) {
-                      $this->allyCode = $this->params[1];
-                      $res = $this->check();
-                      break;
+              case $this->isAllyCode($first):
+                  // /tw check +allyCode
+                  if (!is_null($second) || !is_null($third) || !is_null($fourth)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
                   }
-                  switch ($this->params[1]) {
-                      case 'show':
+                  $res = $this->check(null, $first);
+                  break;
+              case 'show':
+                  switch (count($this->params)) {
+                      case 1:
+                          // /tw check +show
                           $res = $this->checkShow();
+                          break;
+                      case 2:
+                          // /tw check +show +allyCode
+                          // /tw check +show +teamAlias
+                          if ($this->isAllyCode($second)) {
+                              $res = $this->checkShow(null, $second);
+                          } else {
+                              $res = $this->checkShow($second);
+                          }
+                          break;
+                      case 3:
+                          // /tw check +show +teamAlias +allyCode
+                          if (!$this->isAllyCode($third)) {
+                              return $this->getHelp("tw", $this->translatedText("error1"));
+                          }
+                          $res = $this->checkShow($second, $third);
                           break;
                   }
                   break;
-              default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
+              case 'del':
+                  // /tw check +del +teamAlias
+                  // /tw check +del +teamAlias +allyCode
+                  if (is_null($second)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
+                  if (!$this->isAllyCode($third)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
+                  $res = $this->checkDel($second, $third);
+                  break;
+              case 'update':
+              case 'add':
+                  /*
+                    /tw check +update +teamAlias +definition
+                    /tw check +update +teamAlias +definition +allyCode
+                    /tw check +add    +teamAlias +definition
+                    /tw check +add    +teamAlias +definition +allyCode
+                  */
+                  // return [ print_r([ $_, $first, $second, $third, $fourth ], true), print_r($this->params, true), $this->isAllyCode($first) ];
+                  if (is_null($second) || is_null($third)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
+                  if (!is_null($fourth) && !$this->isAllyCode($fourth)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
+                  $res = $this->checkSave($second, $third, $fourth);
+                  break;
+              case 'pending':
+                  /*
+                    /tw check +pending
+                    /tw check +pending +allyCode
+                   */
+                  if (!is_null($third) || !is_null($fourth)) {
+                      return $this->getHelp("tw", $this->translatedText("error1"));
+                  }
+                  $res = $this->check(null, $second, true);
+                  break;
+              default: return $this->getHelp("tw", $this->translatedText("error1"));
           }
           break;
       case 'checkg':
           $res = $this->checkg();
           break;
       default:
-        return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
+        return $this->getHelp("tw", $this->translatedText("error1"));
     }
 
     $finalTime = microtime(true);
@@ -1824,38 +1885,77 @@ class TTW extends TBase {
     return explode(',', $row['noreg'] ?? '');
   }
 
-    private function check()
+    private function check(?string $teamAlias = null, ?string $allyCode = null, bool $onlyPending = false)
     {
-        if (!$this->checkAllyCode($this->allyCode)) {
-            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));
+        if (!is_null($allyCode)) {
+            $this->actAsUser($allyCode);
         }
 
         $player = $this->getInfoPlayer();
 
         $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
 
-        $stats = $this->loadGuildRequirements($this->dataObj->guildId);
+        $stats = $this->loadGuildRequirements($this->dataObj->guildId, $teamAlias);
         $unitsToLoadStats = $stats->unitIds();
 
         $playerRosterWithStats = $this->playerStats($unitsToLoadStats);
 
         return [
             $header,
-            ...$stats->checkPlayer($playerRosterWithStats)
+            ...$stats->checkPlayer($playerRosterWithStats, $onlyPending)
         ];
     }
 
-    private function checkShow()
+    private function checkShow($teamAlias = null, $allyCode = null)
     {
-        if (!$this->checkAllyCode($this->allyCode)) {
-            return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));
+        if (!is_null($allyCode)) {
+            $this->actAsUser($allyCode);
         }
 
-        $stats = $this->loadGuildRequirements($this->dataObj->guildId);
-        $header = $this->translatedText('txtTwCheckShow1', [ $this->dataObj->guildName ]);
+        $player = $this->getInfoPlayer();
+        $stats = $this->loadGuildRequirements($this->dataObj->guildId, $teamAlias);
+        $header = $this->translatedText('txtTwCheckShow1', [ $this->dataObj->guildName, $player[0]['name'] ]);
+
         return [
             $header,
             ...$stats->show()
+        ];
+    }
+
+    private function checkDel(string $teamAlias, ?string $allyCode)
+    {
+        if (!is_null($allyCode)) {
+            $this->actAsUser($allyCode);
+        }
+        if (!$this->isGuildOfficer()) {
+            return $this->translatedText('error7');
+        }
+        $this->deleteGuildRequirement($this->dataObj->guildId, $teamAlias);
+
+        return $this->translatedText('txtTwCheckDel1', [ $this->dataObj->guildName, $teamAlias ]);
+    }
+
+    private function checkSave(string $teamAlias, string $definition, ?string $allyCode)
+    {
+        if (!is_null($allyCode)) {
+            $this->actAsUser($allyCode);
+        }
+
+        if (!$this->isGuildOfficer()) {
+            return $this->translatedText('error7');
+        }
+
+        $requirements = new RequirementCollection(
+            $definition,
+            new ApiUnitRepository(__DIR__, $this->dataObj->language),
+            new MemoryStatService($this->dataObj)
+        );
+
+        $this->saveGuildRequirement($this->dataObj->guildId, $teamAlias, $definition);
+
+        return [
+            $this->translatedText('txtTwCheckSave1', [ $this->dataObj->guildName, $teamAlias ]),
+            ...$requirements->show()
         ];
     }
 
@@ -1875,14 +1975,16 @@ class TTW extends TBase {
         return $responses;
     }
 
-    private function loadGuildRequirements(string $guildId): GuildRequirements
+    private function loadGuildRequirements(string $guildId, ?string $teamAlias = null): GuildRequirements
     {
         $sql = <<<EOF
             SELECT alias, definition
             FROM guild_requirements as gr
             WHERE guildRefId = '%s'
+            %s
         EOF;
-        $query = sprintf($sql, $guildId);
+        $andWhereClause = is_null($teamAlias) ? '' : " AND alias = '$teamAlias'";
+        $query = sprintf($sql, $guildId, $andWhereClause);
 
         $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
         $statService = new MemoryStatService($this->dataObj);
@@ -1898,6 +2000,25 @@ class TTW extends TBase {
         }
 
         return new GuildRequirements(...$teamRequirements);
+    }
+
+    private function deleteGuildRequirement(string $guildId, string $teamAlias)
+    {
+        $sql = "DELETE FROM guild_requirements WHERE guildRefId = '%s' AND alias = '%s'";
+        $query = sprintf($sql, $guildId, $teamAlias);
+
+        $this->fetchFromDb($query);
+    }
+
+    private function saveGuildRequirement(string $guildId, string $teamAlias, string $definition)
+    {
+        $insertSql = "DELETE FROM guild_requirements WHERE guildRefId = '%s' AND alias = '%s'";
+        $insertQuery = sprintf($insertSql, $guildId, $teamAlias);
+        $this->fetchFromDb($insertQuery);
+
+        $insertSql = "INSERT INTO guild_requirements (guildRefId, alias, definition) VALUES ('%s', '%s', '%s')";
+        $insertQuery = sprintf($insertSql, $guildId, $teamAlias, $definition);
+        $this->fetchFromDb($insertQuery);
     }
 
     private function unitsInStats($stats)
@@ -1936,6 +2057,4 @@ class TTW extends TBase {
 
         return $res;
     }
-
-
 }

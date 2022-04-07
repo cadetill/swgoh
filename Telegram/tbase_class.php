@@ -233,6 +233,40 @@ class TBase {
     else
       return true; 
   }
+
+    /*
+     * Check if a data is an allyCode
+     */
+    protected function isAllyCode($allyCode): bool
+    {
+        $intValue = intval($allyCode);
+        return $intValue == $allyCode && ($intValue > 99999999 && $intValue < 1000000000);
+    }
+
+    /*
+     * Replace default user
+     */
+    protected function actAsUser(string $allyCode)
+    {
+        $player = $this->getInfoPlayer($allyCode);
+        $this->allyCode = $allyCode;
+        $this->dataObj->guildId = $player[0]['guildRefId'];
+        $this->dataObj->guildName = $player[0]['guildName'];
+    }
+
+    /*
+     * Check if a user is officer in their guild
+     */
+    protected function isGuildOfficer()
+    {
+        $guild = $this->getInfoGuild();
+        foreach ($guild[0]['roster'] as $player) {
+            if ($player['allyCode'] == $this->allyCode) {
+                return in_array($player['guildMemberLevel'], [ 3, 4, 'GUILDLEADER', 'GUILDOFFICER' ]);
+            }
+        }
+        return false;
+    }
   
   /****************************************************
     recupera l'ajuda de la funció especificada

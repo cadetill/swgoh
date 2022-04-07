@@ -23,7 +23,7 @@ class GuildRequirements
         return array_unique($unitIds);
     }
 
-    public function checkPlayer(array $player): array
+    public function checkPlayer(array $player, bool $onlyPending = false): array
     {
         $responses = [];
 
@@ -31,6 +31,9 @@ class GuildRequirements
             /** @var RequirementCollection $collection */
             [ $alias, $collection ] = $requirementCollection;
             $result = $collection->checkPlayer($player);
+            if ($onlyPending && $result->complain()) {
+                continue;
+            }
 
             $header = sprintf(
                 "<b>%s %s</b>",
@@ -57,7 +60,7 @@ class GuildRequirements
 
             $header = $alias;
 
-            $responses[] = join("\n", [ $header, ...$result ]);
+            $responses[] = join("\n", [ $header, ...$result ])."\n";
         }
 
         return $responses;

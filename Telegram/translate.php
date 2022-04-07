@@ -58,6 +58,7 @@ class TTranslate {
     $this->translated["ENG_US"]["error4"] = "Ooooops! An error has occurred getting data.\n\n";
     $this->translated["ENG_US"]["error5"] = "Incorrect command %s.\n\n";
     $this->translated["ENG_US"]["error6"] = "Ooooops! API server may have shut down. Try again later.\n\n";
+    $this->translated["ENG_US"]["error7"] = "You need to be a Guild Officer.\n\n";
 
     // misstges generals
     $this->translated["ENG_US"]["elapsed_time"] = "\n<i>Elapsed time: %s</i>\n";
@@ -499,6 +500,8 @@ class TTranslate {
 
     $this->translated["ENG_US"]["txtTwCheck1"] = "[%s][%s] TW Check\n\n";
     $this->translated["ENG_US"]["txtTwCheckShow1"] = "[%s][%s] List of TW Check\n\n";
+    $this->translated["ENG_US"]["txtTwCheckDel1"] = "[%s][%s] TW Check deleted\n\n";
+    $this->translated["ENG_US"]["txtTwCheckSave1"] = "[%s][%s] TW Check saved\n\n";
 
     
     
@@ -568,6 +571,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["error4"] = "Ooooops! Ha ocurrido un error cogiendo la información.\n\n";
     $this->translated["SPA_XM"]["error5"] = "Comando incorrecto %s.\n\n";
     $this->translated["SPA_XM"]["error6"] = "Ooooops! Es posible que el servidor del API haya caído. Inténtalo más tarde.\n\n";
+    $this->translated["SPA_XM"]["error7"] = "Necesitas ser oficial del gremio.\n\n";
 
     // misstges generals
     $this->translated["SPA_XM"]["elapsed_time"] = "\n<i>Tiempo transcurrido: %s</i>\n";
@@ -955,5 +959,7 @@ class TTranslate {
 
     $this->translated["SPA_XM"]["txtTwCheck1"] = "[%s][%s] GT Check\n\n";
     $this->translated["SPA_XM"]["txtTwCheckShow1"] = "[%s][%s] Lista de comprobaciones para GT\n\n";
-  } 
+    $this->translated["SPA_XM"]["txtTwCheckDel1"] = "[%s][%s] Comprobación de GT eliminada\n\n";
+    $this->translated["SPA_XM"]["txtTwCheckSave1"] = "[%s][%s] Comprobación de GT guardada\n\n";
+  }
 }

@@ -50,7 +50,7 @@ class RequirementCollection
 
     public function show()
     {
-        $reports = [ '<b>'.$this->definitions."</b>\n\n" ];
+        $reports = [ '<b>'.$this->definitions."</b>\n" ];
         foreach ($this->requirements as $requirement) {
             $reports[] = $requirement->show();
         }
