@@ -201,14 +201,14 @@ class TTW extends TBase {
               case null:
                   // /tw check
                   if (!is_null($second) || !is_null($third) || !is_null($fourth)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->check();
                   break;
               case $this->isAllyCode($first):
                   // /tw check +allyCode
                   if (!is_null($second) || !is_null($third) || !is_null($fourth)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->check(null, $first);
                   break;
@@ -230,7 +230,7 @@ class TTW extends TBase {
                       case 3:
                           // /tw check +show +teamAlias +allyCode
                           if (!$this->isAllyCode($third)) {
-                              return $this->getHelp("tw", $this->translatedText("error1"));
+                              return $this->getHelp("twcheck", $this->translatedText("error1"));
                           }
                           $res = $this->checkShow($second, $third);
                           break;
@@ -240,10 +240,10 @@ class TTW extends TBase {
                   // /tw check +del +teamAlias
                   // /tw check +del +teamAlias +allyCode
                   if (is_null($second)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   if (!$this->isAllyCode($third)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->checkDel($second, $third);
                   break;
@@ -257,10 +257,10 @@ class TTW extends TBase {
                   */
                   // return [ print_r([ $_, $first, $second, $third, $fourth ], true), print_r($this->params, true), $this->isAllyCode($first) ];
                   if (is_null($second) || is_null($third)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   if (!is_null($fourth) && !$this->isAllyCode($fourth)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->checkSave($second, $third, $fourth);
                   break;
@@ -270,11 +270,11 @@ class TTW extends TBase {
                     /tw check +pending +allyCode
                    */
                   if (!is_null($third) || !is_null($fourth)) {
-                      return $this->getHelp("tw", $this->translatedText("error1"));
+                      return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->check(null, $second, true);
                   break;
-              default: return $this->getHelp("tw", $this->translatedText("error1"));
+              default: return $this->getHelp("twcheck", $this->translatedText("error1"));
           }
           break;
       case 'checkg':

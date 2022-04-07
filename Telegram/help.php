@@ -143,6 +143,14 @@ function showHelp($command = "", $lang = "") {
     case '/statg+':
       $ret = getStatsGuildHelp($lang, true);
       break;
+    case 'twcheck':
+    case '/twcheck':
+        $ret = getTwCheckHelp($lang, false);
+        break;
+    case 'twcheck+':
+    case '/twcheck+':
+        $ret = getTwCheckHelp($lang, true);
+        break;
     default:
       $ret = getGeneralHelp($lang);
       break;
@@ -719,6 +727,124 @@ function getTeamsHelp($lang, $plus) {
 /**************************************************************************
   retorna l'ajuda general
 **************************************************************************/
+function getTwCheckHelp($lang, $plus)
+{
+    switch ($lang) {
+        case "SPA_XM":
+            $ret = "<b>COMANDO: <i>tw check</i></b> (by cadetill & Liener)\n";
+            $ret .= "\n";
+            $ret .= "<b>Definición:</b> \n";
+            $ret .= "Comando para comprobar las estadísticas para Guerras de Territorio.\n\n";
+            $ret .= "<b>Ejemplos:</b> \n";
+            $ret .= "  - Comprobar mi roster:\n";
+            $ret .= "    /tw check +<i>AllyCode</i>\n\n";
+            $ret .= "  - Ver sólo los que no cumplo:\n";
+            $ret .= "    /tw check +<i>pending</i> +<i>AllyCode</i>\n\n";
+            $ret .= "  - Comprobar mi roster para un equipo en concreto:\n";
+            $ret .= "    /tw check +<i>aliasEquipo</i> +<i>AllyCode</i>\n\n";
+            $ret .= "  - Ver la lista de comprobaciones:\n";
+            $ret .= "    /tw check +<i>show</i> +<i>AllyCode</i>\n\n";
+            if ($plus) {
+                $ret .= "  - Añadir comprobación:\n";
+                $ret .= "    /tw check +<i>add</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "  - Actualizar comprobación:\n";
+                $ret .= "    /tw check +<i>update</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "  - Eliminar comprobación:\n";
+                $ret .= "    /tw check +<i>del</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "<b>Sintaxis:</b> \n";
+                $ret .= "  - Orden de velocidades:  order(alias1,alias2,alias3)\n";
+                $ret .= "    order(bb8,ipd,t3,ig88,gg)\n\n";
+                $ret .= "  - Nivel de reliquia: alias(r,nivelDeReliquiaMinimo)\n";
+                $ret .= "    fennec(r,7)\n\n";
+                $ret .= "  - Valor de una estadística: alias(aliasEstadistica[,comparador],valorDeEstadisticaMinimo)\n";
+                $ret .= "    kuiil(s,340)\n";
+                $ret .= "    cat(s,&lt;,280)\n\n";
+                $ret .= "  - Valor de una estadística comparado con otra unidad: alias(aliasEstadistica,aliasSegundaUnidad,comparador,fórmula)\n";
+                $ret .= "    gas(s,rex,>=,r*0.7)\n";
+                $ret .= "    En la fórmula <b>r</b> representa el valor de esa estadística en la segunda unidad.\n\n";
+                $ret .= "  - Habilidad maximizada: alias(sk,habilidad)\n";
+                $ret .= "    mara(sk,u)\n\n";
+                $ret .= "<b>Alias de las estadísticas:</b> \n";
+                $ret .= "  - s: Velocidad\n";
+                $ret .= "  - h: Salud\n";
+                $ret .= "  - p: Protección\n";
+                $ret .= "  - pd: Daño Físico\n";
+                $ret .= "  - sd: Daño especial\n";
+                $ret .= "  - po: Potencia\n";
+                $ret .= "  - t: Tenacidad\n";
+                $ret .= "  - a: Armadura\n";
+                $ret .= "  - pa: Evasión crítica física\n";
+                $ret .= "  - sa: Evasión crítical especial\n";
+                $ret .= "  - pcc: Probabilidad de daño crítifo físico\n";
+                $ret .= "  - scc: Probabilidad de daño crítico especial\n";
+                $ret .= "  - cd: Daño crítico\n";
+                $ret .= "<b>Alias de las habilidades:</b> \n";
+                $ret .= "  - b: Básica\n";
+                $ret .= "  - s: Especial\n";
+                $ret .= "  - l: Líder\n";
+                $ret .= "  - u: Única\n";
+                $ret .= "  Por defecto será la primera habilidad de cada tipo, puede indicarse el orden, por ejemplo <b>u2</b> para la segunda única.\n";
+            }
+            break;
+        default:
+            $ret = "<b>COMMAND: <i>tw check</i></b> (by cadetill & Liener)\n";
+            $ret .= "\n";
+            $ret .= "<b>Definition:</b> \n";
+            $ret .= "Command for check roster stats for TW.\n\n";
+            $ret .= "<b>Examples:</b> \n";
+            $ret .= "  - Check my roster:\n";
+            $ret .= "    /tw check +<i>AllyCode</i>\n\n";
+            $ret .= "  - Show non-complain requirements:\n";
+            $ret .= "    /tw check +<i>pending</i> +<i>AllyCode</i>\n\n";
+            $ret .= "  - Check my roster for single group:\n";
+            $ret .= "    /tw check +<i>aliasEquipo</i> +<i>AllyCode</i>\n\n";
+            $ret .= "  - Show the requirements:\n";
+            $ret .= "    /tw check +<i>show</i> +<i>AllyCode</i>\n\n";
+            if ($plus) {
+                $ret .= "  - Add requirement:\n";
+                $ret .= "    /tw check +<i>add</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "  - Update requirement:\n";
+                $ret .= "    /tw check +<i>update</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "  - Delete requirement:\n";
+                $ret .= "    /tw check +<i>del</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "<b>Syntax:</b> \n";
+                $ret .= "  - Speed order:  order(alias1,alias2,alias3)\n";
+                $ret .= "    order(bb8,ipd,t3,ig88,gg)\n\n";
+                $ret .= "  - Relic level: alias(r,nivelDeReliquiaMinimo)\n";
+                $ret .= "    fennec(r,7)\n\n";
+                $ret .= "  - Stat value: alias(statAlias[,comparator],statValue)\n";
+                $ret .= "    kuiil(s,340)\n";
+                $ret .= "    cat(s,&lt;,280)\n\n";
+                $ret .= "  - Stat value compared against another unit: alias(statAlias,aliasUnit,comparator,formula)\n";
+                $ret .= "    gas(s,rex,>=,r*0.7)\n";
+                $ret .= "    In the formula <b>r</b> represent the stat valur of second unit.\n\n";
+                $ret .= "  - Maxed skill: alias(sk,habilidad)\n";
+                $ret .= "    mara(sk,u)\n\n";
+                $ret .= "<b>Stat alias:</b> \n";
+                $ret .= "  - s: Speed\n";
+                $ret .= "  - h: health\n";
+                $ret .= "  - p: Protection\n";
+                $ret .= "  - pd: Physical damage\n";
+                $ret .= "  - sd: Special Damage\n";
+                $ret .= "  - po: Potency\n";
+                $ret .= "  - t: Tenacity\n";
+                $ret .= "  - a: Armor\n";
+                $ret .= "  - pa: Physical critical avoidance\n";
+                $ret .= "  - sa: Special critical avoidance\n";
+                $ret .= "  - pcc: Physical crit chance\n";
+                $ret .= "  - scc: Special crit chance\n";
+                $ret .= "  - cd: Crit damage\n";
+                $ret .= "<b>Skill alias:</b> \n";
+                $ret .= "  - b: Basic\n";
+                $ret .= "  - s: Special\n";
+                $ret .= "  - l: Leader\n";
+                $ret .= "  - u: unique\n";
+                $ret .= "  By default will be first skill os its type, you can set the index, ie <b>u2</b> for the second unique.\n";
+            }
+            break;
+    return $ret;
+}
+
 function getGeneralHelp($lang) {
   switch ($lang) {
     case "SPA_XM":
@@ -809,6 +935,7 @@ function getTWHelp($lang, $plus) {
       $ret .= "<b>   - delh</b>: borra los datos históricos guardado de una GT. La fecha tiene que ser en formato aaaammdd. \n";
       $ret .= "<b>   - listh</b>: muestra los datos guardados de las GTs de los últimos 24 meses. \n";
       $ret .= "<b>   - history</b>: histórico por jugador de los últimos 24 meses.Puedes ordenar el resultado usando un parámetro extra (título de la columna) \n";
+      $ret .= "<b>   - check</b>: comprueba las estadísticas definidas por los oficiales para las Guerras Territoriales \n";
       $ret .= " \n";
       $ret .= "<b>Ejemplos:</b> \n";
       if ($plus) {
@@ -867,6 +994,8 @@ function getTWHelp($lang, $plus) {
       $ret .= "        /tw history +points\n";
       $ret .= "        /tw history +all (all history members guild)\n";
       $ret .= "        /tw history +all +points \n\n";
+      $ret .= "<i>    Comprobar mi roster:</i> \n";
+      $ret .= "        /tw check \n\n";
       $ret .= "<b>Tiempo requerido</b>\n";
       $ret .= "  Unos 5 seg\n\n";
       break;
@@ -900,6 +1029,7 @@ function getTWHelp($lang, $plus) {
       $ret .= "<b>   - delh</b>: Deletes an specific saved TW history. The date must be in yyyymmdd format. \n";
       $ret .= "<b>   - listh</b>: Lists saved results of TW from last 24 month. \n";
       $ret .= "<b>   - history</b>: History of the last 24 months per player. You can sort the result using an extra param (column title) \n";
+      $ret .= "<b>   - check</b>: Check roster stats set up by officer for TW \n";
       $ret .= " \n";
       $ret .= "<b>Examples:</b> \n";
       if ($plus) {
@@ -958,6 +1088,8 @@ function getTWHelp($lang, $plus) {
       $ret .= "        /tw history +points\n";
       $ret .= "        /tw history +all (all history members guild)\n";
       $ret .= "        /tw history +all +points \n\n";
+      $ret .= "<i>    Check my roster:</i> \n";
+      $ret .= "        /tw check\n";
       $ret .= "<b>Time required</b>\n";
       $ret .= "  Around 5 sec\n\n";
   }
