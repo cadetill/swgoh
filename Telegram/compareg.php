@@ -81,49 +81,45 @@ class TCompareg extends TBase {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
    
     // generem string amb els AllyCode dels jugadors dels gremis
-    $roster1 = "";
-    foreach ($g1 as $guild) {
-      foreach ($guild["roster"] as $member) {
-        if ($roster1 != "") $roster1 .= ",";
-        $roster1 .= $member["allyCode"];
-      }
-    }
-    $roster2 = "";
-    foreach ($g2 as $guild) {
-      foreach ($guild["roster"] as $member) {
-        if ($roster2 != "") $roster2 .= ",";
-        $roster2 .= $member["allyCode"];
-      }
-    }
+    $roster1 = array_column($g1[0]["roster"], 'allyCode');
+    $roster2 = array_column($g2[0]["roster"], 'allyCode');
   
     // agafem info de tots els jugadors dels dos gremis
-    $players1 = $this->getInfoPlayer($roster1);
-    $players2 = $this->getInfoPlayer($roster2);
+    $players1 = $this->getInfoPlayers($roster1);
+    $players2 = $this->getInfoPlayers($roster2);
   
     // inicialitzem arrays dels gremis
     $guild1 = $this->iniPlayerArray();
     $guild2 = $this->iniPlayerArray();
-  
+
+    $firstGuildName = '';
+    $membersCountFirstGuild = 0;
     // recorrem array de $players actualitzant els arrays dels gremis
     foreach ($players1 as $player) {
+      $firstGuildName = $player['guildName'];
+      $membersCountFirstGuild++;
       $this->processPlayer($player, $guild1, $units);
     }
+    $secondGuildName = '';
+    $membersCountSecondGuild = 0;
     foreach ($players2 as $player) {
+      $secondGuildName = $player['guildName'];
+      $membersCountSecondGuild++;
       $this->processPlayer($player, $guild2, $units);
     }
     //print_r($guild1);
     //print_r($guild2);
-    $ret  = "<b>".$players1[0]["guildName"]." vs ".$players2[0]["guildName"]."</b>\n\n";
+    $ret  = "<b>".$firstGuildName." vs ".$secondGuildName."</b>\n\n";
     $ret .= "\n";
     $ret .= $this->translatedText("txtCompareg01");                                                          // "<b>-----------SUMMARY-----------</b>\n";
-    $ret .= $this->translatedText("txtCompareg02", array(count($players1), count($players2)));               // "<b>Members:</b> ".count($players1)." vs ".count($players2)."\n";
+    $ret .= $this->translatedText("txtCompareg02", array($membersCountFirstGuild, $membersCountSecondGuild));               // "<b>Members:</b> ".$membersCountFirstGuild." vs ".$membersCountSecondGuild."\n";
     $ret .= $this->translatedText("txtCompareg03", array($g1[0]["gp"], $g2[0]["gp"]));                       // "<b>GP:</b> ".$g1[0]["gp"]." vs ".$g2[0]["gp"]."\n";
     $ret .= $this->translatedText("txtCompareg04", array($guild1["gp"], $guild2["gp"]));                     // "<b>GP (players sum):</b> ".$guild1["gp"]." vs ".$guild2["gp"]."\n";
     $ret .= $this->translatedText("txtCompareg05", array($guild1["gpchars"], $guild2["gpchars"]));           // "<b>GP (characters):</b> ".$guild1["gpchars"]." vs ".$guild2["gpchars"]."\n";
     $ret .= $this->translatedText("txtCompareg06", array($guild1["gpships"], $guild2["gpships"]));           // "<b>GP (ships):</b> ".$guild1["gpships"]." vs ".$guild2["gpships"]."\n";
     $ret .= $this->translatedText("txtCompareg07", array($guild1["top80"], $guild2["top80"]));               // "<b>GP top 80:</b> ".$guild1["top80"]." vs ".$guild2["top80"]."\n";
-    $ret .= $this->translatedText("txtCompareg08", array(number_format($guild1["avarena"] / count($players1), 2), number_format($guild2["avarena"] / count($players2), 2)));               // "<b>Av. Arena:</b> ".number_format($guild1["avarena"] / count($players1), 2)." vs ".number_format($guild2["avarena"] / count($players2), 2)."\n";
-    $ret .= $this->translatedText("txtCompareg09", array(number_format($guild1["avships"] / count($players1), 2), number_format($guild2["avships"] / count($players2), 2)));               // "<b>Av. Ships:</b> ".number_format($guild1["avships"] / count($players1), 2)." vs ".number_format($guild2["avships"] / count($players2), 2)."\n";
+    $ret .= $this->translatedText("txtCompareg08", array(number_format($guild1["avarena"] / $membersCountFirstGuild, 2), number_format($guild2["avarena"] / $membersCountSecondGuild, 2)));               // "<b>Av. Arena:</b> ".number_format($guild1["avarena"] / $membersCountFirstGuild, 2)." vs ".number_format($guild2["avarena"] / $membersCountSecondGuild, 2)."\n";
+    $ret .= $this->translatedText("txtCompareg09", array(number_format($guild1["avships"] / $membersCountFirstGuild, 2), number_format($guild2["avships"] / $membersCountSecondGuild, 2)));               // "<b>Av. Ships:</b> ".number_format($guild1["avships"] / $membersCountFirstGuild, 2)." vs ".number_format($guild2["avships"] / $membersCountSecondGuild, 2)."\n";
     $ret .= $this->translatedText("txtCompareg10", array($guild1["zetas"], $guild2["zetas"]));               // "<b>Zetas:</b> ".$guild1["zetas"]." vs ".$guild2["zetas"]."\n";
     $ret .= $this->translatedText("txtCompareg11", array($guild1["g13"], $guild2["g13"]));                   // "<b>Gear 13:</b> ".$guild1["g13"]." vs ".$guild2["g13"]."\n";
     $ret .= $this->translatedText("txtCompareg12", array($guild1["g12"], $guild2["g12"]));                   // "<b>Gear 12:</b> ".$guild1["g12"]." vs ".$guild2["g12"]."\n";

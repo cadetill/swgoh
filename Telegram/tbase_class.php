@@ -332,6 +332,23 @@ class TBase {
         $targetFileName = "./cache/players_" . $hash;
         file_put_contents($targetFileName, $data);
     }
+
+    protected function getInfoPlayers(array $allyCodes)
+    {
+        sort($allyCodes);
+        $strAllyCodes = join(',', $allyCodes);
+        // $cache        = $this->getInfoPlayerCache($strAllyCodes);
+        // if (!is_null($cache)) {
+        //     return $cache;
+        // }
+
+        $swgoh    = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+        $response = $swgoh->fetchPlayer($strAllyCodes, $this->dataObj->language);
+        // $player = json_decode($p, true);
+        // $this->infoPlayerCache($strAllyCodes, $p);
+
+        return Items::fromString($response, [ 'decoder' => new ExtJsonDecoder(true) ]);
+    }
   
   /****************************************************
     recupera la info d'un jugador
@@ -583,6 +600,7 @@ class TBase {
           $data["units"][$unit["defId"]]["g13"] = 0;
           $data["units"][$unit["defId"]]["g12"] = 0;
           $data["units"][$unit["defId"]]["r8"] = 0;
+          $data["units"][$unit["defId"]]["r9"] = 0;
           $data["units"][$unit["defId"]]["gear"] = 0;
           $data["units"][$unit["defId"]]["level"] = 0;
           $data["units"][$unit["defId"]]["rarity"] = 0;
@@ -612,6 +630,9 @@ class TBase {
             }
             if ($unit["relic"]["currentTier"] == 10) {
                 $data["units"][$unit["defId"]]["r8"] = $data["units"][$unit["defId"]]["r8"] + 1;
+            }
+            if ($unit["relic"]["currentTier"] == 11) {
+                $data["units"][$unit["defId"]]["r9"] = $data["units"][$unit["defId"]]["r9"] + 1;
             }
         }
       }
