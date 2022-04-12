@@ -8,7 +8,9 @@
     "ext-gd": "*",
     "ext-json": "*",
     "ext-mysqli": "*",
-    "halaxa/json-machine": "^1.1"
+    "guzzlehttp/guzzle": "^7.0",
+    "halaxa/json-machine": "^1.1",
+    "longman/telegram-bot": "^0.76.1"
   },
   "require-dev": {
     "pestphp/pest": "^1.21",

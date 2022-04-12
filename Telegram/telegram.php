@@ -71,16 +71,7 @@ http_response_code(200);
   require_once './textimage/class.textPainter.php';
 
     $data = new TData();
-    try {
         processRequest($data);
-    } catch (\Exception $ex) {
-        $debugData         = new TData();
-        $debugData->chatId = $debugData->debugChatId;
-        $response          = array_merge([ $ex->getMessage() ], $ex->getTrace());
-        sendMessage($debugData, $response, false);
-    } finally {
-        // debug($data, [ $data->message ]);
-    }
 
 /***********************************************************************************************************************************************************
   Funcions de caràcter general

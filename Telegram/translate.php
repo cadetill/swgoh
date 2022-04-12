@@ -59,6 +59,7 @@ class TTranslate {
     $this->translated["ENG_US"]["error5"] = "Incorrect command %s.\n\n";
     $this->translated["ENG_US"]["error6"] = "Ooooops! API server may have shut down. Try again later.\n\n";
     $this->translated["ENG_US"]["error7"] = "You need to be a Guild Officer.\n\n";
+    $this->translated["ENG_US"]["error8"] = "Ooooops! An error has occurred.\nThis error will be reported to the admins. Try again later.\n\n";
 
     // misstges generals
     $this->translated["ENG_US"]["elapsed_time"] = "\n<i>Elapsed time: %s</i>\n";
@@ -572,6 +573,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["error5"] = "Comando incorrecto %s.\n\n";
     $this->translated["SPA_XM"]["error6"] = "Ooooops! Es posible que el servidor del API haya caído. Inténtalo más tarde.\n\n";
     $this->translated["SPA_XM"]["error7"] = "Necesitas ser oficial del gremio.\n\n";
+    $this->translated["SPA_XM"]["error8"] = "Ooooops! Ha ocurrido un error.\nTEl error será reportado a los administradores, inténtelo más tarde.\n\n";
 
     // misstges generals
     $this->translated["SPA_XM"]["elapsed_time"] = "\n<i>Tiempo transcurrido: %s</i>\n";

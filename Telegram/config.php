@@ -1,5 +1,8 @@
 <?php
 
+use Im\Shared\Exception\ExceptionHandler;
+use Longman\TelegramBot\Telegram;
+
 class TData
 {
     // variables de connexió a la base de dades
@@ -19,10 +22,11 @@ class TData
     public $userId      = "";
     public $username    = "";
     public $firstname   = "";
-    public $allyCode    = "";
+    public $allycode    = "";
     public $language    = "";
     public $message     = "";
     public $messageId   = "";
+    public $ackId       = "";
     public $messageDate = "";
     public $guildId     = "";
     public $guildName   = "";
@@ -90,23 +94,27 @@ class TData
         '/stats',
         '/stats@impman_bot',                       // stats for a list of units
         '/statg',
-        '/statg@impman_bot'
+        '/statg@impman_bot',
     ];
 
     // unitats noves o a eliminar del bot per a que funcioni la crinolo API
-    public $unitsToDelete = [ ];
+    public $unitsToDelete = [];
 
     //màxim de caràcters per missatge
     public $maxChars = 3000;
 
     public $maintenance = false;
 
-    public $debugMode = true;
+    public           $debugMode = true;
+    public bool      $localMode = false;
+    private Telegram $telegram;
 
     public function __construct()
     {
         $this->loadEnvVars();
         $this->overrideDefaultAttributes();
+
+        $this->bootstrap();
     }
 
     private function loadEnvVars()
@@ -125,7 +133,7 @@ class TData
                 continue;
             }
 
-            list($name, $value) = explode('=', $line, 2);
+            [ $name, $value ] = explode('=', $line, 2);
             $name  = trim($name);
             $value = trim($value);
 
@@ -148,8 +156,26 @@ class TData
         $this->swgohPass = getenv('SWGOH_HELP_PWD');
 
         $this->botToken = getenv('TELEGRAM_BOT_TOKEN');
-        $this->website = getenv('TELEGRAM_BOT_URL');
+        $this->website  = getenv('TELEGRAM_BOT_URL');
 
         $this->debugChatId = getenv('DEBUG_CHAT_ID');
+    }
+
+    private function bootstrap()
+    {
+        $this->bootstrapErrorHandling();
+        $this->bootstrapTelegram();
+    }
+
+    private function bootstrapErrorHandling()
+    {
+        $handler = new ExceptionHandler($this);
+        set_error_handler([ $handler, 'handleError' ]);
+        set_exception_handler([ $handler, 'handleException' ]);
+    }
+
+    private function bootstrapTelegram()
+    {
+        $this->telegram = new Telegram($this->botToken, 'impman_bot');
     }
 }
