@@ -53,6 +53,11 @@ class Requirement
                     return null;
                 };
                 $playerUnit      = $this->playerUnit($roster, $this->unit['baseId']);
+                if (!$playerUnit) {
+                    $complain = false;
+                    $report   = str_replace(':skill', '-', $this->report);
+                    break;
+                }
                 $playerUnitSkill = $findSkill($playerUnit, $this->skillId);
                 $complain        = $playerUnitSkill['tier'] === $playerUnitSkill['tiers'];
                 $report          = str_replace(':skill', $playerUnitSkill['nameKey'], $this->report);
@@ -64,20 +69,30 @@ class Requirement
                 foreach ($this->unitsOrder as $unit) {
                     $unitId          = $unit['baseId'];
                     $playerUnit      = $this->playerUnit($roster, $unitId);
-                    $playerUnitSpeed = $playerUnit['stats']['final']['Speed'];
-                    $playerSpeeds[]  = $playerUnitSpeed;
-                    if ($playerUnitSpeed < $lastUnitSpeed) {
-                        $lastUnitSpeed = $playerUnitSpeed;
-                    } else {
+                    if (!$playerUnit) {
+                        $playerSpeeds[]  = '-';
                         $fail = true;
+                    } else {
+                        $playerUnitSpeed = $playerUnit['stats']['final']['Speed'];
+                        $playerSpeeds[]  = $playerUnitSpeed;
+                        if ($playerUnitSpeed < $lastUnitSpeed) {
+                            $lastUnitSpeed = $playerUnitSpeed;
+                        } else {
+                            $fail = true;
+                        }
                     }
                 }
-                // ksort($playerSpeeds, SORT_NUMERIC);
+
                 $complain = !$fail;
                 $report   = sprintf($this->report, ...$playerSpeeds);
                 break;
             case self::STAT_TYPE:
                 $playerUnit = $this->playerUnit($roster, $this->unit['baseId']);
+                if (!$playerUnit) {
+                    $complain = false;
+                    $report = str_replace(':value', '-', $this->report);
+                    break;
+                }
                 $value      = $playerUnit['stats']['final'][$this->stat['key']];
                 if ($this->stat['percentage']) {
                     $value = $value * 100;
@@ -91,6 +106,11 @@ class Requirement
                 break;
             case self::RELIC_TYPE:
                 $playerUnit         = $this->playerUnit($roster, $this->unit['baseId']);
+                if (!$playerUnit) {
+                    $complain = false;
+                    $report = str_replace(':value', '-', $this->report);
+                    break;
+                }
                 $value              = $playerUnit['relic']['currentTier'] - 2;
                 $complainExpression = str_replace(':value', $value, $this->operation);
                 $complain           = $this->evalExpression($complainExpression);
@@ -99,8 +119,26 @@ class Requirement
                 break;
             case self::REFERAL_TYPE:
                 $playerUnit    = $this->playerUnit($roster, $this->unit['baseId']);
+                if (!$playerUnit) {
+                    $complain = false;
+                    $report             = str_replace(
+                        [ ':value', ':target', ':referal' ],
+                        [ '-', '-', '-' ],
+                        $this->report
+                    );
+                    break;
+                }
                 $value         = $playerUnit['stats']['final'][$this->stat['key']];
                 $playerReferal = $this->playerUnit($roster, $this->referalUnit['baseId']);
+                if (!$playerReferal) {
+                    $complain = false;
+                    $report             = str_replace(
+                        [ ':value', ':target', ':referal' ],
+                        [ $value, '-', '-' ],
+                        $this->report
+                    );
+                    break;
+                }
                 $referalValue  = $playerReferal['stats']['final'][$this->stat['key']];
 
                 $targetExpression = str_replace(':referal', $referalValue, $this->targetOperation);
