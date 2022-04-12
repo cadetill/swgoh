@@ -65,6 +65,9 @@ class TPanic extends TBase {
         break;
       default:
         $res = $this->getPanic();
+        if (empty($res)) {
+            return [];
+        }
         return $res;
     }
     
