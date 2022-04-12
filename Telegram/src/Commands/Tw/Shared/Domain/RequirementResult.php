@@ -10,7 +10,7 @@ class RequirementResult
     public function __construct(bool $complain, string $report)
     {
         $this->complain = $complain;
-        $this->report   = $report;
+        $this->report   = htmlentities($report);
     }
 
     public function complain(): bool
