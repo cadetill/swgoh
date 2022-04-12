@@ -2,7 +2,9 @@
 
 namespace Im\Shared\Infrastructure;
 
+use DateInterval;
 use DateTime;
+use DateTimeImmutable;
 use JsonMachine\Items;
 use JsonMachine\JsonDecoder\ExtJsonDecoder;
 use SwgohHelp;
@@ -26,52 +28,34 @@ class SwgohHelpRepository
 
     public function player(int $allyCode): array
     {
-        $cacheFile = sprintf(
-            '%s/players_%s',
-            self::$CACHE_FOLDER,
-            $allyCode
-        );
-
-        $data = null;
-        if ($this->existCacheFile($cacheFile)) {
-            $data = $this->fromCache($cacheFile);
-        } else {
-            $data = $this->client->fetchPlayer($allyCode, $this->lang);
-            $this->storeCache($cacheFile, $data);
+        $data = $this->playerFromCache($allyCode);
+        if (!is_null($data)) {
+            return json_decode($data, true);
         }
 
-        return json_decode($data, true);
+        $data = $this->client->fetchPlayer($allyCode, $this->lang);
+        $player = json_decode($data, true);
+        $this->storePlayerCache($data, $allyCode, intval($player[0]['updated'] / 1000));
+        return $player;
     }
 
     public function guild(int $allyCode)
     {
-        $cacheFile = sprintf(
-            '%s/guild_%s',
-            self::$CACHE_FOLDER,
-            $allyCode
-        );
-
-        $data = null;
-        if ($this->existCacheFile($cacheFile)) {
-            $data = $this->fromCache($cacheFile);
-
+        $data = $this->guildFromCache($allyCode);
+        if (!is_null($data)) {
             return json_decode($data, true);
-        } else {
-            $data = $this->client->fetchGuild($allyCode, $this->lang);
-            $this->storeCache($cacheFile, $data);
-            $guild              = json_decode($data, true);
-            $guildId            = $guild[0]["id"];
-            $cacheFileByGuildId = sprintf(
-                '%s/guild_%s',
-                self::$CACHE_FOLDER,
-                $guildId
-            );
-            $this->storeCache($cacheFileByGuildId, $data);
-
-            return $guild;
         }
+
+        $data    = $this->client->fetchGuild($allyCode, $this->lang);
+        $guild   = json_decode($data, true);
+        $guildId = $guild[0]["id"];
+        $this->storeGuildCache($data, strval($allyCode), $guild[0]['updated']);
+        $this->storeGuildCache($data, $guildId, $guild[0]['updated']);
+
+        return $guild;
     }
 
+    /*
     public function playersForMods(array $allyCodes)
     {
         // $allyCodes = array_slice($allyCodes, 0, 5);
@@ -115,55 +99,62 @@ class SwgohHelpRepository
             return Items::fromString($data, [ 'decoder' => new ExtJsonDecoder(true) ]);
         }
     }
+    */
 
-    private function existCacheFile(string $cacheFile)
+    private function playerFromCache(int $allyCode)
     {
-        $this->deleteOlderFiles();
+        return $this->fromCache('player', $allyCode);
+    }
 
-        if (file_exists($cacheFile)) {
-            $fileTime = filemtime($cacheFile);
+    private function guildFromCache(int $allyCode)
+    {
+        return $this->fromCache('guild', $allyCode);
+    }
 
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                return true;
+    private function fromCache(string $type, int $allyCode)
+    {
+        $blobPattern = sprintf('./cache/%s_%s_*', $type, $allyCode);
+        $pattern = sprintf('/%s_%s_(.*)/', $type, $allyCode);
+        $now = new DateTimeImmutable();
+        foreach (glob($blobPattern) as $filePath) {
+            $filename = basename($filePath);
+            $matches = [];
+            if (preg_match($pattern, $filename, $matches)) {
+                $timestamp = $matches[1];
+                $timestampDate = (new DateTimeImmutable())->setTimestamp($timestamp);
+                $stillValid = $timestampDate > $now;
+                if ($stillValid) {
+                    return file_get_contents($filePath);
+                } else {
+                    // ToDo: Move to fastcgi_finish_request()
+                    unlink($filePath);
+                }
             }
         }
 
-        return false;
+        return null;
     }
 
-    private function deleteOlderFiles()
+    private function storePlayerCache(string $content, int $allyCode, int $updated)
     {
-        $folder = self::$CACHE_FOLDER;
-        if ($handle = opendir($folder)) {
-            while (false !== ( $file = readdir($handle) )) {
-                if (is_dir($file)) {
-                    continue;
-                }
+        $this->storeCache($content, 'player', strval($allyCode), $updated);
+    }
 
-                if ($file === '.gitkeep') {
-                    continue;
-                }
+    private function storeGuildCache(string $content, string $key, int $updated)
+    {
+        $this->storeCache($content, 'guild', $key, $updated);
+    }
 
-                $fileLastModified = filemtime($folder . '/' . $file);
-                if (( time() - $fileLastModified ) > self::$DEFAULT_CACHE_LIFETIME_SECONDS) {
-                    unlink($folder . '/' . $file);
-                }
-            }
-            closedir($handle);
+    private function storeCache(string $content, string $type, string $key, int $updated)
+    {
+        $ttl = new DateInterval('PT4H');
+        $updatedDate = (new DateTimeImmutable())->setTimestamp($updated);
+        $liveUntilDate = $updatedDate->add($ttl);
+        $liveUntil = $liveUntilDate->getTimestamp();
+        $filename = sprintf('./cache/%s_%s_%s', $type, $key, $liveUntil);
+        if (!file_exists($filename)) {
+            file_put_contents($filename, $content);
         }
-    }
-
-    private function fromCache(string $cacheFile)
-    {
-        return file_get_contents($cacheFile);
-    }
-
-    private function storeCache(string $cacheFile, $data)
-    {
-        file_put_contents($cacheFile, $data);
     }
 
     private function joinPayloads(array $payloads)

@@ -1,8 +1,7 @@
 <?php
 
-use Im\Shared\Infrastructure\SwgohHelpRepository;
+use Im\Shared\ExtJsonDecoder;
 use JsonMachine\Items;
-use JsonMachine\JsonDecoder\ExtJsonDecoder;
 
 class TBase {
   public $dataObj;
@@ -221,17 +220,17 @@ class TBase {
 
   /****************************************************
     FUNCIONS PROTECTED
-  ****************************************************/ 
+  ****************************************************/
   /****************************************************
-    comprova si el AllyCode passatper paràmetre és correcte i el retorna sense caràcters que no siguin números 
+    comprova si el AllyCode passatper paràmetre és correcte i el retorna sense caràcters que no siguin números
   ****************************************************/
   protected function checkAllyCode(&$allyCode) {
     $allyCode = preg_replace('/[^0-9]+/', "", $allyCode); // traiem els caràcters que no son dígits.
 
-    if (($allyCode < 100000000) || ($allyCode > 999999999)) 
+    if (($allyCode < 100000000) || ($allyCode > 999999999))
       return false;  //"The ".$allyCode." isn't a good ally code.\n";
     else
-      return true; 
+      return true;
   }
 
     /*
@@ -267,16 +266,16 @@ class TBase {
         }
         return false;
     }
-  
+
   /****************************************************
     recupera l'ajuda de la funció especificada
   ****************************************************/
   protected function getHelp($help, $message = "") {
     $ret = showHelp($help, $this->dataObj->language);
     if ($message == "")
-      $ret = "Bad request. See help: \n\n".$ret[0]; 
+      $ret = "Bad request. See help: \n\n".$ret[0];
     else
-      $ret = $message.$ret[0]; 
+      $ret = $message.$ret[0];
     return $ret;
   }
 
@@ -290,80 +289,137 @@ class TBase {
       }
 
       $allyCodes = explode(',', $allyCode);
-      sort($allyCodes);
-      $strAllyCodes = join(',', $allyCodes);
-      $cache        = $this->getInfoPlayerCache($strAllyCodes);
+      if (count($allyCodes) > 1) {
+          return $this->getInfoPlayers($allyCodes);
+      }
+
+      $allyCode = $allyCodes[0];
+      $cache    = $this->getCacheContent('player', $allyCode);
       if (!is_null($cache)) {
-        return $cache;
+        return json_decode($cache, true);
       }
 
       $swgoh  = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-      $p      = $swgoh->fetchPlayer($allyCode, $this->dataObj->language);
-      $player = json_decode($p, true);
-      $this->infoPlayerCache($strAllyCodes, $p);
+      $content = $swgoh->fetchPlayer($allyCode, $this->dataObj->language);
+      $player = json_decode($content, true);
+      $updated = intval($player[0]['updated'] / 1000);
+      $this->setCacheContent('player', $allyCode, $content, $updated);
 
       return $player;
     }
-
-    private function getInfoPlayerCache($allyCode)
+    private function getCacheStream(string $type, string $key)
     {
-        $this->deleteOlderFiles(10800, "./cache/");
-        $hash           = md5($allyCode);
-        $targetFileName = "./cache/players_" . $hash;
-        if (file_exists($targetFileName)) {
-            $fileTime = filemtime($targetFileName);
-
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                $players = file_get_contents($targetFileName);
-
-                return json_decode($players, true);
+        $blobPattern = sprintf('./cache/%s_%s_*', $type, $key);
+        $pattern = sprintf('/%s_%s_(.*)/', $type, $key);
+        $now = new DateTimeImmutable();
+        foreach (glob($blobPattern) as $filePath) {
+            $filename = basename($filePath);
+            $matches = [];
+            if (preg_match($pattern, $filename, $matches)) {
+                $timestamp = $matches[1];
+                $timestampDate = (new DateTimeImmutable())->setTimestamp($timestamp);
+                $stillValid = $timestampDate > $now;
+                if ($stillValid) {
+                    return fopen($filePath, 'r');
+                } else {
+                    // ToDo: Move to fastcgi_finish_request()
+                    unlink($filePath);
+                }
             }
         }
-
         return null;
     }
 
-    private function infoPlayerCache($allyCode, $data)
+    private function getCacheContent(string $type, string $key)
     {
-        $hash           = md5($allyCode);
-        $targetFileName = "./cache/players_" . $hash;
-        file_put_contents($targetFileName, $data);
+        $resource = $this->getCacheStream($type, $key);
+        if (is_null($resource)) {
+            return null;
+        }
+
+        return stream_get_contents($resource);
+    }
+
+    private function setCacheContent(string $type, string $key, string $content, int $validStart, DateTime $ttl = null)
+    {
+        // ToDo: Move to fastcgi_finish_request()
+        $ttl = $ttl ?: new DateInterval('PT4H');
+        $updatedDate = (new DateTimeImmutable())->setTimestamp($validStart);
+        $liveUntilDate = $updatedDate->add($ttl);
+        $liveUntil = $liveUntilDate->getTimestamp();
+        $filename = sprintf('./cache/%s_%s_%s', $type, $key, $liveUntil);
+        if (!file_exists($filename)) {
+            file_put_contents($filename, $content);
+        }
     }
 
     protected function getInfoPlayers(array $allyCodes)
     {
-        sort($allyCodes);
-        $strAllyCodes = join(',', $allyCodes);
-        // $cache        = $this->getInfoPlayerCache($strAllyCodes);
-        // if (!is_null($cache)) {
-        //     return $cache;
-        // }
+        // ToDo: hide stream complexity
+        $allyCodesToRequest = [];
+        $cacheHandle = fopen('php://temp', 'rw');
+        fwrite($cacheHandle, '[');
 
-        $swgoh    = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-        $response = $swgoh->fetchPlayer($strAllyCodes, $this->dataObj->language);
-        // $player = json_decode($p, true);
-        // $this->infoPlayerCache($strAllyCodes, $p);
+        foreach ($allyCodes as $allyCode) {
+            $cache = $this->getCacheStream('player', $allyCode);
+            if (is_null($cache)) {
+                $allyCodesToRequest[] = $allyCode;
+            } else {
+                fgetc($cache);
+                stream_copy_to_stream($cache, $cacheHandle);
+                $position = fstat($cacheHandle)['size'] - 1;
+                ftruncate($cacheHandle, $position);
+                fseek($cacheHandle, $position);
+                fwrite($cacheHandle, ',');
+            }
+        }
 
-        return Items::fromString($response, [ 'decoder' => new ExtJsonDecoder(true) ]);
+        if (count($allyCodesToRequest) === 0) {
+            $position = fstat($cacheHandle)['size'] - 1;
+            ftruncate($cacheHandle, $position);
+            fseek($cacheHandle, $position);
+            fwrite($cacheHandle, ']');
+            rewind($cacheHandle);
+
+            return Items::fromStream(
+                $cacheHandle,
+                [
+                    'decoder' => new ExtJsonDecoder(true)
+                ]
+            );
+        } else {
+            $swgoh    = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+            $response = $swgoh->fetchPlayer(join(',', $allyCodesToRequest), $this->dataObj->language);
+            fwrite($cacheHandle, substr($response, 1));
+            rewind($cacheHandle);
+
+            $cacheListener = function ($strValue, $player) {
+                $this->setCacheContent('player', $player['allyCode'], sprintf('[%s]', $strValue), intval($player['updated'] / 1000));
+            };
+
+            return Items::fromStream(
+                $cacheHandle,
+                [
+                    'decoder' => new ExtJsonDecoder(true, 512, 0, $cacheListener)
+                ]
+            );
+        }
     }
-  
+
   /****************************************************
     recupera la info d'un jugador
   ****************************************************/
   protected function getInfoPlayerExtra($allyCode = "") {
     if ($allyCode == "")
       $allyCode = $this->allyCode;
-    
+
     $playerArr = $this->getInfoPlayer($allyCode);
 //    return $playerArr;
     $player = json_encode($playerArr[0]['roster']);
     //file_put_contents("./player", $player);
-    
+
     $url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle,calcGP";
-    $ch = curl_init(); // 
+    $ch = curl_init(); //
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -375,12 +431,12 @@ class TBase {
     $playerJson = curl_exec($ch);
     curl_close($ch);
     $playerArr[0]['roster'] = json_decode($playerJson, true);
-    
+
     file_put_contents("./guilds/player_stats_$allyCode.json", $playerJson);
-	
+
     return $playerArr;
   }
-  
+
   /****************************************************
     recupera la info dels membres d'un gremi
   ****************************************************/
@@ -390,30 +446,17 @@ class TBase {
             $allyCode = $this->allyCode;
         }
 
-        $this->deleteOlderFiles(10800, "./cache/");
-        $cacheByAllyCodeFilename = "./cache/guild_" . $allyCode;
-        $guild = null;
-        if (file_exists($cacheByAllyCodeFilename)) {
-            $fileTime = filemtime($cacheByAllyCodeFilename);
-
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                $guildData = file_get_contents($cacheByAllyCodeFilename);
-                $guild = json_decode($guildData, true);
-            }
+        $cache    = $this->getCacheContent('guild', $allyCode);
+        if (!is_null($cache)) {
+            return json_decode($cache, true);
         }
 
-        if (is_null($guild)) {
-            $swgoh     = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-            $guildData = $swgoh->fetchGuild($allyCode, $this->dataObj->language);
-            file_put_contents($cacheByAllyCodeFilename, $guildData);
-            $guild                  = json_decode($guildData, true);
-            $guildId                = $guild[0]["id"];
-            $cacheByGuildIdFilename = "./cache/guild_" . $guildId;
-            file_put_contents($cacheByGuildIdFilename, $guildData);
-        }
+        $swgoh     = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
+        $guildData = $swgoh->fetchGuild($allyCode, $this->dataObj->language);
+        $guild   = json_decode($guildData, true);
+        $guildId = $guild[0]["id"];
+        $this->setCacheContent('guild', $allyCode, $guildData, intval($guild[0]['updated'] / 1000));
+        $this->setCacheContent('guild', $guildId, $guildData, intval($guild[0]['updated'] / 1000));
 
         return $guild;
     }
@@ -423,8 +466,6 @@ class TBase {
   ****************************************************/
     protected function getInfoGuildExtra($guild = [])
     {
-        $this->deleteOlderFiles(10800, "./cache/");
-
         if (count($guild) == 0) {
             $guild = $this->getInfoGuild();
         }
@@ -433,77 +474,8 @@ class TBase {
             return "Not members found into the guild.";
         }
 
-        // generem string amb els AllyCode
         $allyCodes = array_column($guild[0]["roster"], 'allyCode');
-        sort($allyCodes);
-        $strAllyCodes = join(',', $allyCodes);
-        $allyCodesHash = md5($strAllyCodes);
-
-        // comprovem si existeix el fitxer i, en cas d'existir, si té menys d'1h -> en tal cas el carreguem
-        $players                = "";
-        $cacheByAllyCodesFilename = "./cache/players_" . $allyCodesHash;
-        if (file_exists($cacheByAllyCodesFilename)) {
-            $fileTime = filemtime($cacheByAllyCodesFilename);
-
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                $items = Items::fromFile($cacheByAllyCodesFilename, [ 'decoder' => new ExtJsonDecoder(true) ]);
-                $playersArr = [];
-                foreach ($items as $id => $player) {
-                    $playersArr[] = $player;
-                }
-                return $playersArr;
-            }
-        }
-
-        if ($players == "") { // si no existeix el fitxer o és més antic d'1h
-            $swgoh   = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-            $project = [
-                'allyCode'           => 1,
-                'name'               => 1,
-                'level'              => 1,
-                'guildRefId'         => 1,
-                'guildName'          => 1,
-                'roster'             => 1,
-                'grandArena'         => 1,
-                'grandArenaLifeTime' => 1,
-            ];
-            $players = $swgoh->fetchPlayer($strAllyCodes, $this->dataObj->language);
-        }
-        file_put_contents($cacheByAllyCodesFilename, $players);
-        $items = Items::fromString($players, [ 'decoder' => new ExtJsonDecoder(true) ]);
-        $playersArr = [];
-        foreach ($items as $id => $player) {
-            $playersArr[] = $player;
-        }
-        return $playersArr;
-
-        /*
-        $finalPlayers = $this->deleteUnitsToDelete($players);
-        //file_put_contents("./cache/".$guild[0]["id"].'__', $finalPlayers);
-
-        $url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle,calcGP";
-        //$url = "https://swgoh-stat-calc.glitch.me/api?flags=gameStyle";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ 'Content-type: application/json' ]);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $finalPlayers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Apache-HttpClient/4.5.5 (Java/12.0.1)');
-        $playersJson = curl_exec($ch);
-        //echo $playersJson;
-        curl_close($ch);
-
-        file_put_contents("./cache/" . $guild[0]["id"], $playersJson);
-        $playersArr = json_decode($playersJson, true);
-
-        return $playersArr;
-        */
+        return $this->getInfoPlayers($allyCodes);
     }
 
     /****************************************************
@@ -512,13 +484,13 @@ class TBase {
   protected function translatedText($code, $arr = '') {
     return $this->trans->getTransText($code, $arr);
   }
-  
+
   /**************************************************************************
     functió que retorna un array de dades d'un jugador inicialitzat a 0
   **************************************************************************/
   protected function iniPlayerArray() {
     return array(
-                  "7chars" => 0, 
+                  "7chars" => 0,
                   "7ships" => 0,
                   "g13" => 0,
                   "g13vs12" => 0,
@@ -580,7 +552,7 @@ class TBase {
   **************************************************************************/
   protected function processPlayer($player, &$data, $units = array()) {
     $data["updated"] = date("d-m-Y H:i:s", substr($player["updated"], 0, -3));
-        
+
     $chars = [];
       $hasOmicron = function ($skillTarget, $unitSkills) {
           $skillTargetId   = $skillTarget['skillId'];
@@ -636,13 +608,13 @@ class TBase {
             }
         }
       }
-      
+
       // control GP
       $data["gp"] = $data["gp"] + $unit["gp"];
       if ($unit["combatType"] == 1) { // it is a character
         // GP into array to get +80
         $chars[$unit["defId"]] = $unit["gp"];
-        
+
         // check zetas
         foreach ($unit["skills"] as $skill) {
           if (($skill["isZeta"]) && ($skill["tier"] == $skill["tiers"]))
@@ -667,15 +639,15 @@ class TBase {
                   }
               }
           }
-        
+
         // check gear
         switch ($unit["gear"]) {
           case 8: $data["g8"] = $data["g8"] + 1; break;
           case 9: $data["g9"] = $data["g9"] + 1; break;
           case 10: $data["g10"] = $data["g10"] + 1; break;
           case 11: $data["g11"] = $data["g11"] + 1; break;
-          case 12: 
-            $data["g12"] = $data["g12"] + 1; 
+          case 12:
+            $data["g12"] = $data["g12"] + 1;
             switch (count($unit["equipped"])) {
               case 1: $data["g12+1"] = $data["g12+1"] + 1; break;
               case 2: $data["g12+2"] = $data["g12+2"] + 1; break;
@@ -686,12 +658,12 @@ class TBase {
             break;
           case 13: $data["g13"] = $data["g13"] + 1; break;
         }
-              
+
         // check mods
         foreach ($unit["mods"] as $mod) {
           if ($mod["pips"] == 6)
             $data["mods6"] = $data["mods6"] + 1;
-             
+
           foreach ($mod["secondaryStat"] as $second) {
             if ($second["unitStat"] == 5) {
               $value = $second["value"];
@@ -704,7 +676,7 @@ class TBase {
             }
           }
         }
-                
+
         // check relic
         if ($unit["relic"]["currentTier"] != 1) {
           $data["relics"] = $data["relics"] + ($unit["relic"]["currentTier"] - 2);
@@ -720,32 +692,32 @@ class TBase {
             case 11: $data["r9"] = $data["r9"] + 1; break;
           }
         }
-            
+
         // check PG
         $data["gpchars"] = $data["gpchars"] + $unit["gp"];
-            
+
         // stars
-        if ($unit["rarity"] == 7) $data["7chars"] = $data["7chars"] + 1;  
-      } 
+        if ($unit["rarity"] == 7) $data["7chars"] = $data["7chars"] + 1;
+      }
       else {  // it is a ship
         // stars
         if ($unit["rarity"] == 7) $data["7ships"] = $data["7ships"] + 1;
-            
+
         // check PG
-        $data["gpships"] = $data["gpships"] + $unit["gp"]; 
+        $data["gpships"] = $data["gpships"] + $unit["gp"];
       }
     } // ---> fi foreach roster
-            
+
     if ($data["g12"] + $data["g11"] == 0) {
         $data["g13vs12"] = 0;
     } else {
         $data["g13vs12"] = number_format(( $data["g13"] * 100 ) / ( $data["g12"] + $data["g11"] ), 2);
     }
-            
+
     // arenas
-    $data["avarena"] = $data["avarena"] + $player["arena"]["char"]["rank"]; 
-    $data["avships"] = $data["avships"] + $player["arena"]["ship"]["rank"]; 
-            
+    $data["avarena"] = $data["avarena"] + $player["arena"]["char"]["rank"];
+    $data["avships"] = $data["avships"] + $player["arena"]["ship"]["rank"];
+
     // arena characters squand
     if (isset($player["arena"]["char"]["squad"][0])) {
         $data["csquad1"] = TUnits::unitNameFromUnitId($player["arena"]["char"]["squad"][0]["defId"], $this->dataObj);
@@ -800,26 +772,26 @@ class TBase {
   }
 
   /**************************************************************************
-    funció que retorna si un string (yyyymmdd) conté una data vàlida 
+    funció que retorna si un string (yyyymmdd) conté una data vàlida
   **************************************************************************/
   protected function isCorrectDate($date) {
-    if (strlen($date) != 8) 
+    if (strlen($date) != 8)
       return false;
-            
+
     $day = substr($date, 6, 2);
     $month = substr($date, 4, 2);
     $year = substr($date, 0, 4);
     if (!checkdate($month, $day, $year))
       return false;
-            
+
     $today = getdate();
     $today = $today['year'].str_pad($today['mon'], 2, "0", STR_PAD_LEFT).str_pad($today['mday'], 2, "0", STR_PAD_LEFT);
     if ($today < $date)
       return false;
-            
+
     return true;
   }
-  
+
   /**************************************************************************
     funció que retorna la unitat si la troba dins del array d'unitats. Sino retorna blanc
   **************************************************************************/
@@ -830,14 +802,14 @@ class TBase {
     }
     return "";
   }
-  
+
   /**************************************************************************
-  * funció que esborra els fitxers de la carpeta $folder amb una antiguetat 
+  * funció que esborra els fitxers de la carpeta $folder amb una antiguetat
   *   superior a $seconds segons
   **************************************************************************/
   protected function deleteOlderFiles($seconds, $folder) {
     if ($handle = opendir($folder)) {
-      while (false !== ($file = readdir($handle))) { 
+      while (false !== ($file = readdir($handle))) {
         if (is_dir($file)) {
           continue;
         }
@@ -845,25 +817,25 @@ class TBase {
           if ($file === '.gitkeep') {
               continue;
           }
-        
+
         $fileLastModified = filemtime($folder . $file);
         if ((time() - $fileLastModified) > $seconds) {
           unlink($folder . $file);
         }
       }
-      closedir($handle); 
+      closedir($handle);
     }
   }
-  
+
   /**************************************************************************
-  * funció que genera una imatge dels personatges passats en el array $arr 
+  * funció que genera una imatge dels personatges passats en el array $arr
   **************************************************************************/
   protected function genImageCarac($arr) {
     $this->deleteOlderFiles(60, "./tmp/");
-            
+
     // definim mida per a la imatge d'una unitat
     $width = 350; //180;
-    $height = 160; 
+    $height = 160;
 
     // calculem quantes files i columnes tindrem (màx. 2 columnes)
     $maxRowns = ceil(count($arr) / 2);
@@ -871,7 +843,7 @@ class TBase {
     if (count($arr) <= 2) {
       $maxCols = 1;
     }
-    
+
     if (($maxRowns == 0) || ($maxCols == 0)) {
       return "";
     }
@@ -894,13 +866,13 @@ class TBase {
     $col = 0;
     //print_r($arr);
     foreach ($arr as $key => $unit) {
-      // superposem imatge unitat 
+      // superposem imatge unitat
       $imgUrl = $this->getImageUrl($units, $key);
       $info_imagen = getimagesize($imgUrl);
       if (($info_imagen[0] != 128) && ($info_imagen[1] != 128)) {
         $file = $this->redimensionarPNG($imgUrl, 128, 128, "");
         $a = imagecreatefrompng($file);
-      } 
+      }
       else {
         $a = imagecreatefrompng($imgUrl);
       }
@@ -928,7 +900,7 @@ class TBase {
       if ($unit['relic'] > 0) {
         if (strcasecmp($alig, 'Dark Side') == 0) {
           $img = new textPainter('./img/relicd.png', $unit['relic'], './textimage/arial-bold.ttf', 10);
-        } 
+        }
         else {
           $img = new textPainter('./img/relicl.png', $unit['relic'], './textimage/arial-bold.ttf', 10);
         }
@@ -960,11 +932,11 @@ class TBase {
       $f = imagecreatefrompng('./img/star'.$unit['rarity'].'.png');
       imagecopy($dest_image, $f, ($width*$col)+10, ($height*$rown), 0, 0, 160, 160);
       imagedestroy($f);
-      
+
       // posem dades
       if (strcasecmp($alig, 'Dark Side') == 0) {
         $img = new textPainter('./img/datad.png', $unit['count'], './textimage/arial-bold.ttf', 14);
-      } 
+      }
       else {
         $img = new textPainter('./img/datal.png', $unit['count'], './textimage/arial-bold.ttf', 14);
       }
@@ -989,13 +961,13 @@ class TBase {
       $c = imagecreatefrompng($filename);
       imagecopy($dest_image, $c, ($width*$col)+190, ($height*$rown), 0, 0, 160, 160);
       imagedestroy($c);
-      
+
       // control de la fila i columna
       $col++;
       if ($col >= $maxCols) {
         $col = 0;
         $rown++;
-        if ($rown >= $maxRowns)  
+        if ($rown >= $maxRowns)
           $rown = 0;
       }
     }
@@ -1006,11 +978,11 @@ class TBase {
   }
 
   /**************************************************************************
-  * funció que genera una imatge dels personatges passats en el array $arr 
+  * funció que genera una imatge dels personatges passats en el array $arr
   **************************************************************************/
   protected function generateImage($arr) {
     $this->deleteOlderFiles(60, "./tmp/");
-            
+
     // definim mida per a la imatge d'una unitat
     $width = 180;
     $height = 160;
@@ -1050,14 +1022,14 @@ class TBase {
       if (($info_imagen[0] != 128) && ($info_imagen[1] != 128)) {
         $file = $this->redimensionarPNG($imgUrl, 128, 128, "");
         $a = imagecreatefrompng($file);
-      } 
+      }
       else {
         $a = imagecreatefrompng($imgUrl);
       }
-      
-      if (($unit['rarity'] == 0) && ($unit['level'] == 0) && ($unit['gear'] == 0) && ($unit['gp'] == 0)) 
+
+      if (($unit['rarity'] == 0) && ($unit['level'] == 0) && ($unit['gear'] == 0) && ($unit['gp'] == 0))
         $a = $this->imageSetOpacity($a, 0.45);
-      
+
       imagecopy($dest_image, $a, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($a);
 
@@ -1082,14 +1054,14 @@ class TBase {
       }
       imagecopy($dest_image, $b, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
       imagedestroy($b);
-      
+
       if (($unit['rarity'] == 0) && ($unit['level'] == 0) && ($unit['gear'] == 0) && ($unit['gp'] == 0)) {
         // control de la fila i columna
         $col++;
         if ($col >= $maxCols) {
           $col = 0;
           $rown++;
-          if ($rown >= $maxRowns)  
+          if ($rown >= $maxRowns)
             $rown = 0;
         }
         continue;
@@ -1121,7 +1093,7 @@ class TBase {
       if ($relic > 0) {
         if (strcasecmp($alig, 'Dark Side') == 0) {
           $img = new textPainter('./img/relicd.png', $relic, './textimage/arial-bold.ttf', 10);
-        } 
+        }
         else {
           $img = new textPainter('./img/relicl.png', $relic, './textimage/arial-bold.ttf', 10);
         }
@@ -1145,7 +1117,7 @@ class TBase {
           $img->setPosition(55, 117);
         $img->setTextColor(255,255,255);
         $filename = $img->saveImage("./tmp", "LVL_");
-        
+
         $e = imagecreatefrompng($filename);
         imagecopy($dest_image, $e, ($width*$col)+25, ($height*$rown)+20, 0, 0, 128, 128);
         imagedestroy($e);
@@ -1157,34 +1129,34 @@ class TBase {
         imagecopy($dest_image, $f, ($width*$col)+10, ($height*$rown), 0, 0, 160, 160);
         imagedestroy($f);
       }
-      
+
       // controlem prerequisits i posem "check" si els compleix
       $isOk = true;
       foreach ($unit['botpre'] as $key => $pre) {
         switch ($key) {
           case 'gp':
             if ($unit['gp'] < $pre) {
-              $isOk = false;  
+              $isOk = false;
             }
             break;
           case 'l':
             if ($unit['level'] < $pre) {
-              $isOk = false;  
+              $isOk = false;
             }
             break;
           case 'g':
             if ($unit['gear'] < $pre) {
-              $isOk = false;  
+              $isOk = false;
             }
             break;
           case 'r':
             if (($unit['gear'] < 13) || (($unit['relic']['currentTier']-2) < $pre)) {
-              $isOk = false;  
+              $isOk = false;
             }
             break;
-          case 's': 
+          case 's':
             if ($unit['rarity'] < $pre) {
-              $isOk = false;  
+              $isOk = false;
             }
             break;
         }
@@ -1201,11 +1173,11 @@ class TBase {
       if ($col >= $maxCols) {
         $col = 0;
         $rown++;
-        if ($rown >= $maxRowns)  
+        if ($rown >= $maxRowns)
           $rown = 0;
       }
     }
-    
+
     // si tenim acabats tots els personatges, posem el "approved"
     if ($okCount == count($arr)) {
       $x = $width*$maxCols;
@@ -1234,7 +1206,7 @@ class TBase {
     //echo '<br><br><br>'.'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png'.'<br><br><br>';
     return 'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png';
   }
-  
+
   /**************************************************************************
   * funció que enviarà fotos a Telegram
   **************************************************************************/
@@ -1251,7 +1223,7 @@ class TBase {
     else {
       $url = $this->dataObj->website.'/sendPhoto?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&caption='.urlencode($photoText).'&photo='.$photo;
     }
-     echo "\n\n"."\n\n".$url."\n\n"."\n\n";       
+     echo "\n\n"."\n\n".$url."\n\n"."\n\n";
     file_get_contents($url);
   }
 
@@ -1262,24 +1234,24 @@ class TBase {
     if (isset($keyboard)) {
       $teclado = '&reply_markup={"keyboard":['.$keyboard.'], "resize_keyboard":true, "one_time_keyboard":true}';
     }
-          
+
     $first = true;
     foreach ($response as $res) {
       if (($first) && ($reply)) {
         $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&reply_to_message_id='.$this->dataObj->messageId.'&parse_mode=HTML&text='.urlencode($res).$keyboard;
         $first = false;
-      } 
+      }
       else {
         $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&text='.urlencode($res).$keyboard;
       }
-          
+
       file_get_contents($url);
     }
   }
 
   /****************************************************
     FUNCIONS PRIVATED
-  ****************************************************/ 
+  ****************************************************/
   /**************************************************************************
     funció que redimensiona una imatge
   **************************************************************************/
@@ -1292,7 +1264,7 @@ class TBase {
     if ($ancho >= $alto) {
       $nuevo_alto = round($alto * $ancho_max / $ancho,0);
       $nuevo_ancho = $ancho_max;
-    } 
+    }
     else {
       $nuevo_ancho = round($ancho * $alto_max / $alto,0);
       $nuevo_alto = $alto_max;
@@ -1319,20 +1291,20 @@ class TBase {
     imagedestroy($imagen_vieja);
     return 'https://www.cadetill.com/swgoh/bot/tmp/'.basename($destino);
   }
-  
+
   /**************************************************************************
     funció que canvia la opacitat a una imatge
   **************************************************************************/
   private function imageSetOpacity( $imageSrc, $opacity ) {
     $width  = imagesx( $imageSrc );
     $height = imagesy( $imageSrc );
-    
+
     // Duplicate image and convert to TrueColor
     $imageDst = imagecreatetruecolor( $width, $height );
     imagealphablending( $imageDst, false );
     imagefill( $imageDst, 0, 0, imagecolortransparent( $imageDst ));
     imagecopy( $imageDst, $imageSrc, 0, 0, 0, 0, $width, $height );
-    
+
     // Set new opacity to each pixel
     for ( $x = 0; $x < $width; ++$x ) {
       for ( $y = 0; $y < $height; ++$y ) {
@@ -1345,10 +1317,10 @@ class TBase {
         }
       }
     }
-    
+
     return $imageDst;
   }
-  
+
   /**************************************************************************
     funció que esborra les unitats que no volem processar
   **************************************************************************/
@@ -1364,10 +1336,10 @@ class TBase {
       }
     }
     //echo "\n\nentrada delete units\n\n";
-    
+
     return json_encode($p, true);
   }
-  
+
   /**************************************************************************
     funció que returna la url de la unitat especificada
   **************************************************************************/
@@ -1381,60 +1353,26 @@ class TBase {
 
     protected function guildStats($unitsToFilter = [])
     {
-        $this->deleteOlderFiles(10800, "./cache/");
-
         $guild = $this->getInfoGuild();
+        $allyCodes = array_column($guild[0]["roster"], 'allyCode');
+        $infoPlayers = $this->getInfoPlayers($allyCodes);
 
-        $rosterCacheFile = "./cache/roster_" . $guild[0]["id"];
-        $roster          = null;
-        if (file_exists($rosterCacheFile)) {
-            $fileTime = filemtime($rosterCacheFile);
-
-            $fecha = new DateTime();
-            $fecha->modify('-3 hours');
-
-            if ($fileTime > $fecha->getTimestamp()) {
-                $data   = file_get_contents($rosterCacheFile);
-                $roster = json_decode($data, true);
-            }
-        }
-
-        if (is_null($roster)) {
-            $allyCodes = array_map(
-                function ($member) {
-                    return $member["allyCode"];
-                },
-                $guild[0]["roster"]
+        $rosterFiltered = [];
+        foreach ($infoPlayers as $player) {
+            $playerUnits = array_values(
+                array_filter(
+                    $player['roster'],
+                    function ($unit) use ($unitsToFilter) {
+                        return in_array($unit['defId'], $unitsToFilter);
+                    }
+                )
             );
-
-            $firstChunk  = array_slice($allyCodes, 0, count($allyCodes) / 2);
-            $secondChunk = array_slice($allyCodes, count($allyCodes) / 2);
-
-            $swgohHelpClient = new SwgohHelp([ $this->dataObj->swgohUser, $this->dataObj->swgohPass ]);
-
-            $firstChunkResponse  = $swgohHelpClient->fetchRoster(join(',', $firstChunk), $this->dataObj->language);
-            $secondChunkResponse = $swgohHelpClient->fetchRoster(join(',', $secondChunk), $this->dataObj->language);
-
-            $roster = array_merge(
-                json_decode($firstChunkResponse, true),
-                json_decode($secondChunkResponse, true)
-            );
-
-            file_put_contents($rosterCacheFile, json_encode($roster));
+            $rosterFiltered[] = [
+                'allyCode' => $player['allyCode'],
+                'name'     => $player['name'],
+                'roster'   => $playerUnits,
+            ];
         }
-
-        $rosterFiltered = array_map(
-            function ($roster) use ($unitsToFilter) {
-                return array_filter(
-                    $roster,
-                    function ($unitDefId) use ($unitsToFilter) {
-                        return in_array($unitDefId, $unitsToFilter);
-                    },
-                    ARRAY_FILTER_USE_KEY
-                );
-            },
-            $roster
-        );
 
         $url = "https://crinolo-swgoh.glitch.me/statCalc/api?flags=gameStyle,calcGP,withModCalc";
         $ch  = curl_init();
@@ -1449,7 +1387,7 @@ class TBase {
         $statsResponse = curl_exec($ch);
         curl_close($ch);
 
-        return json_decode($statsResponse, true);
+        return Items::fromString($statsResponse, [ 'decoder' => new ExtJsonDecoder(true) ]);
     }
 
     protected function playerStats($unitsToFilter = [])

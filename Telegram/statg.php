@@ -87,20 +87,19 @@ class TStatg extends TBase
         $statToCheck = self::CRINOLO_STAT_ALIAS[$this->stat];
 
         $toReport = [];
-        foreach ($guildStats as $memberRoster) {
-            $unit       = $memberRoster[$defId][0];
-            $finalStats = $unit['stats']['final'];
-            $statValue  = $finalStats[$statToCheck];
-
-            if ($statValue >= $this->threshold) {
-                continue;
+        foreach ($guildStats as $player) {
+            foreach ($player['roster'] as $playerUnit) {
+                $finalStats = $playerUnit['stats']['final'];
+                $statValue  = $finalStats[$statToCheck];
+                if ($statValue >= $this->threshold) {
+                    continue;
+                }
+                $toReport[] = [
+                    'playerName'   => $player['name'],
+                    'allyCode'     => $player['allyCode'],
+                    'currentValue' => $statValue
+                ];
             }
-
-            $toReport[] = [
-                'playerName'   => $unit['player'],
-                'allyCode'     => $unit['allyCode'],
-                'currentValue' => $statValue
-            ];
         }
 
         $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);

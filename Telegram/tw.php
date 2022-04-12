@@ -426,33 +426,32 @@ class TTW extends TBase {
     }
     
     // agafem info del gremi
-    $players = $this->getInfoGuildExtra();
-    
-    if ($unitId != "rogue") {
-      $tmp = array();
-      
-      // esborrem jugadors que no tinguin la unitat
-      foreach ($players as $key => $value) {
-        $found = false;
-        if (key_exists('roster', $value)){
-          foreach ($value['roster'] as $unit) {
-            if ($unit['defId'] == $unitId) {
-              $found = true;
-            }
-          }
+    $playersInfo = $this->getInfoGuildExtra();
+
+    $isRogueMode = $unitId == "rogue";
+
+    $players = [];
+    $guildRefId = null;
+    $guildName = null;
+    foreach ($playersInfo as $player) {
+        $guildRefId = $guildRefId ?: $player['guildRefId'];
+        $guildName  = $guildName ?: $player['guildName'];
+
+        $playerUnitIds = array_column($player['roster'], 'defId');
+        $hasUnit       = in_array($unitId, $playerUnitIds);
+        if (!$isRogueMode && !$hasUnit) {
+            continue;
         }
-        
-        if ($found) {
-          $tmp[$key] = $players[$key];  
-        }
-      }
-      
-      $players = $tmp;
-      $players = array_values($players);
+
+        $playerData             = [];
+        $playerData['name']     = $player['name'];
+        $playerData['allyCode'] = $player['allyCode'];
+
+        $players[$player['allyCode']] = $playerData;
     }
     
     // mirem que haguem trobat Id Guild  
-    if ($players[0]["guildRefId"] == "") {
+    if ($guildRefId == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
 
@@ -466,7 +465,7 @@ class TTW extends TBase {
     }
 
     // busquem registres
-    $sql  = "SELECT * FROM tw where guildRefId = '".$players[0]["guildRefId"]."' and unit = '".$unitId."'";
+    $sql  = "SELECT * FROM tw where guildRefId = '".$guildRefId."' and unit = '".$unitId."'";
     $res = $idcon->query( $sql );
     $sumOff = 0;
     if ($idcon->error) {
@@ -481,29 +480,24 @@ class TTW extends TBase {
     
     // recorrem registres omplin arrays
     while ($row = $res->fetch_assoc()) {
-      $found = false;
-      foreach ($players as $key => $player) {
-        if ($row['allyCode'] == $player['allyCode']) {
-          $found = true;
-          switch ($row['unittype']) {
-            case 'def':
-              array_push($arrDef, $player['name'].'-'.$player['allyCode']);
-              break;
-            case 'used':
-              array_push($arrUsed, $player['name'].'-'.$player['allyCode']);
-              break;
-            case 'off':
-              array_push($arrAtt, $player['name'].'-'.$player['allyCode'].' ('.$row['points'].')');
-              $sumOff = $sumOff + $row['points'];
-              break;
-            case 'rogue':
-              array_push($arrRogue, $player['name'].'-'.$player['allyCode'].' ('.$row['points'].')');
-              break;
-          }
-            
-          unset($players[$key]); 
-          break; 
-        }
+      $player = $players[$row['allyCode']] ?? null;
+      if (!$player) {
+          continue;
+      }
+      switch ($row['unittype']) {
+        case 'def':
+          $arrDef[] = $player['name'] . '-' . $player['allyCode'];
+          break;
+        case 'used':
+          $arrUsed[] = $player['name'] . '-' . $player['allyCode'];
+          break;
+        case 'off':
+          $arrAtt[] = $player['name'] . '-' . $player['allyCode'] . ' (' . $row['points'] . ')';
+          $sumOff   = $sumOff + $row['points'];
+          break;
+        case 'rogue':
+          $arrRogue[] = $player['name'] . '-' . $player['allyCode'] . ' (' . $row['points'] . ')';
+          break;
       }
     }
     
@@ -526,7 +520,7 @@ class TTW extends TBase {
     usort($arrNo, 'strnatcasecmp');    
     usort($arrRogue, 'strnatcasecmp');
 
-    $ret  = $this->translatedText("txtTw07", $players[array_key_first($players)]["guildName"]);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
+    $ret  = $this->translatedText("txtTw07", $guildName);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
     if ($this->alias != "rogue") {
       $ret .= $this->translatedText("txtTw08", TUnits::unitNameFromUnitId($unitId, $this->dataObj));  // "<b>Unit</b>: ".$this->alias."\n";
       $ret .= $this->translatedText("txtTw14", $this->alias);                   // "<b>Alias</b>: ".$this->alias."\n";
@@ -1961,6 +1955,7 @@ class TTW extends TBase {
 
     private function checkg()
     {
+        /*
         if (!$this->checkAllyCode($this->allyCode)) {
             return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
         }
@@ -1973,6 +1968,7 @@ class TTW extends TBase {
         $guildStats = $this->guildStats($unitsToLoadStats);
 
         return $responses;
+        */
     }
 
     private function loadGuildRequirements(string $guildId, ?string $teamAlias = null): GuildRequirements

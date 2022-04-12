@@ -1,24 +1,18 @@
 <?php
 
-$cacheDir     = './cache';
-$ttlInSeconds = 10800; // seconds
-
-if ($handle = opendir($cacheDir)) {
-    while (false !== ( $file = readdir($handle) )) {
-        if (is_dir($file)) {
-            continue;
-        }
-
-        if ($file === '.gitkeep') {
-            continue;
-        }
-
-        $fileLastModified = filemtime($cacheDir . '/' . $file);
-        if (( time() - $fileLastModified ) > $ttlInSeconds) {
-            unlink($cacheDir . '/' . $file);
+$now = new DateTimeImmutable();
+foreach (glob('./cache/*_*_*') as $filePath) {
+    $filename = basename($filePath);
+    $matches = [];
+    if (preg_match('/(.*)_(.*)_(.*)/', $filename, $matches)) {
+        var_dump($matches);
+        [ $_, $type, $key, $timestamp ] = $matches;
+        $timestampDate = (new DateTimeImmutable())->setTimestamp($timestamp);
+        $stillValid = $timestampDate > $now;
+        if (!$stillValid) {
+            unlink($filePath);
         }
     }
-    closedir($handle);
 }
 
 http_response_code(200);

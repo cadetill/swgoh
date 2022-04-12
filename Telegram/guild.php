@@ -345,10 +345,10 @@ class TGuild extends TBase {
     mostra els mods dels membres del gremi
   ****************************************************/
   private function getMods() {
-    $repository = new SwgohHelpRepository($this->dataObj->swgohUser, $this->dataObj->swgohPass, $this->dataObj->language);
-    $guild = $repository->guild(intval($this->allyCode));
+    // $repository = new SwgohHelpRepository($this->dataObj->swgohUser, $this->dataObj->swgohPass, $this->dataObj->language);
+    $guild = $this->getInfoGuild();
     $allyCodes = array_column($guild[0]["roster"], 'allyCode');
-    $players = $repository->playersForMods($allyCodes);
+    $players = $this->getInfoPlayers($allyCodes);
 
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "") {
