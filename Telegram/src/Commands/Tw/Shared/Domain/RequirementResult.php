@@ -10,7 +10,7 @@ class RequirementResult
     public function __construct(bool $complain, string $report)
     {
         $this->complain = $complain;
-        $this->report   = htmlentities($report);
+        $this->report   = str_replace('<', '&lt;', $report);
     }
 
     public function complain(): bool
