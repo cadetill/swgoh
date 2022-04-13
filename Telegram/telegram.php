@@ -37,6 +37,7 @@ stats - stats for a list of units
 require __DIR__.'/vendor/autoload.php';
 
 use Im\Shared\Infrastructure\SwgohHelpRepository;
+use Longman\TelegramBot\Request;
 
 http_response_code(200);
   fastcgi_finish_request();
@@ -73,6 +74,35 @@ http_response_code(200);
     $data = new TData();
         processRequest($data);
 
+    $memoryInMb = intval(memory_get_peak_usage(true) / 1024 / 1024);
+
+    if ($memoryInMb > 50) {
+        sendPerformanceReport($data, $memoryInMb);
+    }
+
+    function sendPerformanceReport(TData $data, float $memoryInMb)
+    {
+        $reportTemplate = <<<EOF
+            <b>Memory Performance</b>:
+               - Command: <code>%s</code>
+               - Memory: <code>%s Mb</code>
+        EOF;
+
+        $reportMessage = sprintf(
+            $reportTemplate,
+            join('|', [ $data->username, $data->firstname, $data->allycode ]),
+            trim($data->message),
+            $memoryInMb
+        );
+
+        Request::sendMessage(
+            [
+                'chat_id'             => $data->debugChatId,
+                'text'                => $reportMessage,
+                'parse_mode'          => 'html',
+            ]
+        );
+    }
 /***********************************************************************************************************************************************************
   Funcions de caràcter general
 ***********************************************************************************************************************************************************/
