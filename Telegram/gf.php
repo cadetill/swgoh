@@ -131,92 +131,100 @@ class TGF extends TBase {
 
     // creem array de les unitats
     $row = $res->fetch_assoc();
-    $units = explode(',', $row['units']);
+    $units = is_null($row) ? [] : explode(',', $row['units']);
     
     // tanquem connexió a la base de dades
     $idcon->close();
-    
-    // agafem informació general (primer missatge)
-    $info = array();
-    foreach ($players as $player) {
-      $data = $this->iniPlayerArray();
-      $this->processPlayer($player, $data);
-      $info[$player["name"]] = array (
-                                      'r7' => str_pad(intval($data['r7']), 3, " ", STR_PAD_LEFT),
-                                      'relics' => str_pad(intval($data['relics']), 3, " ", STR_PAD_LEFT),
-                                      'g13' => str_pad(intval($data['g13']), 3, " ", STR_PAD_LEFT),
-                                      'mods6' => str_pad(intval($data['mods6']), 3, " ", STR_PAD_LEFT),
-                                      'mods' => str_pad(intval(($data['mods10']+$data['mods15']+$data['mods20']+$data['mods25'])), 3, " ", STR_PAD_LEFT),
-                                      'name' => $player["name"]
-                                     );
-    }
 
+      $unitsData = [];
+      foreach ($units as $unit) {
+          $unitName             = TUnits::unitNameFromUnitId($unit, $this->dataObj);
+          $unitsData[$unitName] = [ 'unitId' => $unit, 'unitName' => $unitName, 'players' => [] ];
+      }
     
+      // agafem informació general (primer missatge)
+      $info = [];
+      foreach ($players as $player) {
+          $data = $this->iniPlayerArray();
+          $this->processPlayer($player, $data);
+          $info[$player["name"]] = [
+              'r7'     => str_pad(intval($data['r7']), 3, " ", STR_PAD_LEFT),
+              'relics' => str_pad(intval($data['relics']), 3, " ", STR_PAD_LEFT),
+              'g13'    => str_pad(intval($data['g13']), 3, " ", STR_PAD_LEFT),
+              'mods6'  => str_pad(intval($data['mods6']), 3, " ", STR_PAD_LEFT),
+              'mods'   => str_pad(
+                  intval(( $data['mods10'] + $data['mods15'] + $data['mods20'] + $data['mods25'] )),
+                  3,
+                  " ",
+                  STR_PAD_LEFT
+              ),
+              'name'   => $player["name"],
+          ];
+
+          foreach ($unitsData as $unitName => $unitData) {
+              $unitsData[$unitName]['players'][$player["name"]] = [
+                  'gear'  => "---",
+                  'zetas' => '',
+                  'name'  => $player["name"],
+              ];
+              foreach ($player["roster"] as $u) {
+                  if (strcasecmp($unitsData['unitId'], $u["defId"]) != 0) {
+                      continue;
+                  }
+
+                  // gear
+                  if ($u["relic"]["currentTier"] != 1) {
+                      $unitsData[$unitName]['players'][$player["name"]]['gear'] = str_pad('r'.intval($u["relic"]["currentTier"]-2), 3, " ", STR_PAD_LEFT);
+                  }
+                  else {
+                      $unitsData[$unitName]['players'][$player["name"]]['gear'] = str_pad('g'.intval($u["gear"]), 3, " ", STR_PAD_LEFT);
+                  }
+
+                  // zetas
+                  usort($u['skills'], function($a, $b) {
+                      return $a['id'] <=> $b['id'];
+                  });
+                  foreach($u['skills'] as $skill) {
+                      if (!$skill["isZeta"]) {
+                          continue;
+                      }
+
+                      $unitsData[$unitName]['players'][$player["name"]]['zetas'] .= " ";
+
+                      if ($skill["tier"] != $skill["tiers"]) {
+                          continue;
+                      }
+
+                      if (strpos($skill["id"], "unique") !== false) {
+                          $unitsData[$unitName]['players'][$player["name"]]['zetas'][strlen($unitsData[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'u';
+                      }
+                      else {
+                          if (strpos($skill["id"], "leader") !== false) {
+                              $unitsData[$unitName]['players'][$player["name"]]['zetas'][strlen($unitsData[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'l';
+                          }
+                          else {
+                              if (strpos($skill["id"], "special") !== false) {
+                                  $unitsData[$unitName]['players'][$player["name"]]['zetas'][strlen($unitsData[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'e';
+                              }
+                              else {
+                                  $unitsData[$unitName]['players'][$player["name"]]['zetas'][strlen($unitsData[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'b';
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+
+
     // agafem informació de les unitats
-    $uarr = array();
+    $unitsData = [];
     foreach ($units as $unit) {
       $unitName = TUnits::unitNameFromUnitId($unit, $this->dataObj);
-      $uarr[$unitName] = array(
-                               'unitName' => $unitName,
-                               'players' => array()
-                              );
-      
-      // recorrem tots els jugadors
-      foreach ($players as $player) {
-        $uarr[$unitName]['players'][$player["name"]] = array(
-                                                             'gear' => "---",
-                                                             'zetas' => '',
-                                                             'name' => $player["name"]
-                                                            );
-        // recorrem les unitats del jugador buscant la que toca
-        foreach ($player["roster"] as $u) {
-          if (strcasecmp($unit, $u["defId"]) != 0) {
-            continue;
-          }
-          
-          // gear
-          if ($u["relic"]["currentTier"] != 1) {
-            $uarr[$unitName]['players'][$player["name"]]['gear'] = str_pad('r'.intval($u["relic"]["currentTier"]-2), 3, " ", STR_PAD_LEFT);
-          }
-          else {
-            $uarr[$unitName]['players'][$player["name"]]['gear'] = str_pad('g'.intval($u["gear"]), 3, " ", STR_PAD_LEFT);
-          }
-          
-          // zetas
-          usort($u['skills'], function($a, $b) {
-            return $a['id'] <=> $b['id'];
-          });
-          foreach($u['skills'] as $skill) {
-            if (!$skill["isZeta"]) {
-              continue;
-            }
-      
-            $uarr[$unitName]['players'][$player["name"]]['zetas'] .= " ";
-      
-            if ($skill["tier"] != $skill["tiers"]) {
-              continue;
-            }
-      
-            if (strpos($skill["id"], "unique") !== false) {
-              $uarr[$unitName]['players'][$player["name"]]['zetas'][strlen($uarr[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'u';
-            }
-            else {
-              if (strpos($skill["id"], "leader") !== false) {
-                $uarr[$unitName]['players'][$player["name"]]['zetas'][strlen($uarr[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'l';
-              }
-              else {
-                if (strpos($skill["id"], "special") !== false) {
-                  $uarr[$unitName]['players'][$player["name"]]['zetas'][strlen($uarr[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'e';
-                }
-                else {
-                  $uarr[$unitName]['players'][$player["name"]]['zetas'][strlen($uarr[$unitName]['players'][$player["name"]]['zetas']) - 1] = 'b';
-                }
-              }
-            }
-          }  // foreach zetas
+      $unitsData[$unitName] = [ 'unitName' => $unitName, 'players' => [] ];
 
-        } // foreach roster
-      } // foreach players
+      // recorrem tots els jugadors
+
     } // forearch units
 
     
@@ -230,19 +238,27 @@ class TGF extends TBase {
     $ret[0]  = $this->translatedText("txtGf01", $guild[0]["name"]);             // "<b>Guild</b>: ".$this->guild[0]["name"]."\n";
     $ret[0] .= $this->translatedText("txtGf02");                                // "General Information \n\n";
     $ret[0] .= "<pre>";
-    $ret[0] .= " R7|Rel|G13|M6 |M10 \n";
+    $ret[0] .= " R7| Rel|G13|  M6| M10 \n";
     foreach ($info as $player) {
-      $ret[0] .= $player['r7']."|".$player['relics']."|".$player['g13']."|".$player['mods6']."|".$player['mods']." - ".$player['name']."\n";
+      $ret[0] .= sprintf(
+          '%s|%s|%s|%s|%s - %s',
+          str_pad($player['r7'], 3, ' ', STR_PAD_LEFT),
+          str_pad($player['relics'], 4, ' ', STR_PAD_LEFT),
+          str_pad($player['g13'], 3, ' ', STR_PAD_LEFT),
+          str_pad($player['mods6'], 4, ' ', STR_PAD_LEFT),
+          str_pad($player['mods'], 4, ' ', STR_PAD_LEFT),
+          $player['name']."\n"
+      );
     }
     $ret[0] .= "</pre>";
     $ret[0] .= "\n";
     //echo "\n\n\n";print_r($uarr);echo "\n\n\n";
     // imprimim 1 missatge per unitat
-    usort($uarr, function($a, $b) {
+    usort($unitsData, function($a, $b) {
        return strtoupper($a['unitName']) <=> strtoupper($b['unitName']);
     });
     $pos = 0;
-    foreach ($uarr as $unit) {
+    foreach ($unitsData as $unit) {
       $pos++;
       $ret[$pos]  = $this->translatedText("txtGf01", $guild[0]["name"]);        // "<b>Guild</b>: ".$this->guild[0]["name"]."\n";
       $ret[$pos] .= $unit['unitName']."\n\n";
