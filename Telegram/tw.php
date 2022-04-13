@@ -321,11 +321,11 @@ class TTW extends TBase {
     $sql = "delete from twconf where guildRefId = '".$player[0]["guildRefId"]."'";
     $idcon->query( $sql );
     if ($idcon->error) {
-      return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.";
+        return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.";
     } else {
         $guild = $this->getInfoGuild();
         $this->getInfoGuildExtra($guild);
-      return $this->translatedText("txtTw01", $player[0]["guildName"]);      // "TW for ".$player[0]["guildName"]." has been initialized\n\n";
+        return $this->translatedText("txtTw01", $player[0]["guildName"]);      // "TW for ".$player[0]["guildName"]." has been initialized\n\n";
     }
     $idcon->close();
   }
@@ -1894,8 +1894,6 @@ class TTW extends TBase {
 
         $player = $this->getInfoPlayer();
 
-        $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
-
         $stats = $this->loadGuildRequirements($this->dataObj->guildId, $teamAlias);
         $unitsToLoadStats = $stats->unitIds();
 
@@ -1905,9 +1903,18 @@ class TTW extends TBase {
 
         $playerRosterWithStats = $this->playerStats($unitsToLoadStats);
 
+        $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
+        $now = new DateTimeImmutable();
+        $updated = (new DateTimeImmutable())->setTimestamp(intval($player[0]['updated'] / 1000));
+        $nextUpdate = $updated->add(new DateInterval('PT4H'));
+        $ago = $updated->diff($now)->format('%Hh %Im');
+        $next = $now->diff($nextUpdate)->format('%Hh %Im');
+        $footer = $this->translatedText('txtTwCheck3', [ $ago, $next ]);
+
         return [
             $header,
-            ...$stats->checkPlayer($playerRosterWithStats, $onlyPending)
+            ...$stats->checkPlayer($playerRosterWithStats, $onlyPending),
+            $footer
         ];
     }
 
@@ -2026,25 +2033,6 @@ class TTW extends TBase {
         $insertSql = "INSERT INTO guild_requirements (guildRefId, alias, definition) VALUES ('%s', '%s', '%s')";
         $insertQuery = sprintf($insertSql, $guildId, $teamAlias, $definition);
         $this->fetchFromDb($insertQuery);
-    }
-
-    private function unitsInStats($stats)
-    {
-        $unitIds = [];
-        foreach ($stats as $group) {
-            if ($order = $group['order'] ?? null) {
-                $unitIds = array_merge($unitIds, $order);
-            }
-            if ($checks = $group['checks'] ?? null) {
-                foreach ($checks as $check) {
-                    $unitIds[] = $check['unit_id'];
-                    if ($comparision = $check['calc'] ?? null) {
-                        $unitIds[] = $comparision['unit_id'];
-                    }
-                }
-            }
-        }
-        return array_unique($unitIds);
     }
 
     private function fetchFromDb(string $query)
