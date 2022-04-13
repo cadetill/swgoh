@@ -50,7 +50,7 @@ class ExceptionHandler
                - Command: <code>%s</code>
                - Message: <code>%s</code>
                - Trace: 
-            <code>%s</code>
+        <code>%s</code>
         EOF;
 
         $reportMessage = sprintf(

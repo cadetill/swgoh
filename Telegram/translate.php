@@ -500,6 +500,7 @@ class TTranslate {
     $this->translated["ENG_US"]["txtStatg1"] = "Member with <b>%s</b> <b>%s</b> under <b>%s</b>:";
 
     $this->translated["ENG_US"]["txtTwCheck1"] = "[%s][%s] TW Check\n\n";
+    $this->translated["ENG_US"]["txtTwCheck2"] = "There are no check for your guild.\n\n";
     $this->translated["ENG_US"]["txtTwCheckShow1"] = "[%s][%s] List of TW Check\n\n";
     $this->translated["ENG_US"]["txtTwCheckDel1"] = "[%s][%s] TW Check deleted\n\n";
     $this->translated["ENG_US"]["txtTwCheckSave1"] = "[%s][%s] TW Check saved\n\n";
@@ -960,6 +961,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtStatg1"] = "Miembros con <b>%s</b> con <b>%s</b> por debajo de <b>%s</b>:";
 
     $this->translated["SPA_XM"]["txtTwCheck1"] = "[%s][%s] GT Check\n\n";
+    $this->translated["SPA_XM"]["txtTwCheck2"] = "No hay comprobaciones para tu gremio.\n\n";
     $this->translated["SPA_XM"]["txtTwCheckShow1"] = "[%s][%s] Lista de comprobaciones para GT\n\n";
     $this->translated["SPA_XM"]["txtTwCheckDel1"] = "[%s][%s] Comprobación de GT eliminada\n\n";
     $this->translated["SPA_XM"]["txtTwCheckSave1"] = "[%s][%s] Comprobación de GT guardada\n\n";

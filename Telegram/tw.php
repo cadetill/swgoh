@@ -1892,6 +1892,10 @@ class TTW extends TBase {
         $stats = $this->loadGuildRequirements($this->dataObj->guildId, $teamAlias);
         $unitsToLoadStats = $stats->unitIds();
 
+        if (count($unitsToLoadStats) === 0) {
+            return $this->translatedText('txtTwCheck2');
+        }
+
         $playerRosterWithStats = $this->playerStats($unitsToLoadStats);
 
         return [
