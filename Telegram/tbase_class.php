@@ -1237,6 +1237,9 @@ class TBase {
 
     $first = true;
     foreach ($response as $res) {
+        if (empty($res)) {
+            continue;
+        }
       if (($first) && ($reply)) {
         $url = $this->dataObj->website.'/sendMessage?chat_id='.$this->dataObj->chatId.'&reply_to_message_id='.$this->dataObj->messageId.'&parse_mode=HTML&text='.urlencode($res).$keyboard;
         $first = false;

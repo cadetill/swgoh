@@ -29,8 +29,9 @@ class TInfo extends TBase {
     executa el subcomando
   ****************************************************/
   public function execCommand() {
-    if ($this->error != "")
-      return $this->getHelp("info", $this->error);
+    if ($this->error != "") {
+        return $this->getHelp("info", $this->error);
+    }
   
     $initialTime = microtime(true);
     
@@ -62,15 +63,17 @@ class TInfo extends TBase {
   private function getInfo() {    
     // agafem unitats que ha de controlar el comando
     $units = TUnits::unitsForCommand($this->dataObj->guildId, 'units', 'info', $this->dataObj);
-    if (!is_array($units))
-      $units = array();
-    //print_r($units);
+    if (!is_array($units)) {
+        $units = [];
+    }
+      //print_r($units);
 
     $player = $this->getInfoPlayerExtra();
     //print_r($player);
     // mirem que haguem trobat Id Guild
-    if ($player[0]["id"] == "")
-      return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+    if ($player[0]["id"] == "") {
+        return $this->translatedText("error6");
+    }
   
     $data = $this->iniPlayerArray();
     $this->processPlayer($player[0], $data, $units);
@@ -152,7 +155,9 @@ class TInfo extends TBase {
     $ret .= "\n";
     $ret .= $this->translatedText("last_update", $data["updated"]);                                // "<i>Last update: ".$data["updated"]."</i>\n";
 
-    $this->image = $this->genImageCarac($data["units"]);
+    if (count($data['units']) > 0) {
+      $this->image = $this->genImageCarac($data["units"]);
+    }
 
     return $ret;
   }  

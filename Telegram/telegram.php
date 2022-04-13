@@ -325,6 +325,9 @@ function sendGetMessage($data, $response, $reply = true, $keyboard = NULL) {
 
     $first = true;
     foreach ($response as $res) {
+        if (empty($res)) {
+            continue;
+        }
         if ($first && $reply) {
             $url = $data->website.'/sendMessage?chat_id='.$data->chatId.'&reply_to_message_id='.$data->messageId.'&parse_mode=HTML&text='.urlencode($res).$teclado;
             $first = false;
