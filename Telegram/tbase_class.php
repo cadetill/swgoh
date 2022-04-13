@@ -9,6 +9,9 @@ class TBase {
   public $trans;
   public $error = "";
 
+  private $cachePrefix = '';
+  private $cacheTtl = null;
+
   private $TW_OMICRONS = [
       'PHASMA'     => [
           [
@@ -267,6 +270,12 @@ class TBase {
         return false;
     }
 
+    protected function configCache(string $prefix, DateInterval $ttl)
+    {
+        $this->cachePrefix = $prefix;
+        $this->cacheTtl = $ttl;
+    }
+
   /****************************************************
     recupera l'ajuda de la funció especificada
   ****************************************************/
@@ -307,7 +316,8 @@ class TBase {
 
       return $player;
     }
-    private function getCacheStream(string $type, string $key)
+
+    private function getCachePath(string $type, string $key)
     {
         $blobPattern = sprintf('./cache/%s_%s_*', $type, $key);
         $pattern = sprintf('/%s_%s_(.*)/', $type, $key);
@@ -320,13 +330,26 @@ class TBase {
                 $timestampDate = (new DateTimeImmutable())->setTimestamp($timestamp);
                 $stillValid = $timestampDate > $now;
                 if ($stillValid) {
-                    return fopen($filePath, 'r');
-                } else {
-                    // ToDo: Move to fastcgi_finish_request()
-                    unlink($filePath);
+                    return $filePath;
                 }
             }
         }
+        return null;
+    }
+    private function getCacheStream(string $type, string $key)
+    {
+        $path = $this->getCachePath($type, $key);
+        if (!is_null($path)) {
+            return fopen($path, 'r');
+        }
+
+        if ($this->cachePrefix) {
+            $path = $this->getCachePath($this->cachePrefix.$type, $key);
+            if (!is_null($path)) {
+                return fopen($path, 'r');
+            }
+        }
+
         return null;
     }
 
@@ -340,14 +363,16 @@ class TBase {
         return stream_get_contents($resource);
     }
 
-    private function setCacheContent(string $type, string $key, string $content, int $validStart, DateTime $ttl = null)
+    private function setCacheContent(string $type, string $key, string $content, int $validStart, DateInterval $ttl = null)
     {
         // ToDo: Move to fastcgi_finish_request()
-        $ttl = $ttl ?: new DateInterval('PT4H');
+        $ttl = $this->cacheTtl
+            ?: $ttl
+            ?: new DateInterval('PT4H');
         $updatedDate = (new DateTimeImmutable())->setTimestamp($validStart);
         $liveUntilDate = $updatedDate->add($ttl);
         $liveUntil = $liveUntilDate->getTimestamp();
-        $filename = sprintf('./cache/%s_%s_%s', $type, $key, $liveUntil);
+        $filename = sprintf('./cache/%s_%s_%s', $this->cachePrefix.$type, $key, $liveUntil);
         if (!file_exists($filename)) {
             file_put_contents($filename, $content);
         }
@@ -455,8 +480,8 @@ class TBase {
         $guildData = $swgoh->fetchGuild($allyCode, $this->dataObj->language);
         $guild   = json_decode($guildData, true);
         $guildId = $guild[0]["id"];
-        $this->setCacheContent('guild', $allyCode, $guildData, intval($guild[0]['updated'] / 1000));
-        $this->setCacheContent('guild', $guildId, $guildData, intval($guild[0]['updated'] / 1000));
+        $this->setCacheContent('guild', $allyCode, $guildData, intval($guild[0]['updated'] / 1000), new DateInterval('PT6H'));
+        $this->setCacheContent('guild', $guildId, $guildData, intval($guild[0]['updated'] / 1000), new DateInterval('PT6H'));
 
         return $guild;
     }

@@ -39,6 +39,11 @@ class TTW extends TBase {
   public function execCommand() {
     $initialTime = microtime(true);
 
+    $normalCacheSubcommands = [ 'check', 'checkg' ];
+    if (!in_array($this->subcomand, $normalCacheSubcommands)) {
+        $this->configCache('tw', new DateInterval('PT3D'));
+    }
+
     switch ($this->subcomand) {
       case 'new':
       case 'start':
@@ -315,11 +320,13 @@ class TTW extends TBase {
     $idcon->query( $sql );
     $sql = "delete from twconf where guildRefId = '".$player[0]["guildRefId"]."'";
     $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error) {
       return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.";
-    else 
+    } else {
+        $guild = $this->getInfoGuild();
+        $this->getInfoGuildExtra($guild);
       return $this->translatedText("txtTw01", $player[0]["guildName"]);      // "TW for ".$player[0]["guildName"]." has been initialized\n\n";
-    
+    }
     $idcon->close();
   }
 
