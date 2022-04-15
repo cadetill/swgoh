@@ -90,7 +90,6 @@ http_response_code(200);
 
         $reportMessage = sprintf(
             $reportTemplate,
-            join('|', [ $data->username, $data->firstname, $data->allycode ]),
             trim($data->message),
             $memoryInMb
         );
