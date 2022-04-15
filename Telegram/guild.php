@@ -116,16 +116,14 @@ class TGuild extends TBase {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
     
-    if (!is_array($players)) {
-      return $players;
-    }
-    
     $arenachar = 0;
     $arenaships = 0;
     $gptotal = 0;
     $gpchar = 0;
     $gpships = 0;
-    foreach ($players as $player) { 
+    $countPlayers = 0;
+    foreach ($players as $player) {
+      $countPlayers++;
       $arenachar = $arenachar + $player["arena"]["char"]["rank"];
       $arenaships = $arenaships + $player["arena"]["ship"]["rank"];
       foreach ($player["roster"] as $unit) {
@@ -138,10 +136,10 @@ class TGuild extends TBase {
         }
       }
     }
-    $arenachar = $arenachar / count($players);
-    $arenaships = $arenaships / count($players);
+    $arenachar = $arenachar / $countPlayers;
+    $arenaships = $arenaships / $countPlayers;
     
-    $res .= $this->translatedText("txtGuild01", $guild[0]["name"]);             // "<b>Guild</b>: ".$guild[0]["name"]."\n";
+    $res = $this->translatedText("txtGuild01", $guild[0]["name"]);             // "<b>Guild</b>: ".$guild[0]["name"]."\n";
     $res .= $this->translatedText("txtGuild02", $guild[0]["members"]);          // "<b>Members</b>: ".$guild[0]["members"]."\n";
     $res .= $this->translatedText("txtGuild03", $guild[0]["message"]);          // "<b>Internal message</b>: ".$guild[0]["message"]."\n";
     $res .= "<b>----------------------------------------</b>\n";
