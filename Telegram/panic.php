@@ -262,6 +262,7 @@ class TPanic extends TBase {
     }
     
     //print_r($roster);
+    //echo json_encode($roster);
     /*
     $roster = array();
     foreach ($player[0]['roster'] as $unit) {

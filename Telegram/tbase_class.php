@@ -881,9 +881,9 @@ class TBase {
     imagefill($dest_image, 0, 0, $white_background);
 
     // agafem dades de swgoh.gg per saber "alignment" i "url imatge"
-    $charsJson = file_get_contents($this->dataObj->chars_gg);
+    $charsJson = file_get_contents($this->dataObj->chars_gg, false, stream_context_create([ 'http' => [ 'method' => 'GET', 'user_agent' => 'aaa' ] ]));
     $chars = json_decode($charsJson, true);
-    $fleetJson = file_get_contents($this->dataObj->fleet_gg);
+    $fleetJson = file_get_contents($this->dataObj->fleet_gg, false, stream_context_create([ 'http' => [ 'method' => 'GET', 'user_agent' => 'aaa' ] ]));
     $units = array_merge($chars, json_decode($fleetJson, true));
 
     // recorrem unitats i les superposem a la imatge
@@ -1023,9 +1023,9 @@ class TBase {
     }
 
     // agafem dades de swgoh.gg per saber "alignment" i "url imatge"
-    $charsJson = file_get_contents($this->dataObj->chars_gg);
+    $charsJson = file_get_contents($this->dataObj->chars_gg, false, stream_context_create([ 'http' => [ 'method' => 'GET', 'user_agent' => 'aaa' ] ]));
     $chars = json_decode($charsJson, true);
-    $fleetJson = file_get_contents($this->dataObj->fleet_gg);
+    $fleetJson = file_get_contents($this->dataObj->fleet_gg, false, stream_context_create([ 'http' => [ 'method' => 'GET', 'user_agent' => 'aaa' ] ]));
     $units = array_merge($chars, json_decode($fleetJson, true));
 
     // creem imatge
@@ -1227,8 +1227,8 @@ class TBase {
     }
 
     $tempName = tempnam('./tmp/', 'FINAL_');
+//    echo '<br><br><br>'.'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png'.'<br><br><br>';
     imagepng($dest_image, $tempName.'.png');
-    //echo '<br><br><br>'.'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png'.'<br><br><br>';
     return 'https://www.cadetill.com/swgoh/bot/tmp/'.basename($tempName).'.png';
   }
 
