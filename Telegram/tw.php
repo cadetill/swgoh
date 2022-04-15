@@ -41,7 +41,7 @@ class TTW extends TBase {
 
     $normalCacheSubcommands = [ 'check', 'checkg' ];
     if (!in_array($this->subcomand, $normalCacheSubcommands)) {
-        $this->configCache('tw', new DateInterval('PT3D'));
+        $this->configCache('tw', new DateInterval('P3D'));
     }
 
     switch ($this->subcomand) {
@@ -1327,7 +1327,7 @@ class TTW extends TBase {
                                    'allyCode' => $row['allyCode'], 
                                    'off' => 0, 
                                    'points' => 0, 
-                                   'maxpoints' => 0, 
+                                   'maxpoints' => 0,
                                    'rogues' => 0, 
                                    'percent' => 0
                                   );
@@ -1336,18 +1336,20 @@ class TTW extends TBase {
         $arr[$row['name']]['points'] = $arr[$row['name']]['points'] + $row['points'] + $this->extraPointsToSum($row['unit'], $row['points']);
         $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1; 
       
-        if (TUnits::isAShip($row['unit'], $this->dataObj)) 
-          $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
-        else
-          $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 20;
+        if (TUnits::isAShip($row['unit'], $this->dataObj)) {
+            $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
+        } else {
+            $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 20;
+        }
       } 
-      else 
-        $arr[$row['name']]['rogues'] = $arr[$row['name']]['rogues'] + $row['points'];
+      else {
+          $arr[$row['name']]['rogues'] = $arr[$row['name']]['rogues'] + $row['points'];
+      }
     }	
       
     // calculem el %
     foreach ($arr as $key => $data) {
-      $arr[$key]['percent'] = number_format(($data['points'] * 100)/$data['maxpoints'], 2);
+      $arr[$key]['percent'] = number_format(($data['points'] * 100) / $data['maxpoints'], 2);
     }
     
     // guardem 1 registre per persona  
