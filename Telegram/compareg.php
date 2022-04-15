@@ -29,8 +29,9 @@ class TCompareg extends TBase {
     executa el subcomando
   ****************************************************/
   public function execCommand() {
-    if ($this->error != "")
-      return $this->getHelp("compareg", $this->error);
+    if ($this->error != "") {
+        return $this->getHelp("compareg", $this->error);
+    }
   
     $initialTime = microtime(true);
 
@@ -38,9 +39,10 @@ class TCompareg extends TBase {
     $sql = "insert into queue (insdate, message_id, date) VALUES ('".$timestamp."', '".$this->dataObj->messageId."', '".$this->dataObj->messageDate."')";
     // echo $sql;
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
-      return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-    $idcon->query( $sql );
+    if ($idcon->connect_error) {
+        return $this->translatedText("error4");
+    }
+    $idcon->query($sql);
 
     $res = $this->compareGuilds();
 
@@ -71,14 +73,15 @@ class TCompareg extends TBase {
         $units = [];
     }
 
-      $allyCodes = explode(',', $this->allyCode);
+    $allyCodes = explode(',', $this->allyCode);
     // busquem info dels gremis
-    $g1 = $this->getInfoGuild( $allyCodes[0] );
-    $g2 = $this->getInfoGuild( $allyCodes[1] );
+    $g1 = $this->getInfoGuild($allyCodes[0]);
+    $g2 = $this->getInfoGuild($allyCodes[1]);
 
     // mirem que haguem trobat Id Guild
-    if ($g1[0]["id"] == "")
-      return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+    if ($g1[0]["id"] == "") {
+        return $this->translatedText("error6");
+    }
    
     // generem string amb els AllyCode dels jugadors dels gremis
     $roster1 = array_column($g1[0]["roster"], 'allyCode');

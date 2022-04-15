@@ -11,17 +11,20 @@ class TRegister extends TBase {
      
     switch (count($params)) {
       case 2:
-        if (!$this->checkAllyCode($params[1]))
-          $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        if (!$this->checkAllyCode($params[1])) {
+            $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        }
         $this->allyCode = $params[1];
         break;
       case 3:
-        if (!$this->checkAllyCode($params[1]))
-          $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        if (!$this->checkAllyCode($params[1])) {
+            $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        }
         $this->allyCode = $params[1];
         $this->lang = $params[2];
-        if (!in_array($this->lang, $this->langs))
-          $this->error = "Bad selected language. See help for more info.\n\n\n";
+        if (!in_array($this->lang, $this->langs)) {
+            $this->error = "Bad selected language. See help for more info.\n\n\n";
+        }
         break;
       default:
         $this->error = $this->translatedText("error1"); // Bad request. See help: \n\n
@@ -32,12 +35,14 @@ class TRegister extends TBase {
     realitza el registre d'un usuari
   ****************************************************/
   public function doRegister() {
-    if ($this->error != "")
-      return $this->getHelp("register", $this->error);
+    if ($this->error != "") {
+        return $this->getHelp("register", $this->error);
+    }
   
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
-      return "Ooooops! An error has occurred saving data.";
+    if ($idcon->connect_error) {
+        return "Ooooops! An error has occurred saving data.";
+    }
       
     $this->lang = strtoupper($this->lang);
       
