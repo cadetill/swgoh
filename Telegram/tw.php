@@ -484,6 +484,8 @@ class TTW extends TBase {
     $arrDef = array();
     $arrUsed = array();
     $arrRogue = array();
+
+    $allyCodeThatUsed = [];
     
     // recorrem registres omplin arrays
     while ($row = $res->fetch_assoc()) {
@@ -506,16 +508,17 @@ class TTW extends TBase {
           $arrRogue[] = $player['name'] . '-' . $player['allyCode'] . ' (' . $row['points'] . ')';
           break;
       }
+      $allyCodeThatUsed[] = $player['allyCode'];
     }
     
     $arrNo = array();
 
     foreach ($players as $player) {
-      if (!in_array($player['allyCode'], $arrNoReg)) {
+      if (!in_array($player['allyCode'], $allyCodeThatUsed)) {
         $sql  = "SELECT * FROM users where allycode = '".$player['allyCode']."' limit 1";
         $res = $idcon->query( $sql );
         $row = $res->fetch_assoc() ?? [];
-        array_push($arrNo, '<code>'.$player['name'].'-'.$player['allyCode'].'</code> @'.($row['username'] ?? ''));
+        $arrNo[] = '<code>' . $player['name'] . '-' . $player['allyCode'] . '</code> @' . ( $row['username'] ?? '' );
       }
     }
     
@@ -551,12 +554,13 @@ class TTW extends TBase {
         $tmp2 .= $val."\n";
       }
       $maxPoints = count($arrAtt) * $pointsBattle;
-      if ($maxPoints == 0)
-        $ret .= $this->translatedText("txtTw11", Array(count($arrAtt), $sumOff, 0, $tmp2));    // "<b>Used in offense</b>: ".count($arrAtt)." (".$sumOff." - ".number_format(($sumOff * 100) / $maxPoints, 2)."%)\n<pre>".$tmp2."</pre>\n";
-      else
-        $ret .= $this->translatedText("txtTw11", Array(count($arrAtt), $sumOff, number_format(($sumOff * 100) / $maxPoints, 2), $tmp2));    // "<b>Used in offense</b>: ".count($arrAtt)." (".$sumOff." - ".number_format(($sumOff * 100) / $maxPoints, 2)."%)\n<pre>".$tmp2."</pre>\n";
-            
-      $tmp = "";
+      if ($maxPoints == 0) {
+          $ret .= $this->translatedText("txtTw11", [ count($arrAtt), $sumOff, 0, $tmp2 ]);    // "<b>Used in offense</b>: ".count($arrAtt)." (".$sumOff." - ".number_format(($sumOff * 100) / $maxPoints, 2)."%)\n<pre>".$tmp2."</pre>\n";
+      } else {
+          $ret .= $this->translatedText("txtTw11", [ count($arrAtt), $sumOff, number_format(( $sumOff * 100 ) / $maxPoints, 2), $tmp2 ]);    // "<b>Used in offense</b>: ".count($arrAtt)." (".$sumOff." - ".number_format(($sumOff * 100) / $maxPoints, 2)."%)\n<pre>".$tmp2."</pre>\n";
+      }
+
+        $tmp = "";
       foreach ($arrDef as $val) {
         $tmp .= $val."\n";
       }
