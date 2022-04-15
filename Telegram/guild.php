@@ -166,11 +166,9 @@ class TGuild extends TBase {
     $players = $this->getInfoGuildExtra($guild);
     
     // mirem que haguem trobat Id Guild
-    if ($guild[0]["id"] == "")
+    if ($guild[0]["id"] == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    
-    if (!is_array($players))
-      return $players;
+    }
     
     $arrGuild = array();
     $totalGP = 0;
@@ -242,12 +240,10 @@ class TGuild extends TBase {
     $players = $this->getInfoGuildExtra($guild);
     
     // mirem que haguem trobat Id Guild
-    if ($guild[0]["id"] == "")
-      return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    
-    if (!is_array($players))
-      return $players;
-    
+    if ($guild[0]["id"] == "") {
+        return $this->translatedText("error6");
+    }
+
     $arrGuild = array();
     $resume = array("r8" => 0, "r7" => 0, "g13" => 0, "g12" => 0, "g11" => 0);
     foreach ($players as $player) {
@@ -473,10 +469,6 @@ class TGuild extends TBase {
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    }
-    
-    if (!is_array($players)) {
-      return $players;
     }
     
     $arrGuild = array();
