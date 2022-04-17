@@ -502,6 +502,7 @@ class TTranslate {
     $this->translated["ENG_US"]["txtTwCheck1"] = "[%s][%s] TW Check\n\n";
     $this->translated["ENG_US"]["txtTwCheck2"] = "There are no check for your guild.\n\n";
     $this->translated["ENG_US"]["txtTwCheck3"] = "Data from %s ago.\nNext update in %s\n";
+    $this->translated["ENG_US"]["txtTwCheck4"] = "Not found any team on your guild with alias: %s\nUse <code>/tw check +show</code> to show the entire list";
     $this->translated["ENG_US"]["txtTwCheckShow1"] = "[%s][%s] List of TW Check\n\n";
     $this->translated["ENG_US"]["txtTwCheckDel1"] = "[%s][%s] TW Check deleted\n\n";
     $this->translated["ENG_US"]["txtTwCheckSave1"] = "[%s][%s] TW Check saved\n\n";
@@ -964,6 +965,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["txtTwCheck1"] = "[%s][%s] GT Check\n\n";
     $this->translated["SPA_XM"]["txtTwCheck2"] = "No hay comprobaciones para tu gremio.\n\n";
     $this->translated["SPA_XM"]["txtTwCheck3"] = "Datos de hace %s.\nSiguiente actualización en %s\n";
+    $this->translated["SPA_XM"]["txtTwCheck4"] = "No se ha encontrado para su gremio ningún equipo con alias: %s\nUse <code>/tw check +show</code> para ver la lista completa";
     $this->translated["SPA_XM"]["txtTwCheckShow1"] = "[%s][%s] Lista de comprobaciones para GT\n\n";
     $this->translated["SPA_XM"]["txtTwCheckDel1"] = "[%s][%s] Comprobación de GT eliminada\n\n";
     $this->translated["SPA_XM"]["txtTwCheckSave1"] = "[%s][%s] Comprobación de GT guardada\n\n";

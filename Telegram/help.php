@@ -842,9 +842,8 @@ function getTwCheckHelp($lang, $plus)
                 $ret .= "  By default will be first skill os its type, you can set the index, ie <b>u2</b> for the second unique.\n";
             }
             break;
-
-            return $ret;
     }
+    return $ret;
 }
 
 function getGeneralHelp($lang) {

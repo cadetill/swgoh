@@ -2,6 +2,7 @@
 
 use Im\Commands\Tw\Shared\Domain\GuildRequirements;
 use Im\Commands\Tw\Shared\Domain\RequirementCollection;
+use Im\Shared\Exception\ImException;
 use Im\Shared\Infrastructure\ApiUnitRepository;
 use Im\Shared\Infrastructure\MemoryStatService;
 
@@ -279,7 +280,9 @@ class TTW extends TBase {
                   }
                   $res = $this->check(null, $second, true);
                   break;
-              default: return $this->getHelp("twcheck", $this->translatedText("error1"));
+              default:
+                  $res = $this->check($first);
+                  break;
           }
           break;
       case 'checkg':
@@ -2006,10 +2009,13 @@ class TTW extends TBase {
         $andWhereClause = is_null($teamAlias) ? '' : " AND alias = '$teamAlias'";
         $query = sprintf($sql, $guildId, $andWhereClause);
 
+        $result = $this->fetchFromDb($query);
+        if ($result->num_rows === 0) {
+            throw new ImException($this->translatedText('txtTwCheck4', $teamAlias));
+        }
+
         $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
         $statService = new MemoryStatService($this->dataObj);
-
-        $result = $this->fetchFromDb($query);
 
         $teamRequirements = [];
         while ($row = $result->fetch_assoc()) {
