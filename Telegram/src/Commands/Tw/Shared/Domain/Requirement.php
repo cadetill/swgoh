@@ -197,7 +197,7 @@ class Requirement
                 break;
         }
 
-        return '<b>'.$this->definition."</b>\n".$show;
+        return '<b>'.str_replace('<', '&lt;', $this->definition)."</b>\n".str_replace('<', '&lt;', $show);
     }
 
     private function guard()
