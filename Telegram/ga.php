@@ -56,23 +56,26 @@ class TGA extends TBase {
     inicialitza les variables necessaries per a la impressió de la GA
   ****************************************************/
   protected function getVariables(&$player, &$data0, &$data1, &$rank0, &$league0, &$rank1, &$league1, $units) {
-    $player = $this->getInfoPlayer(); 
+      $player = [];
+    $allyCodes = explode(',', $this->allyCode);
+    $player[] = $this->getInfoPlayer($allyCodes[0])[0];
+    $player[] = $this->getInfoPlayer($allyCodes[1])[0];
     //print_r($player);
 
     // mirem que haguem trobat Id Guild
     if ($player[0]["name"] == "")
       return -1;
-    
+
     // inicialitzem
     $data0 = $this->iniPlayerArray();
     $data1 = $this->iniPlayerArray();
     //print_r($data0);
     //print_r($data1);
-    
+
     // processem jugajor
     $this->processPlayer($player[0], $data0, $units);
     $this->processPlayer($player[1], $data1, $units);
-  
+
     // control de variables temporal
     $pos0 = count($player[0]["grandArena"]);
     if ($pos0 > 0) {
@@ -141,7 +144,7 @@ class TGA extends TBase {
     $res[0] .= $this->translatedText("txtCham42", array($data0["mods20"], $data1["mods20"]));                               // "<b>Velocidad +20</b>: ".$data0["mods20"]." vs ".$data1["mods20"]."\n";
     $res[0] .= $this->translatedText("txtCham43", array($data0["mods25"], $data1["mods25"]));                               // "<b>Velocidad +25</b>: ".$data0["mods25"]." vs ".$data1["mods25"]."\n";
     $res[0] .= "\n";
-    $res[1] .= $this->translatedText("txtCham87");                                                    // "<b>units</b>\n";
+    $res[1] = $this->translatedText("txtCham87");                                                    // "<b>units</b>\n";
     foreach ($units as $unit) {
       $res[1] .= TUnits::unitNameFromUnitId($unit, $this->dataObj)."\n"; 
       $numdata0 = 0;
@@ -247,9 +250,10 @@ class TGA extends TBase {
   private function processGa() {
     // agafem unitats que ha de controlar el comando
     $units = TUnits::unitsForCommand($this->dataObj->guildId, 'units', 'info', $this->dataObj);
-    if (!is_array($units))
-      $units = array();
-    //print_r($units);
+    if (!is_array($units)) {
+        $units = [];
+    }
+      //print_r($units);
 
     $player = array();
     $data0 = array();
@@ -260,8 +264,9 @@ class TGA extends TBase {
     $league1 = '';
     $ret = $this->getVariables($player, $data0, $data1, $rank0, $league0, $rank1, $league1, $units);
     
-    if ($ret == -1)
-      return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+    if ($ret == -1) {
+        return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
+    }
     
     return $this->printGA($player, $data0, $data1, $rank0, $league0, $rank1, $league1, $units);
   }  
