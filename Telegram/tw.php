@@ -467,6 +467,9 @@ class TTW extends TBase {
 
     // busquem no inscrits
     $arrNoReg = $this->getNoReg();
+    foreach ($arrNoReg as $noRegAllyCode) {
+        unset($players[$noRegAllyCode]);
+    }
     
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
