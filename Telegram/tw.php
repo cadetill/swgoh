@@ -1359,7 +1359,9 @@ class TTW extends TBase {
       
     // calculem el %
     foreach ($arr as $key => $data) {
-      $arr[$key]['percent'] = number_format(($data['points'] * 100) / $data['maxpoints'], 2);
+      $arr[$key]['percent'] = $data['maxpoints'] === 0
+        ? 0
+        : number_format(($data['points'] * 100) / $data['maxpoints'], 2);
     }
     
     // guardem 1 registre per persona  
