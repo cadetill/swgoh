@@ -69,6 +69,8 @@ class TData
         '/ga@impman_bot',                            // compare your account with another
         '/rank',
         '/rank@impman_bot',                        // shows the character ordered by the specified stat
+        '/rank2',
+        '/rank2@impman_bot',                        // shows the character ordered by the specified stat
         '/im',
         '/im@impman_bot',                            // shows all IM's guilds
         '/compareg',

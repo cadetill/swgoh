@@ -1,6 +1,11 @@
 <?php
 
+use Im\Commands\Tw\Shared\Domain\GuildRequirements;
+use Im\Commands\Tw\Shared\Domain\RequirementCollection;
+use Im\Shared\Exception\ImException;
 use Im\Shared\ExtJsonDecoder;
+use Im\Shared\Infrastructure\ApiUnitRepository;
+use Im\Shared\Infrastructure\MemoryStatService;
 use JsonMachine\Items;
 
 class TBase {
@@ -1349,7 +1354,60 @@ class TBase {
     return $imageDst;
   }
 
-  /**************************************************************************
+    protected function fetchFromDb(string $query)
+    {
+        $idcon = new mysqli(
+            $this->dataObj->bdserver,
+            $this->dataObj->bduser,
+            $this->dataObj->bdpas,
+            $this->dataObj->bdnamebd
+        );
+        if ($idcon->connect_error) {
+            throw new \Exception($this->translatedText("error4"));
+        }
+
+        $res = $idcon->query($query);
+
+        if ($idcon->error) {
+            throw new \Exception($this->translatedText("error4"));
+        }
+
+        $idcon->close();
+
+        return $res;
+    }
+
+    protected function loadGuildRequirements(string $guildId, ?string $teamAlias = null): GuildRequirements
+    {
+        $sql = <<<EOF
+            SELECT alias, definition
+            FROM guild_requirements as gr
+            WHERE guildRefId = '%s'
+            %s
+        EOF;
+        $andWhereClause = is_null($teamAlias) ? '' : " AND alias = '$teamAlias'";
+        $query = sprintf($sql, $guildId, $andWhereClause);
+
+        $result = $this->fetchFromDb($query);
+        if ($result->num_rows === 0) {
+            throw new ImException($this->translatedText('txtTwCheck4', $teamAlias));
+        }
+
+        $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
+        $statService    = new MemoryStatService($this->dataObj);
+
+        $teamRequirements = [];
+        while ($row = $result->fetch_assoc()) {
+            $teamRequirements[] = [
+                $row['alias'],
+                new RequirementCollection($row['definition'], $unitRepository, $statService)
+            ];
+        }
+
+        return new GuildRequirements(...$teamRequirements);
+    }
+
+    /**************************************************************************
     funció que esborra les unitats que no volem processar
   **************************************************************************/
   private function deleteUnitsToDelete( $players ) {
@@ -1418,13 +1476,15 @@ class TBase {
         return Items::fromString($statsResponse, [ 'decoder' => new ExtJsonDecoder(true) ]);
     }
 
-    protected function playerStats($unitsToFilter = [])
+    protected function playerStats($player = null, $unitsToFilter = [])
     {
-        $playerArr = $this->getInfoPlayer();
+        if (is_null($player)) {
+            $player = $this->getInfoPlayer()[0];
+        }
 
         $rosterFiltered = array_values(
             array_filter(
-                $playerArr[0]['roster'],
+                $player['roster'],
                 function ($unit) use ($unitsToFilter) {
                     return in_array($unit['defId'], $unitsToFilter);
                 }

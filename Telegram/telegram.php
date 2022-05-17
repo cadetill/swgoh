@@ -55,6 +55,7 @@ http_response_code(200);
   require_once 'search.php';
   require_once 'ga.php';
   require_once 'rank.php';
+  require_once 'rank2.php';
   require_once 'alias.php';
   require_once 'im.php';
   require_once 'compareg.php';
@@ -257,6 +258,11 @@ function processRequest ($data) {
         case '/rank':
         case '/rank@impman_bot':
             $rank = new TRank(explode(' +',trim($data->message)), $data);
+            $response = $rank->execCommand();
+            break;
+        case '/rank2':
+        case '/rank2@impman_bot':
+            $rank = new TRank2(explode(' +',trim($data->message)), $data);
             $response = $rank->execCommand();
             break;
         case '/im':

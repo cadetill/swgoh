@@ -23,7 +23,7 @@ class GuildRequirements
         return array_unique($unitIds);
     }
 
-    public function checkPlayer(array $player, bool $onlyPending = false): array
+    public function playerReport(array $player, bool $onlyPending = false): array
     {
         $responses = [];
 
@@ -64,5 +64,22 @@ class GuildRequirements
         }
 
         return $responses;
+    }
+
+    /**
+     * @return RequirementCollectionResult[]
+     */
+    public function playerResult(array $player)
+    {
+        $response = [];
+
+        foreach ($this->requirementCollections as $requirementCollection) {
+            /** @var RequirementCollection $collection */
+            [ $alias, $collection ] = $requirementCollection;
+            $result = $collection->checkPlayer($player);
+            $response[] = $result;
+        }
+
+        return $response;
     }
 }

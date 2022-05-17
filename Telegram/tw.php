@@ -1915,7 +1915,7 @@ class TTW extends TBase {
             return $this->translatedText('txtTwCheck2');
         }
 
-        $playerRosterWithStats = $this->playerStats($unitsToLoadStats);
+        $playerRosterWithStats = $this->playerStats($player[0], $unitsToLoadStats);
 
         $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
         $now = new DateTimeImmutable();
@@ -1927,7 +1927,7 @@ class TTW extends TBase {
 
         return [
             $header,
-            ...$stats->checkPlayer($playerRosterWithStats, $onlyPending),
+            ...$stats->playerReport($playerRosterWithStats, $onlyPending),
             $footer
         ];
     }
@@ -2003,36 +2003,6 @@ class TTW extends TBase {
         */
     }
 
-    private function loadGuildRequirements(string $guildId, ?string $teamAlias = null): GuildRequirements
-    {
-        $sql = <<<EOF
-            SELECT alias, definition
-            FROM guild_requirements as gr
-            WHERE guildRefId = '%s'
-            %s
-        EOF;
-        $andWhereClause = is_null($teamAlias) ? '' : " AND alias = '$teamAlias'";
-        $query = sprintf($sql, $guildId, $andWhereClause);
-
-        $result = $this->fetchFromDb($query);
-        if ($result->num_rows === 0) {
-            throw new ImException($this->translatedText('txtTwCheck4', $teamAlias));
-        }
-
-        $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
-        $statService = new MemoryStatService($this->dataObj);
-
-        $teamRequirements = [];
-        while ($row = $result->fetch_assoc()) {
-            $teamRequirements[] = [
-                $row['alias'],
-                new RequirementCollection($row['definition'], $unitRepository, $statService)
-            ];
-        }
-
-        return new GuildRequirements(...$teamRequirements);
-    }
-
     private function deleteGuildRequirement(string $guildId, string $teamAlias)
     {
         $sql = "DELETE FROM guild_requirements WHERE guildRefId = '%s' AND alias = '%s'";
@@ -2052,21 +2022,4 @@ class TTW extends TBase {
         $this->fetchFromDb($insertQuery);
     }
 
-    private function fetchFromDb(string $query)
-    {
-        $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-        if ($idcon->connect_error) {
-            throw new \Exception($this->translatedText("error4"));
-        }
-
-        $res = $idcon->query($query);
-
-        if ($idcon->error) {
-            throw new \Exception($this->translatedText("error4"));
-        }
-
-        $idcon->close();
-
-        return $res;
-    }
 }
