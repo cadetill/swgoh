@@ -79,6 +79,7 @@ test_.php
 Telegram/guilds/*
 Telegram/players/*
 Telegram/cache/*
+Telegram/tmp/*
 
 Telegram/vendor/*
 
