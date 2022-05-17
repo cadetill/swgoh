@@ -1100,20 +1100,22 @@ class TTW extends TBase {
         $arr[$row['name']]['points'] = $arr[$row['name']]['points'] + $row['points'] + $this->extraPointsToSum($row['unit'], $row['points']);
         $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1; 
         
-        if (TUnits::isAShip($row['unit'], $this->dataObj)) 
-          $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
-        else
-          $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 20;
+        if (TUnits::isAShip($row['unit'], $this->dataObj)) {
+            $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
+        } else {
+            $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 20;
+        }
       }
-      else 
+      else {
         $arr[$row['name']]['rogues'] = $arr[$row['name']]['rogues'] + $row['points'];
+      }
     }	
         
     $idcon->close(); 
         
     // calculem el %
     foreach ($arr as $key => $data) {
-      $arr[$key]['percent'] = number_format(($data['points'] * 100)/$data['maxpoints'], 2);
+      $arr[$key]['percent'] = $data['maxpoints'] === 0 ? '0.00' : number_format(($data['points'] * 100)/$data['maxpoints'], 2);
     }
         
     // ordenem
@@ -1160,7 +1162,7 @@ class TTW extends TBase {
     $sumOff = 0;
     foreach ($arr as $data) {
       $sumOff = $sumOff + $data['off'];
-      $ret .= str_pad($data['rogues'], 1, " ", STR_PAD_LEFT)."|".
+      $ret .= str_pad($data['rogues'], 2, " ", STR_PAD_LEFT)."|".
               str_pad($data['off'], 2, " ", STR_PAD_LEFT)."|".
               str_pad($data['points'], 3, " ", STR_PAD_LEFT)."|".
               str_pad($data['percent'], 6, " ", STR_PAD_LEFT)." - ".
