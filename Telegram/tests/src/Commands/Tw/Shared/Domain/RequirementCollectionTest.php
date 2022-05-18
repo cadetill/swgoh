@@ -89,10 +89,10 @@ it('should be able to check unit stats with custom comparator', function () {
 
     expect($successfulResult)
         ->isSuccesful()
-        ->hasSuccesfulReport('[Comandante Ahsoka Tano][Velocidad] 279 < 280');
+        ->hasSuccesfulReport('[Comandante Ahsoka Tano][Velocidad] 279 &lt; 280');
     expect($notSuccessfulResult)
         ->isNotSuccesful()
-        ->hasNotSuccesfulReport('[Comandante Ahsoka Tano][Velocidad] 280 < 280');
+        ->hasNotSuccesfulReport('[Comandante Ahsoka Tano][Velocidad] 280 &lt; 280');
 });
 
 it('should be able to report properly unit stats with percentage', function () {

@@ -244,6 +244,8 @@ class Requirement
 
             return;
         }
+
+        throw WrongRequirementDefinition::extra($this->definition, $first);
     }
 
     private function playerUnit(array $roster, $baseId)

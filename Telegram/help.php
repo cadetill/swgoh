@@ -750,7 +750,7 @@ function getTwCheckHelp($lang, $plus)
                 $ret .= "  - Actualizar comprobación:\n";
                 $ret .= "    /tw check +<i>update</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
                 $ret .= "  - Eliminar comprobación:\n";
-                $ret .= "    /tw check +<i>del</i> +<i>alias</i> +<i>definición</i> +<i>AllyCode</i>\n\n";
+                $ret .= "    /tw check +<i>del</i> +<i>alias</i> +<i>AllyCode</i>\n\n";
                 $ret .= "<b>Sintaxis:</b> \n";
                 $ret .= "  - Orden de velocidades:  order(alias1,alias2,alias3)\n";
                 $ret .= "    order(bb8,ipd,t3,ig88,gg)\n\n";

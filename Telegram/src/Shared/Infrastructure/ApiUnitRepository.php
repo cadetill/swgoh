@@ -94,7 +94,7 @@ class ApiUnitRepository implements UnitRepository
 
     private function byAlias(string $alias)
     {
-        return $this->aliases()[strtolower($alias)];
+        return $this->aliases()[strtolower($alias)] ?? null;
     }
 
     private function toUnitId(string $alias): string
@@ -104,6 +104,6 @@ class ApiUnitRepository implements UnitRepository
 
     private function byUnitId($unitId)
     {
-        return $this->units()[strtoupper($unitId)];
+        return $this->units()[strtoupper($unitId)] ?? null;
     }
 }
