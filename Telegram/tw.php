@@ -248,7 +248,7 @@ class TTW extends TBase {
                   if (is_null($second)) {
                       return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
-                  if (!$this->isAllyCode($third)) {
+                  if (!is_null($third) && !$this->isAllyCode($third)) {
                       return $this->getHelp("twcheck", $this->translatedText("error1"));
                   }
                   $res = $this->checkDel($second, $third);
