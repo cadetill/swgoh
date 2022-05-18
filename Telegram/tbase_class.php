@@ -266,6 +266,11 @@ class TBase {
      */
     protected function isGuildOfficer()
     {
+        $isAdmin = isUserAdmin($this->dataObj->username, $this->dataObj);
+        if ($isAdmin) {
+            return true;
+        }
+
         $guild = $this->getInfoGuild();
         foreach ($guild[0]['roster'] as $player) {
             if ($player['allyCode'] == $this->allyCode) {
