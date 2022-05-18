@@ -5,8 +5,8 @@ namespace Im\Shared\Infrastructure;
 class ApiUnitRepository implements UnitRepository
 {
     private string $basePath;
-    private ?array $alias = null;
-    private ?array $units = null;
+    private ?array $aliases = null;
+    private ?array $units   = null;
     private string $lang;
 
     public function __construct(string $basePath, string $lang)
@@ -17,14 +17,13 @@ class ApiUnitRepository implements UnitRepository
 
     public function existAlias(string $alias): bool
     {
-        return array_key_exists($alias, $this->alias()) || array_key_exists(strtoupper($alias), $this->units());
+        return $this->hasAlias($alias) || $this->hasUnit($alias);
     }
 
     public function unitByAlias(string $alias): array
     {
-        $unitId = $this->alias()[$alias] ?? strtoupper($alias);
-
-        $unit = $this->units()[$unitId];
+        $unitId = $this->byAlias($alias) ?? $this->toUnitId($alias);
+        $unit   = $this->byUnitId($unitId);
 
         return [
             'baseId' => $unit['baseId'],
@@ -32,9 +31,9 @@ class ApiUnitRepository implements UnitRepository
         ];
     }
 
-    private function alias()
+    private function aliases()
     {
-        return $this->alias = $this->alias ?: $this->buildAlias();
+        return $this->aliases = $this->aliases ?: $this->buildAlias();
     }
 
     private function buildAlias()
@@ -74,9 +73,37 @@ class ApiUnitRepository implements UnitRepository
 
         $units = [];
         foreach ($content as $unit) {
-            $units[$unit['baseId']] = $unit;
+            $units[strtoupper($unit['baseId'])] = $unit;
         }
 
         return $units;
+    }
+
+    private function hasAlias(string $alias): bool
+    {
+        return array_key_exists(strtolower($alias), $this->aliases());
+    }
+
+    private function hasUnit(string $alias): bool
+    {
+        return array_key_exists(
+            strtoupper($alias),
+            $this->units()
+        );
+    }
+
+    private function byAlias(string $alias)
+    {
+        return $this->aliases()[strtolower($alias)];
+    }
+
+    private function toUnitId(string $alias): string
+    {
+        return strtoupper($alias);
+    }
+
+    private function byUnitId($unitId)
+    {
+        return $this->units()[strtoupper($unitId)];
     }
 }
