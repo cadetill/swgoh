@@ -42,7 +42,7 @@ class TStats extends TBase {
   public static function crinoloAliasFromPre($pre) {
       return [
           's'   => 'Speed',   // speed
-          'hp'  => '',  // health+protection
+          'hp'  => [ 'Health', 'Protection' ],  // health+protection
           'h'   => 'Health',   // health
           'p'   => 'Protection',   // protection
           'pd'  => 'Physical Damage',  // physical damage

@@ -43,7 +43,7 @@ class Requirement
     {
         switch ($this->type) {
             case self::SKILL_TYPE:
-                $findSkill       = function ($unit, $skillId) {
+                $findSkill  = function ($unit, $skillId) {
                     foreach ($unit['skills'] as $skill) {
                         if ($skill['id'] === $skillId) {
                             return $skill;
@@ -52,7 +52,7 @@ class Requirement
 
                     return null;
                 };
-                $playerUnit      = $this->playerUnit($roster, $this->unit['baseId']);
+                $playerUnit = $this->playerUnit($roster, $this->unit['baseId']);
                 if (!$playerUnit) {
                     $complain = false;
                     $report   = str_replace(':skill', '-', $this->report);
@@ -67,11 +67,11 @@ class Requirement
                 $fail          = false;
                 $playerSpeeds  = [];
                 foreach ($this->unitsOrder as $unit) {
-                    $unitId          = $unit['baseId'];
-                    $playerUnit      = $this->playerUnit($roster, $unitId);
+                    $unitId     = $unit['baseId'];
+                    $playerUnit = $this->playerUnit($roster, $unitId);
                     if (!$playerUnit) {
-                        $playerSpeeds[]  = '-';
-                        $fail = true;
+                        $playerSpeeds[] = '-';
+                        $fail           = true;
                     } else {
                         $playerUnitSpeed = $playerUnit['stats']['final']['Speed'];
                         $playerSpeeds[]  = $playerUnitSpeed;
@@ -90,10 +90,10 @@ class Requirement
                 $playerUnit = $this->playerUnit($roster, $this->unit['baseId']);
                 if (!$playerUnit) {
                     $complain = false;
-                    $report = str_replace(':value', '-', $this->report);
+                    $report   = str_replace(':value', '-', $this->report);
                     break;
                 }
-                $value      = $playerUnit['stats']['final'][$this->stat['key']];
+                $value = $this->statValue($playerUnit);
                 if ($this->stat['percentage']) {
                     $value = $value * 100;
                 }
@@ -105,10 +105,10 @@ class Requirement
                 $report = str_replace(':value', $value, $this->report);
                 break;
             case self::RELIC_TYPE:
-                $playerUnit         = $this->playerUnit($roster, $this->unit['baseId']);
+                $playerUnit = $this->playerUnit($roster, $this->unit['baseId']);
                 if (!$playerUnit) {
                     $complain = false;
-                    $report = str_replace(':value', '-', $this->report);
+                    $report   = str_replace(':value', '-', $this->report);
                     break;
                 }
                 $value              = $playerUnit['relic']['currentTier'] - 2;
@@ -118,28 +118,28 @@ class Requirement
 
                 break;
             case self::REFERAL_TYPE:
-                $playerUnit    = $this->playerUnit($roster, $this->unit['baseId']);
+                $playerUnit = $this->playerUnit($roster, $this->unit['baseId']);
                 if (!$playerUnit) {
                     $complain = false;
-                    $report             = str_replace(
+                    $report   = str_replace(
                         [ ':value', ':target', ':referal' ],
                         [ '-', '-', '-' ],
                         $this->report
                     );
                     break;
                 }
-                $value         = $playerUnit['stats']['final'][$this->stat['key']];
+                $value = $this->statValue($playerUnit);
                 $playerReferal = $this->playerUnit($roster, $this->referalUnit['baseId']);
                 if (!$playerReferal) {
                     $complain = false;
-                    $report             = str_replace(
+                    $report   = str_replace(
                         [ ':value', ':target', ':referal' ],
                         [ $value, '-', '-' ],
                         $this->report
                     );
                     break;
                 }
-                $referalValue  = $playerReferal['stats']['final'][$this->stat['key']];
+                $referalValue = $this->statValue($playerReferal);
 
                 $targetExpression = str_replace(':referal', $referalValue, $this->targetOperation);
                 $target           = $this->evalExpression($targetExpression);
@@ -197,7 +197,7 @@ class Requirement
                 break;
         }
 
-        return '<b>'.str_replace('<', '&lt;', $this->definition)."</b>\n".str_replace('<', '&lt;', $show);
+        return '<b>' . str_replace('<', '&lt;', $this->definition) . "</b>\n" . str_replace('<', '&lt;', $show);
     }
 
     private function guard()
@@ -406,11 +406,26 @@ class Requirement
 
         $this->skillId = sprintf(
             '%sskill_%s0%s',
-            $skillAliases[$skillAlias],
+            $skillAliases[$skillPrefix],
             $this->unit['baseId'],
             $skillIndex
         );
         $this->report  = sprintf('[%s][:skill]', $this->unit['name']);
         $this->type    = self::SKILL_TYPE;
+    }
+
+    private function statValue(array $playerUnit)
+    {
+        $statKeys   = is_array($this->stat['key']) ? $this->stat['key'] : [ $this->stat['key'] ];
+        $finalStats = $playerUnit['stats']['final'];
+        $value      = array_reduce(
+            $statKeys,
+            function ($carry, $statKey) use ($finalStats) {
+                return $carry + $finalStats[$statKey];
+            },
+            0
+        );
+
+        return $value;
     }
 }
