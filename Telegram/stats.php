@@ -73,7 +73,7 @@ class TStats extends TBase {
             'sa'  => false,  // special avoidance
             'pcc' => true, // physical critical chance
             'scc' => true, // special critical chance
-            'cd'  => false   // critical damage
+            'cd'  => true   // critical damage
         ][$pre];
     }
  
