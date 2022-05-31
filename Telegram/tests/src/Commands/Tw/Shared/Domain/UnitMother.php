@@ -4,7 +4,7 @@ namespace Im\Tests\Commands\Tw\Shared\Domain;
 
 class UnitMother
 {
-    public static function withStats(string $unitId, array $stats)
+    public static function withStat(string $unitId, array $stats)
     {
         [ $statName, $value ] = $stats;
 
@@ -14,6 +14,16 @@ class UnitMother
                 "final" => [
                     $statName => $value,
                 ],
+            ],
+        ];
+    }
+
+    public static function withStats(string $unitId, array $stats)
+    {
+        return [
+            "defId" => $unitId,
+            "stats" => [
+                "final" => $stats,
             ],
         ];
     }

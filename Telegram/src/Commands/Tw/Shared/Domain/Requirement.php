@@ -7,15 +7,17 @@ use Im\Shared\Infrastructure\UnitRepository;
 
 class Requirement
 {
-    public const ORDER_TYPE_ALIAS = 'order';
-    public const RELIC_TYPE_ALIAS = 'r';
-    public const SKILL_TYPE_ALIAS = 'sk';
+    public const ORDER_TYPE_ALIAS  = 'order';
+    public const RELIC_TYPE_ALIAS  = 'r';
+    public const SKILL_TYPE_ALIAS  = 'sk';
+    public const CUSTOM_TYPE_ALIAS = 'c';
 
     public const ORDER_TYPE   = 1;
     public const STAT_TYPE    = 2;
     public const RELIC_TYPE   = 3;
     public const REFERAL_TYPE = 4;
     public const SKILL_TYPE   = 5;
+    public const CUSTOM_TYPE  = 6;
 
     private int            $type;
     private string         $definition;
@@ -29,6 +31,11 @@ class Requirement
     private string         $targetOperation;
     private array          $unitsOrder;
     private string         $skillId;
+
+    private array  $referalUnits;
+    private string $leftSideOperation;
+    private string $rightSideOperation;
+    private string $operator;
 
     public function __construct(string $definition, UnitRepository $aliasRepository, StatService $statService)
     {
@@ -93,7 +100,7 @@ class Requirement
                     $report   = str_replace(':value', '-', $this->report);
                     break;
                 }
-                $value = $this->statValue($playerUnit);
+                $value = $this->statValue($playerUnit, $this->stat);
                 if ($this->stat['percentage']) {
                     $value = $value * 100;
                 }
@@ -128,7 +135,7 @@ class Requirement
                     );
                     break;
                 }
-                $value = $this->statValue($playerUnit);
+                $value         = $this->statValue($playerUnit, $this->stat);
                 $playerReferal = $this->playerUnit($roster, $this->referalUnit['baseId']);
                 if (!$playerReferal) {
                     $complain = false;
@@ -139,7 +146,7 @@ class Requirement
                     );
                     break;
                 }
-                $referalValue = $this->statValue($playerReferal);
+                $referalValue = $this->statValue($playerReferal, $this->stat);
 
                 $targetExpression = str_replace(':referal', $referalValue, $this->targetOperation);
                 $target           = $this->evalExpression($targetExpression);
@@ -155,6 +162,57 @@ class Requirement
                     [ $value, number_format($target, 2), $referalValue ],
                     $this->report
                 );
+                break;
+            case self::CUSTOM_TYPE:
+                $playerUnit         = $this->playerUnit($roster, $this->unit['baseId']);
+                $leftSideOperation  = $this->leftSideOperation;
+                $rightSideOperation = $this->rightSideOperation;
+                $report             = $this->report;
+                $targetOperation    = $this->targetOperation;
+                foreach ($this->referalUnits as $referalUnit) {
+                    [ $unitAlias, $statAlias ] = explode('.', $referalUnit);
+                    $unit = $this->aliasRepository->unitByAlias($unitAlias);
+                    $stat = $this->statService->statByAlias($statAlias);
+
+                    $playerReferalUnit      = $this->playerUnit($roster, $unit['baseId']);
+                    $playerReferalStatValue = $this->statValue($playerReferalUnit, $stat);
+
+                    $leftSideOperation     = str_replace(
+                        $referalUnit,
+                        $playerReferalStatValue,
+                        $leftSideOperation
+                    );
+                    $rightSideOperation    = str_replace(
+                        $referalUnit,
+                        $playerReferalStatValue,
+                        $rightSideOperation
+                    );
+                    $targetOperation = str_replace(
+                        $referalUnit,
+                        $playerReferalStatValue,
+                        $targetOperation
+                    );
+                    $report                = str_replace(
+                        $referalUnit,
+                        sprintf(
+                            '[%s][%s][%s]',
+                            $unit['name'],
+                            $stat['name'],
+                            $playerReferalStatValue
+                        ),
+                        $report
+                    );
+                }
+                $complain = $this->evalExpression($targetOperation);
+                $report   = str_replace(
+                    [ ':leftSide', ':rightSide' ],
+                    [
+                        $this->evalExpression($leftSideOperation),
+                        $this->evalExpression($rightSideOperation),
+                    ],
+                    $report
+                );
+                break;
         }
 
         return new RequirementResult($complain, $report);
@@ -221,6 +279,12 @@ class Requirement
 
         $defaults = [ null, null, null, null ];
         [ $first, $second, $third, $fourth ] = explode(',', $rightSide) + $defaults;
+        if ($first === self::CUSTOM_TYPE_ALIAS) {
+            $this->guardCustomType($leftSide, [ $first, $second, $third, $fourth ]);
+
+            return;
+        }
+
         if ($first === self::SKILL_TYPE_ALIAS) {
             $this->guardSkillType($leftSide, [ $first, $second, $third, $fourth ]);
 
@@ -414,9 +478,9 @@ class Requirement
         $this->type    = self::SKILL_TYPE;
     }
 
-    private function statValue(array $playerUnit)
+    private function statValue(array $playerUnit, array $stat)
     {
-        $statKeys   = is_array($this->stat['key']) ? $this->stat['key'] : [ $this->stat['key'] ];
+        $statKeys   = is_array($stat['key']) ? $stat['key'] : [ $stat['key'] ];
         $finalStats = $playerUnit['stats']['final'];
         $value      = array_reduce(
             $statKeys,
@@ -428,4 +492,49 @@ class Requirement
 
         return $value;
     }
+
+    private function guardCustomType(string $unitAlias, array $params)
+    {
+        [ $prefix, $formula, $null1, $null2 ] = $params;
+        if (!is_null($null1) || !is_null($null2)) {
+            throw WrongRequirementDefinition::custom($this->definition);
+        }
+
+        $this->type         = self::CUSTOM_TYPE;
+        $this->unit         = $this->aliasRepository->unitByAlias($unitAlias);
+        $this->referalUnits = [];
+
+        $pregMAOutput = [];
+        preg_match_all('/[a-zA-Z0-9]+\.[a-zA-Z]+/i', $formula, $pregMAOutput);
+        foreach ($pregMAOutput[0] as $match) {
+            [ $unitAlias, $statAlias ] = explode('.', $match);
+            if (!$this->aliasRepository->existAlias($unitAlias)) {
+                throw WrongRequirementDefinition::alias($this->definition, $unitAlias);
+            }
+            if (!$this->statService->exist($statAlias)) {
+                throw WrongRequirementDefinition::extra($this->definition, $statAlias);
+            }
+            $this->referalUnits[] = $match;
+        }
+
+        [ $leftSideOperation, $rightSideOperation ] = preg_split('/[<>]=?/i', $formula);
+        $this->leftSideOperation  = trim($leftSideOperation);
+        $this->rightSideOperation = trim($rightSideOperation);
+
+        $pregMOutput = [];
+        preg_match('/[<>]=?/i', $formula, $pregMOutput);
+        $this->operator = $pregMOutput[0];
+        if (empty($this->operator)) {
+            throw WrongRequirementDefinition::custom($this->definition);
+        }
+
+        $this->targetOperation = str_replace('=', '==', $formula);
+        $this->report          = sprintf(
+            "[%s][Custom] :leftSide %s :rightSide %s",
+            $this->unit['name'],
+            $this->operator,
+            $formula
+        );
+    }
 }
+

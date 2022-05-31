@@ -1,8 +1,6 @@
 <?php
 
-use Im\Commands\Tw\Shared\Domain\GuildRequirements;
 use Im\Commands\Tw\Shared\Domain\RequirementCollection;
-use Im\Shared\Exception\ImException;
 use Im\Shared\Infrastructure\ApiUnitRepository;
 use Im\Shared\Infrastructure\MemoryStatService;
 

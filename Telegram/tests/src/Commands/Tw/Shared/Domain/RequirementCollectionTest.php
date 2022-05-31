@@ -43,8 +43,8 @@ it('should raise an exception on bad definition', function () {
 });
 
 it('should be able to check unit stats', function () {
-    $complainPlayer    = [ UnitMother::withStats('KUIIL', [ 'Speed', 340 ]) ];
-    $notComplainPlayer = [ UnitMother::withStats('KUIIL', [ 'Speed', 339 ]) ];
+    $complainPlayer    = [ UnitMother::withStat('KUIIL', [ 'Speed', 340 ]) ];
+    $notComplainPlayer = [ UnitMother::withStat('KUIIL', [ 'Speed', 339 ]) ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [ 'kuiil' => true ][$alias] ?? false,
         unitByAlias: fn($alias) => [ 'kuiil' => [ 'baseId' => 'KUIIL', 'name' => 'Kuiil' ] ][$alias],
@@ -67,8 +67,8 @@ it('should be able to check unit stats', function () {
 });
 
 it('should be able to check unit stats with custom comparator', function () {
-    $complainPlayer    = [ UnitMother::withStats('COMMANDERAHSOKA', [ 'Speed', 279 ]) ];
-    $notComplainPlayer = [ UnitMother::withStats('COMMANDERAHSOKA', [ 'Speed', 280 ]) ];
+    $complainPlayer    = [ UnitMother::withStat('COMMANDERAHSOKA', [ 'Speed', 279 ]) ];
+    $notComplainPlayer = [ UnitMother::withStat('COMMANDERAHSOKA', [ 'Speed', 280 ]) ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [ 'cat' => true ][$alias] ?? false,
         unitByAlias: fn($alias) => [
@@ -96,8 +96,8 @@ it('should be able to check unit stats with custom comparator', function () {
 });
 
 it('should be able to report properly unit stats with percentage', function () {
-    $complainPlayer    = [ UnitMother::withStats('CHEWBACCALEGENDARY', [ 'Tenacity', 1.5 ]) ];
-    $notComplainPlayer = [ UnitMother::withStats('CHEWBACCALEGENDARY', [ 'Tenacity', 1.49 ]) ];
+    $complainPlayer    = [ UnitMother::withStat('CHEWBACCALEGENDARY', [ 'Tenacity', 1.5 ]) ];
+    $notComplainPlayer = [ UnitMother::withStat('CHEWBACCALEGENDARY', [ 'Tenacity', 1.49 ]) ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [ 'chewie' => true ][$alias] ?? false,
         unitByAlias: fn($alias) => [ 'chewie' => [ 'baseId' => 'CHEWBACCALEGENDARY', 'name' => 'Chewbacca' ] ][$alias],
@@ -142,12 +142,12 @@ it('should be able to check unit relic', function () {
 
 it('should be able to check multiple restrictions', function () {
     $complainPlayer    = [
-        UnitMother::withStats('DAKA', [ 'Health', 150000 ]),
-        UnitMother::withStats('MOTHERTALZIN', [ 'Speed', 280 ]),
+        UnitMother::withStat('DAKA', [ 'Health', 150000 ]),
+        UnitMother::withStat('MOTHERTALZIN', [ 'Speed', 280 ]),
     ];
     $notComplainPlayer = [
-        UnitMother::withStats('DAKA', [ 'Health', 149999 ]),
-        UnitMother::withStats('MOTHERTALZIN', [ 'Speed', 280 ]),
+        UnitMother::withStat('DAKA', [ 'Health', 149999 ]),
+        UnitMother::withStat('MOTHERTALZIN', [ 'Speed', 280 ]),
     ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [
@@ -184,12 +184,12 @@ it('should be able to check multiple restrictions', function () {
 it('should be able to compare stats between units', function () {
     // (((351 + 20) * 0.8) - 20) = 276,8
     $complainPlayer    = [
-        UnitMother::withStats('ADMIRALPIETT', [ 'Speed', 351 ]),
-        UnitMother::withStats('COLONELSTARCK', [ 'Speed', 277 ]),
+        UnitMother::withStat('ADMIRALPIETT', [ 'Speed', 351 ]),
+        UnitMother::withStat('COLONELSTARCK', [ 'Speed', 277 ]),
     ];
     $notComplainPlayer = [
-        UnitMother::withStats('ADMIRALPIETT', [ 'Speed', 351 ]),
-        UnitMother::withStats('COLONELSTARCK', [ 'Speed', 276 ]),
+        UnitMother::withStat('ADMIRALPIETT', [ 'Speed', 351 ]),
+        UnitMother::withStat('COLONELSTARCK', [ 'Speed', 276 ]),
     ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [
@@ -227,18 +227,18 @@ it('should be able to compare stats between units', function () {
 it('should be able to check team order', function () {
     // BB8 > IMPERIALPROBEDROID > T3_M4 > IG88 > GRIEVOUS
     $complainPlayer    = [
-        UnitMother::withStats('GRIEVOUS', [ 'Speed', 1 ]),
-        UnitMother::withStats('IG88', [ 'Speed', 2 ]),
-        UnitMother::withStats('T3_M4', [ 'Speed', 3 ]),
-        UnitMother::withStats('IMPERIALPROBEDROID', [ 'Speed', 4 ]),
-        UnitMother::withStats('BB8', [ 'Speed', 5 ]),
+        UnitMother::withStat('GRIEVOUS', [ 'Speed', 1 ]),
+        UnitMother::withStat('IG88', [ 'Speed', 2 ]),
+        UnitMother::withStat('T3_M4', [ 'Speed', 3 ]),
+        UnitMother::withStat('IMPERIALPROBEDROID', [ 'Speed', 4 ]),
+        UnitMother::withStat('BB8', [ 'Speed', 5 ]),
     ];
     $notComplainPlayer = [
-        UnitMother::withStats('GRIEVOUS', [ 'Speed', 1 ]),
-        UnitMother::withStats('IG88', [ 'Speed', 2 ]),
-        UnitMother::withStats('T3_M4', [ 'Speed', 3 ]),
-        UnitMother::withStats('IMPERIALPROBEDROID', [ 'Speed', 4 ]),
-        UnitMother::withStats('BB8', [ 'Speed', 1 ]),
+        UnitMother::withStat('GRIEVOUS', [ 'Speed', 1 ]),
+        UnitMother::withStat('IG88', [ 'Speed', 2 ]),
+        UnitMother::withStat('T3_M4', [ 'Speed', 3 ]),
+        UnitMother::withStat('IMPERIALPROBEDROID', [ 'Speed', 4 ]),
+        UnitMother::withStat('BB8', [ 'Speed', 1 ]),
     ];
     $aliasMock         = mock(UnitRepository::class)->expect(
         existAlias: fn($alias) => [
@@ -293,4 +293,48 @@ it('should be able to check unit skills', function () {
     expect($notSuccessfulResult)
         ->isNotSuccesful()
         ->hasNotSuccesfulReport('[Mara Jade, la mano del Emperador][Mano del emperador]');
+});
+
+it('should be able to check custom formula', function () {
+    $complainPlayer    = [
+        UnitMother::withStats('MACEWINDU', [ 'Health' => 54085, 'Protection' => 52524 ]),
+        UnitMother::withStats('AHSOKATANO', [ 'Health' => 56709, 'Protection' => 53831 ]),
+    ];
+    $notComplainPlayer = [
+        UnitMother::withStats('MACEWINDU', [ 'Health' => 64085, 'Protection' => 52524 ]),
+        UnitMother::withStats('AHSOKATANO', [ 'Health' => 56709, 'Protection' => 53831 ]),
+    ];
+
+    $aliasMock         = mock(UnitRepository::class)->expect(
+        existAlias: fn($alias) => [
+                'mace'  => true,
+                'at' => true,
+            ][$alias] ?? false,
+        unitByAlias: fn($alias) => [
+            'mace'  => [ 'baseId' => 'MACEWINDU', 'name' => 'Mace Windu' ],
+            'at' => [ 'baseId' => 'AHSOKATANO', 'name' => 'Ahsoka Tano' ],
+        ][$alias],
+    );
+    $statsMock         = mock(StatService::class)->expect(
+        exist: fn($alias) => [ 'h' => true, 'p' => true ][$alias] ?? false,
+        statByAlias: fn($alias) => [
+            'h' => [ 'key' => 'Health', 'name' => 'Salud', 'percentage' => false ],
+            'p' => [ 'key' => 'Protection', 'name' => 'Protección', 'percentage' => false ],
+        ][$alias]
+    );
+
+    $requirements        = new RequirementCollection('mace(c,mace.h*1.3 + mace.p < at.h*1.4 + at.p)', $aliasMock, $statsMock);
+    $successfulResult    = $requirements->checkPlayer($complainPlayer);
+    $notSuccessfulResult = $requirements->checkPlayer($notComplainPlayer);
+
+    expect($successfulResult)
+        ->isSuccesful()
+        ->hasSuccesfulReport(
+            "[Mace Windu][Custom] 122834.5 &lt; 133223.6 [Mace Windu][Salud][54085]*1.3 + [Mace Windu][Protección][52524] &lt; [Ahsoka Tano][Salud][56709]*1.4 + [Ahsoka Tano][Protección][53831]"
+        );
+    expect($notSuccessfulResult)
+        ->isNotSuccesful()
+        ->hasNotSuccesfulReport(
+            "[Mace Windu][Custom] 135834.5 &lt; 133223.6 [Mace Windu][Salud][64085]*1.3 + [Mace Windu][Protección][52524] &lt; [Ahsoka Tano][Salud][56709]*1.4 + [Ahsoka Tano][Protección][53831]"
+        );
 });

@@ -15,6 +15,7 @@ class WrongRequirementDefinition extends ImException
     public const SKILL_TYPE       = 7;
     public const SKILL_ALIAS_TYPE = 8;
     public const EXTRA            = 9;
+    public const CUSTOM           = 10;
 
     private string $definition;
     private int    $type;
@@ -32,6 +33,11 @@ class WrongRequirementDefinition extends ImException
     public static function extra(string $definition, ?string $extra)
     {
         return new self($definition, self::EXTRA, $extra);
+    }
+
+    public static function custom(string $definition)
+    {
+        return new self($definition, self::CUSTOM);
     }
 
     public function errorCode(): string
