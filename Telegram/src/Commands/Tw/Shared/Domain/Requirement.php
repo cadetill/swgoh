@@ -455,6 +455,12 @@ class Requirement
             'l' => '',
             'u' => 1,
         ];
+        $skillDefaultIndexPrefix = [
+            'b' => '0',
+            's' => '0',
+            'l' => '',
+            'u' => '0',
+        ];
         $skillIndex          = strlen($skillAlias) === 2
             ? substr($skillAlias, 1, 1)
             : $skillDefaultIndexes[$skillPrefix];
@@ -469,9 +475,10 @@ class Requirement
         ];
 
         $this->skillId = sprintf(
-            '%sskill_%s0%s',
+            '%sskill_%s%s%s',
             $skillAliases[$skillPrefix],
             $this->unit['baseId'],
+            $skillDefaultIndexPrefix[$skillPrefix],
             $skillIndex
         );
         $this->report  = sprintf('[%s][:skill]', $this->unit['name']);
