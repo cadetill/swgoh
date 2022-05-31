@@ -2,6 +2,7 @@
 
 use Im\Commands\Tw\Shared\Domain\GuildRequirements;
 use Im\Commands\Tw\Shared\Domain\RequirementCollection;
+use Im\Shared\Exception\EmptyDbResult;
 use Im\Shared\Exception\ImException;
 use Im\Shared\ExtJsonDecoder;
 use Im\Shared\Infrastructure\ApiUnitRepository;
@@ -1395,7 +1396,7 @@ class TBase {
 
         $result = $this->fetchFromDb($query);
         if ($result->num_rows === 0) {
-            throw new ImException($this->translatedText('txtTwCheck4', $teamAlias));
+            throw new EmptyDbResult($this->translatedText('txtTwCheck4', $teamAlias));
         }
 
         $unitRepository = new ApiUnitRepository(__DIR__, $this->dataObj->language);
