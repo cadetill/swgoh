@@ -82,7 +82,7 @@ class TRank extends TBase {
     
     // agafem info del gremi
     $guild = $this->getInfoGuild();
-    //$players = $this->getInfoGuildExtra($guild);
+    $players = $this->getInfoGuildExtra($guild);
     
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "")
@@ -92,6 +92,7 @@ class TRank extends TBase {
     // PART 4: recorrem jugadors buscant la unitat
     $result = array();
     $sum = 0;
+    $total = 0;
     foreach ($players as $player) {
       switch (strtolower($this->stat)) {
         case "weighing":
@@ -131,13 +132,14 @@ class TRank extends TBase {
           }
           break;
       }
+      $total++;
     }
   
     // PART 5: bump del resultat
     $ret  = $this->translatedText("txtRank01", $guild[0]["name"]);                         // "<b>Guild</b>: ".$guild[0]["name"]."\n";
     $ret .= $this->translatedText("txtRank02", $nameUnit);                                 // "<b>Unit</b>: ".$nameUnit."\n";
     $ret .= $this->translatedText("txtRank03", ucfirst(strtolower($this->stat)));          // "<b>Sort by</b>: ".ucfirst(strtolower($this->stat))."\n";
-    $ret .= $this->translatedText("txtRank04", number_format($sum/count($players), 2));    // "<b>Average</b>: ".number_format($sum/count($players), 2)."\n";
+    $ret .= $this->translatedText("txtRank04", number_format($sum/$total, 2));    // "<b>Average</b>: ".number_format($sum/count($players), 2)."\n";
               
     $ret .= "<b>----------------------------</b>\n";
     arsort($result);
