@@ -8,6 +8,7 @@ use Im\Shared\ExtJsonDecoder;
 use Im\Shared\Infrastructure\ApiUnitRepository;
 use Im\Shared\Infrastructure\MemoryStatService;
 use JsonMachine\Items;
+use Longman\TelegramBot\Request;
 
 class TBase {
   public $dataObj;
@@ -1288,20 +1289,22 @@ class TBase {
   * funció que enviarà fotos a Telegram
   **************************************************************************/
   protected function sendPhoto($photoFile, $photoUrl, $photoText, $reply = true) {
-    if ($photoFile != '') {
-      $photo = '@'.$photoFile;
-    }
-    else {
-      $photo = $photoUrl;
-    }
-    if ($reply) {
-      $url = $this->dataObj->website.'/sendPhoto?chat_id='.$this->dataObj->chatId.'&reply_to_message_id='.$this->dataObj->messageId.'&parse_mode=HTML&caption='.urlencode($photoText).'&photo='.$photo;
-    }
-    else {
-      $url = $this->dataObj->website.'/sendPhoto?chat_id='.$this->dataObj->chatId.'&parse_mode=HTML&caption='.urlencode($photoText).'&photo='.$photo;
-    }
-     echo "\n\n"."\n\n".$url."\n\n"."\n\n";
-    file_get_contents($url);
+      if ($photoFile != '') {
+          $photo = '@' . $photoFile;
+      } else {
+          $photo = $photoUrl;
+      }
+
+      $data = [
+          'chat_id' => $this->dataObj->chatId,
+          'parse_mode' => 'HTML',
+          'caption' => $photoText,
+          'photo' => $photo,
+      ];
+      if ($reply) {
+          $data['reply_to_message_id'] = $this->dataObj->messageId;
+      }
+      Request::sendPhoto($data);
   }
 
   /**************************************************************************
