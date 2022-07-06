@@ -1,5 +1,9 @@
 <?php
 
+use Im\Shared\Domain\AllyCode;
+use Im\Shared\Exception\EmptyDbResult;
+use Im\Shared\Infrastructure\SwgohGgApiClient;
+
 class TRank2 extends TBase
 {
     private const LEGENDS_POINTS  = [
@@ -16,6 +20,7 @@ class TRank2 extends TBase
         'uniqueskill_MACEWINDU02'     => 9,
         'uniqueskill_BOBAFETTSCION01' => 8,
         'leaderskill_PHASMA'          => 9,
+        'uniqueskill_juhani01'        => 9,
     ];
     private const OMICRONS_POINTS = [
         'uniqueskill_MARAJADE01'      => 50,
@@ -23,10 +28,12 @@ class TRank2 extends TBase
         'uniqueskill_MACEWINDU02'     => 50,
         'uniqueskill_BOBAFETTSCION01' => 50,
         'leaderskill_PHASMA'          => 50,
+        'uniqueskill_juhani01'        => 50,
     ];
 
     private const CHARS_POINTS = [
-        'STARKILLER' => 75,
+        'STARKILLER'      => 75,
+        'GRANDINQUISITOR' => 75,
     ];
 
     private const MODS_SIX_DOTS_MINIMUM        = 300;
@@ -37,8 +44,12 @@ class TRank2 extends TBase
     private const R8_POINTS                    = 10;
     private const GT_TEAM_POINTS               = 25;
     private const GA_RANK_POINTS               = 50;
+    private const DATACRON_MK9_POINTS          = 100;
+    private const DATACRON_MK6_POINTS          = 25;
+    private const DATACRON_MK3_POINTS          = 5;
 
-    private array $allyCodes;
+    private array            $allyCodes;
+    private SwgohGgApiClient $swgohGgClient;
 
     /****************************************************
      * constructor de la classe. Inicialitza variables
@@ -67,6 +78,7 @@ class TRank2 extends TBase
             default:
                 $this->error = $this->translatedText("error1"); // Bad request. See help: \n\n
         }
+        $this->swgohGgClient = new SwgohGgApiClient();
     }
 
     /****************************************************
@@ -121,7 +133,8 @@ class TRank2 extends TBase
         $result = [];
         foreach ($guildsInfo as $guildName => $playersInfo) {
             foreach ($playersInfo as $playerInfo) {
-                $result[] = array_merge([ 'guild' => $guildName ], $this->playerResult($playerInfo));
+                $playerResult = array_merge([ 'guild' => $guildName ], $this->playerResult($playerInfo));
+                $result[]     = $playerResult;
             }
         }
         usort($result, function ($item1, $item2) {
@@ -147,6 +160,9 @@ class TRank2 extends TBase
             'r8',
             'tw_team',
             'gac',
+            'mk9_datacrons',
+            'mk6_datacrons',
+            'mk3_datacrons',
         ];
         $playerReport             = array_fill_keys($captions, 0);
         $playerReport['name']     = $playerInfo['name'];
@@ -154,11 +170,14 @@ class TRank2 extends TBase
         $totalSixDotsMods         = 0;
 
         // GAC
-        $lastGac = $playerInfo['grandArena'][array_key_last($playerInfo['grandArena'])];
-        // Kyber 1
-        if ($lastGac['division'] === 25) {
-            $playerReport['points'] += self::GA_RANK_POINTS;
-            $playerReport['gac']    = 1;
+        $playerGac = $playerInfo['grandArena'] ?? null;
+        if ($playerGac) {
+            $lastGac = $playerInfo['grandArena'][array_key_last($playerInfo['grandArena'])];
+            // Kyber 1
+            if ($lastGac['division'] === 25) {
+                $playerReport['points'] += self::GA_RANK_POINTS;
+                $playerReport['gac']    = 1;
+            }
         }
 
         foreach ($playerInfo['roster'] as $unit) {
@@ -222,19 +241,41 @@ class TRank2 extends TBase
         $playerReport['mods_extra'] = $modsExtraChunks;
 
         // TW Teams
-        $stats            = $this->loadGuildRequirements($this->dataObj->guildId);
-        $unitsToLoadStats = $stats->unitIds();
+        try {
+            $stats            = $this->loadGuildRequirements($this->dataObj->guildId);
+            $unitsToLoadStats = $stats->unitIds();
 
-        if (count($unitsToLoadStats) > 0) {
-            $playerRosterWithStats = $this->playerStats($playerInfo, $unitsToLoadStats);
-            $results               = $stats->playerResult($playerRosterWithStats);
+            if (count($unitsToLoadStats) > 0) {
+                $playerRosterWithStats = $this->playerStats($playerInfo, $unitsToLoadStats);
+                $results               = $stats->playerResult($playerRosterWithStats);
 
-            foreach ($results as $result) {
-                if ($result->complain()) {
-                    $playerReport['points'] += self::GT_TEAM_POINTS;
-                    $playerReport['tw_team']++;
+                foreach ($results as $result) {
+                    if ($result->complain()) {
+                        $playerReport['points'] += self::GT_TEAM_POINTS;
+                        $playerReport['tw_team']++;
+                    }
                 }
             }
+        } catch (EmptyDbResult $emptyDbResult) {
+        }
+
+        // Datacrons
+        try {
+            $ggProfile                     = $this->swgohGgClient->player(new AllyCode($playerInfo['allyCode']));
+            $playerDatacrons               = $ggProfile['datacrons'];
+            foreach ($playerDatacrons as $datacron) {
+                if ($datacron['tier'] === 9) {
+                    $playerReport['mk9_datacrons'] += 1;
+                    $playerReport['points']        += self::DATACRON_MK9_POINTS;
+                } else if ($datacron['tier'] >= 6) {
+                    $playerReport['mk6_datacrons'] += 1;
+                    $playerReport['points']        += self::DATACRON_MK6_POINTS;
+                } else if ($datacron['tier'] >= 3) {
+                    $playerReport['mk3_datacrons'] += 1;
+                    $playerReport['points']        += self::DATACRON_MK3_POINTS;
+                }
+            }
+        } catch (\Exception $ex) {
         }
 
         return $playerReport;
