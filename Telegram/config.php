@@ -161,6 +161,7 @@ class TData
         $this->website  = getenv('TELEGRAM_BOT_URL');
 
         $this->debugChatId = getenv('DEBUG_CHAT_ID');
+        $this->admins = explode(',', getenv('ADMINS_TELEGRAM_ALIAS'));
     }
 
     private function bootstrap()
