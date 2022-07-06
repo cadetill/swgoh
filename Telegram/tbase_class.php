@@ -119,6 +119,23 @@ class TBase {
               'skillId'   => 'leaderskill_SEVENTHSISTER',
               'skillTier' => 8,
           ]
+      ],
+      'GRANDINQUISITOR' => [
+          [
+              'alias' => 'GRANDINQUISITOR_SPECIAL',
+              'skillId'   => 'specialskill_GRANDINQUISITOR02',
+              'skillTier' => 8,
+          ],
+          [
+              'alias' => 'GRANDINQUISITOR_LEADER',
+              'skillId'   => 'leaderskill_GRANDINQUISITOR',
+              'skillTier' => 8,
+          ],
+          [
+              'alias' => 'GRANDINQUISITOR_UNIQUE',
+              'skillId'   => 'uniqueskill_GRANDINQUISITOR01',
+              'skillTier' => 8,
+          ]
       ]
   ];
 
@@ -214,6 +231,30 @@ class TBase {
             [
                 'alias' => 'STARKILLER_UNIQUE',
                 'skillId'   => 'uniqueskill_STARKILLER02',
+                'skillTier' => 8,
+            ]
+        ],
+        'DARTHMALGUS' => [
+            [
+                'alias' => 'DARTHMALGUS_SPECIAL',
+                'skillId'   => 'specialskill_DARTHMALGUS01',
+                'skillTier' => 8,
+            ],
+            [
+                'alias' => 'DARTHMALGUS_LEADER',
+                'skillId'   => 'leaderskill_DARTHMALGUS',
+                'skillTier' => 8,
+            ],
+            [
+                'alias' => 'DARTHMALGUS_UNIQUE',
+                'skillId'   => 'uniqueskill_DARTHMALGUS01',
+                'skillTier' => 8,
+            ]
+        ],
+        'ADMIRALRADDUS' => [
+            [
+                'alias' => 'ADMIRALRADDUS',
+                'skillId'   => 'leaderskill_ADMIRALRADDUS',
                 'skillTier' => 8,
             ]
         ]
