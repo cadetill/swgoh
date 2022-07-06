@@ -3,6 +3,7 @@
 use Im\Commands\Tw\Shared\Domain\RequirementCollection;
 use Im\Shared\Infrastructure\ApiUnitRepository;
 use Im\Shared\Infrastructure\MemoryStatService;
+use Im\Shared\Infrastructure\Telegram\TelegramInteractiveMessage;
 
 class TTW extends TBase {
   private $params = array();
@@ -19,7 +20,7 @@ class TTW extends TBase {
   ****************************************************/
   public function __construct($params, $dataObj) {
     parent::__construct($dataObj);
-    
+
     $this->allyCode = $dataObj->allycode;
     // agafem el subcomando i l'extraem de $params
     $this->subcomand = explode(' ', trim($params[0]));
@@ -28,7 +29,7 @@ class TTW extends TBase {
 
     $this->params = $params;
   }
-  
+
   /****************************************************
     FUNCIONS PUBLIQUES
   ****************************************************/
@@ -56,8 +57,8 @@ class TTW extends TBase {
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
         $res = $this->add('def');
-        break;                                                 
-      case 'off':                                
+        break;
+      case 'off':
         $this->alias = $this->params[1];
         $this->points = $this->params[2];
         $this->alias2 = $this->params[3];
@@ -76,7 +77,7 @@ class TTW extends TBase {
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
         $res = $this->add('used');
-        break;                                                 
+        break;
       case 'search':
         $this->alias = $this->params[1];
         switch (count($this->params)) {
@@ -140,13 +141,13 @@ class TTW extends TBase {
         break;
       case 'save':
         $this->date = $this->params[1];
-        if (count($this->params) != 1) 
+        if (count($this->params) != 1)
           return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         $res = $this->save();
         break;
       case 'delh':
         $this->date = $this->params[1];
-        if (count($this->params) != 1) 
+        if (count($this->params) != 1)
           return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         $res = $this->deleteH();
         break;
@@ -157,7 +158,7 @@ class TTW extends TBase {
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
         $res = $this->listH();
-        break; 
+        break;
       case 'history':
         $this->all = false;
         $this->sort = 'name';
@@ -172,13 +173,13 @@ class TTW extends TBase {
           case 2:
             $this->all = true;
             $this->sort = $this->params[2];
-            if (strcasecmp($this->params[1], "all") != 0) 
+            if (strcasecmp($this->params[1], "all") != 0)
               return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
             break;
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
         $res = $this->history();
-        break; 
+        break;
       case 'defenses':
         switch (count($this->params)) {
           case 0: break;
@@ -194,7 +195,7 @@ class TTW extends TBase {
           default: return $this->getHelp("tw", $this->translatedText("error1"));  // Bad request. See help: \n\n
         }
         $res = $this->dates();
-        break; 
+        break;
       case 'noreg':
         $res = $this->noreg();
         break;
@@ -295,13 +296,13 @@ class TTW extends TBase {
     if (is_array($res)) {
       $res[count($res)-1] .= $this->translatedText("elapsed_time", gmdate("H:i:s", $time));
       return $res;
-    } 
+    }
     else {
       $res .= $this->translatedText("elapsed_time", gmdate("H:i:s", intval($time)));
       return array($res);
     }
   }
-  
+
   /****************************************************
     FUNCIONS PRIVADES
   ****************************************************/
@@ -310,12 +311,12 @@ class TTW extends TBase {
   **************************************************************************/
   private function initializeTW() {
     $player = $this->getInfoPlayer();
-          
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.\n\n";
-          
+
     // esborrem posible contingut del gremi
     $sql = "delete from tw where guildRefId = '".$player[0]["guildRefId"]."'";
     $idcon->query( $sql );
@@ -336,10 +337,10 @@ class TTW extends TBase {
   **************************************************************************/
   private function add($unittype) {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-    
-    // agafem ID de la unitat 
-    if ($unittype == "rogue") 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
+    // agafem ID de la unitat
+    if ($unittype == "rogue")
       $unitId = $unittype;
     else {
       $unitId = TAlias::aliasSearch($this->alias, $this->dataObj);
@@ -349,35 +350,35 @@ class TTW extends TBase {
       return $this->translatedText("twerr1", $this->alias); // "Unit <i>".$unit."</i> not found.\n\n";
     if (($vsId == "") && ($unittype == "off"))
       return $this->translatedText("twerr1", $this->alias2); // "Unit <i>'".$vs."'</i> not found.\n\n";
-          
+
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-          
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-    
+
     $pupdate = $this->points;
     if ($unittype == "rogue")
       $pupdate = $this->points+1;
-          
+
     // afegim registre
     $sql  = "INSERT INTO tw (guildRefId, allyCode, unit, name, points, vs, unittype, datectrl) ";
     $sql .= "VALUES ('".$player[0]["guildRefId"]."', '".$player[0]["allyCode"]."', '".$unitId."', '".$player[0]["name"]."', ".$pupdate.", '".$vsId."', '".$unittype."', now()) ";
     if ($unittype == "rogue") {
-      $sql .= "ON DUPLICATE KEY UPDATE points=points+1, unittype='".$unittype."', vs='".$vsId."'";  
+      $sql .= "ON DUPLICATE KEY UPDATE points=points+1, unittype='".$unittype."', vs='".$vsId."'";
     }
     else {
-      $sql .= "ON DUPLICATE KEY UPDATE points=".$pupdate.", unittype='".$unittype."', vs='".$vsId."', datectrl=now()";  
+      $sql .= "ON DUPLICATE KEY UPDATE points=".$pupdate.", unittype='".$unittype."', vs='".$vsId."', datectrl=now()";
     }
       //echo "\n\n sql: ".$sql."\n\n";
-          
+
     $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
 
     $ret  = $this->translatedText("txtTw02", $player[0]["guildName"]);          // "TW updated for ".$player[0]["guildName"]."\n\n";
@@ -396,9 +397,9 @@ class TTW extends TBase {
     }
     $ret .= $this->translatedText("txtTw06", $unittype);                      // "  Type: ".$unittype."\n\n";
     $ret .= "\n";
-    
-    $idcon->close(); 
-      
+
+    $idcon->close();
+
     return $ret;
   }
 
@@ -407,9 +408,9 @@ class TTW extends TBase {
   **************************************************************************/
   private function search() {
     ini_set('memory_limit', '-1');
-    
+
     if (!$this->checkAllyCode($this->allyCode)) {
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
     }
 
     // agafem ID de la unitat (llista de alias o llista d'unitats)
@@ -424,7 +425,7 @@ class TTW extends TBase {
     if ($unitId == "") {
       return $this->translatedText("twerr1", $this->alias);                     // "Unit <i>%s</i> not found.\n\n";
     }
-        
+
     // agafem punts segons sigue naus o terra
     if (TUnits::isAShip($unitId, $this->dataObj)) {
       $pointsBattle = 22;
@@ -432,7 +433,7 @@ class TTW extends TBase {
     else {
       $pointsBattle = 20;
     }
-    
+
     // agafem info del gremi
     $playersInfo = $this->getInfoGuildExtra();
 
@@ -457,8 +458,8 @@ class TTW extends TBase {
 
         $players[$player['allyCode']] = $playerData;
     }
-    
-    // mirem que haguem trobat Id Guild  
+
+    // mirem que haguem trobat Id Guild
     if ($guildRefId == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
@@ -468,7 +469,7 @@ class TTW extends TBase {
     foreach ($arrNoReg as $noRegAllyCode) {
         unset($players[$noRegAllyCode]);
     }
-    
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {
@@ -482,15 +483,15 @@ class TTW extends TBase {
     if ($idcon->error) {
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
     }
-    
-    // inicialitzem arrays necessaris per a la impressió 
+
+    // inicialitzem arrays necessaris per a la impressió
     $arrAtt = array();
     $arrDef = array();
     $arrUsed = array();
     $arrRogue = array();
 
     $allyCodeThatUsed = [];
-    
+
     // recorrem registres omplin arrays
     while ($row = $res->fetch_assoc()) {
       $player = $players[$row['allyCode']] ?? null;
@@ -514,7 +515,7 @@ class TTW extends TBase {
       }
       $allyCodeThatUsed[] = $player['allyCode'];
     }
-    
+
     $arrNo = array();
 
     foreach ($players as $player) {
@@ -525,13 +526,13 @@ class TTW extends TBase {
         $arrNo[] = '<code>' . $player['name'] . '-' . $player['allyCode'] . '</code> @' . ( $row['username'] ?? '' );
       }
     }
-    
-    $idcon->close(); 
-                
+
+    $idcon->close();
+
     usort($arrAtt, 'strnatcasecmp');
     usort($arrDef, 'strnatcasecmp');
     usort($arrUsed, 'strnatcasecmp');
-    usort($arrNo, 'strnatcasecmp');    
+    usort($arrNo, 'strnatcasecmp');
     usort($arrRogue, 'strnatcasecmp');
 
     $ret  = $this->translatedText("txtTw07", $guildName);         // "<b>Guild</b>: ".$players[0]["name"]."\n";
@@ -540,19 +541,19 @@ class TTW extends TBase {
       $ret .= $this->translatedText("txtTw14", $this->alias);                   // "<b>Alias</b>: ".$this->alias."\n";
       $ret .= $this->translatedText("txtTw09", $unitId);                        // "<b>unitId</b>: ".$unitId."\n";
       $ret .= "\n";
-            
+
       $tmp1 = "";
       foreach ($arrNo as $val) {
         $tmp1 .= $val."\n";
       }
       $ret .= $this->translatedText("txtTw10", Array(count($arrNo), $tmp1));    // "<b>Unused</b>: ".count($arrNo)."\n<pre>".$tmp1."</pre>\n";
-            
+
       $tmp3 = "";
       foreach ($arrUsed as $val) {
         $tmp3 .= $val."\n";
       }
       $ret .= $this->translatedText("txtTw41", Array(count($arrUsed), $tmp3));    // "<b>Used in others teams</b>: ".count($arrDef)."\n<pre>".$tmp."</pre>\n";
-          
+
       $tmp2 = "";
       foreach ($arrAtt as $val) {
         $tmp2 .= $val."\n";
@@ -570,13 +571,13 @@ class TTW extends TBase {
       }
       $ret .= $this->translatedText("txtTw12", Array(count($arrDef), $tmp));    // "<b>Used in defense</b>: ".count($arrDef)."\n<pre>".$tmp."</pre>\n";
     }
-            
+
     $tmp = "";
     foreach ($arrRogue as $val) {
-      $tmp .= $val."\n";    
+      $tmp .= $val."\n";
     }
     $ret .= $this->translatedText("txtTw13", Array(count($arrRogue), $tmp));    // "<b>Rogues</b>: ".count($arrRogue)."\n<pre>".$tmp."</pre>\n";
-            
+
     return $ret;
   }
 
@@ -585,35 +586,35 @@ class TTW extends TBase {
   **************************************************************************/
   private function del() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
 
     // agafem ID de la unitat (llista de alias o llista d'unitats)
-    if ($this->alias == "rogue") 
+    if ($this->alias == "rogue")
       $unitId = $this->alias;
-    else 
+    else
       $unitId = TAlias::aliasSearch($this->alias, $this->dataObj);
-    
+
     if ($unitId == "")
       return $this->translatedText("twerr1", $this->alias); // "Unit <i>".$this->alias."</i> not found.\n\n";
-    
+
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-            
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // return "Ooooops! An error has occurred getting data.\n\n";
-            
+
     // esborrem registre
     if ($this->alias == "rogue") {
       $sql = "update tw set points = points-1 where guildRefId = '".$player[0]["guildRefId"]."' AND allyCode = '".$player[0]["allyCode"]."' AND unit = 'rogue' ";
       $res = $idcon->query( $sql );
-      if ($idcon->error) 
+      if ($idcon->error)
         return $this->translatedText("error4");                                 // return "Ooooops! An error has occurred getting data.";
-      
+
       if ($idcon->affected_rows > 0) {
         $sql = "select points from tw where guildRefId = '".$player[0]["guildRefId"]."' AND allyCode = '".$player[0]["allyCode"]."' AND unit = 'rogue' ";
         $res = $idcon->query( $sql );
@@ -631,44 +632,44 @@ class TTW extends TBase {
     else {
       $sql  = "DELETE FROM tw WHERE guildRefId = '".$player[0]["guildRefId"]."' AND allyCode = '".$player[0]["allyCode"]."' AND unit = '".$unitId."'";
       $res = $idcon->query( $sql );
-      if ($idcon->error) 
+      if ($idcon->error)
         return $this->translatedText("error4");                                 // $ret = "Ooooops! An error has occurred getting data.";
-      
+
       $ret  = $this->translatedText("txtTw02", $player[0]["guildName"]);        // "TW updated for ".$player[0]["guildName"]."\n\n";
       $ret .= $this->translatedText("txtTw03", $player[0]["name"]);             // "  Player: ".$player[0]["name"]."\n";
       $ret .= $this->translatedText("txtTw16", TUnits::unitNameFromUnitId($unitId, $this->dataObj));     // "  Deleted Unit: ".$unit."\n\n";
-      
-      $idcon->close(); 
-            
+
+      $idcon->close();
+
       return $ret;
-    }           
+    }
   }
 
   /**************************************************************************
-    retorna les unitats utilitzades per un AllyCode 
+    retorna les unitats utilitzades per un AllyCode
   **************************************************************************/
   private function me() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-           
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-            
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // return "Ooooops! An error has occurred getting data.\n\n";
-            
+
     // cerquem registres
     $sql  = "SELECT * FROM tw WHERE guildRefId = '".$player[0]["guildRefId"]."' and allyCode = '". $this->allyCode."'";
-           
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
-    
+
     $arrOff = array();
     $arrDef = array();
     $arrUsed = array();
@@ -703,12 +704,12 @@ class TTW extends TBase {
           array_push($arrRogue, $unitName." (".$row['points'].")");
           break;
       }
-    }	
-    usort($arrOff, 'strnatcasecmp');	
-    usort($arrDef, 'strnatcasecmp');	
-    usort($arrUsed, 'strnatcasecmp');	
-    usort($arrRogue, 'strnatcasecmp');	
-      
+    }
+    usort($arrOff, 'strnatcasecmp');
+    usort($arrDef, 'strnatcasecmp');
+    usort($arrUsed, 'strnatcasecmp');
+    usort($arrRogue, 'strnatcasecmp');
+
     $ret  = $this->translatedText("txtTw17", $player[0]["guildName"]);          // "TW for ".$player[0]["guildName"]."\n\n";
     $ret .= $this->translatedText("txtTw18", $player[0]["name"]);               // "Units used by ".$player[0]["name"]."\n\n";
 
@@ -722,82 +723,82 @@ class TTW extends TBase {
       $ret .= " - ".$unit."\n";
     }
     $ret .= "</pre>\n";
-      
+
     $ret .= $this->translatedText("txtTw20");                                   // "<b>Defense</b>: \n<pre>";
     foreach ($arrDef as $unit) {
       $ret .= " - ".$unit."\n";
     }
     $ret .= "</pre>\n";
-      
+
     $ret .= $this->translatedText("txtTw42");                                   // "<b>Usadas</b>: \n<pre>";
     foreach ($arrUsed as $unit) {
       $ret .= " - ".$unit."\n";
     }
     $ret .= "</pre>\n";
-      
+
     $ret .= $this->translatedText("txtTw21");                                   // "<b>Rogues</b>: \n<pre>";
     foreach ($arrRogue as $unit) {
       $ret .= $unit."\n";
     }
     $ret .= "</pre>\n";
-    
-    $idcon->close(); 
-        
+
+    $idcon->close();
+
     return $ret;
-  }          
-  
+  }
+
   /**************************************************************************
     retorna una visió general de la TW
   **************************************************************************/
   private function all() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-        
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-    
+
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-        
+
     // cerquem registres
     $sql  = "SELECT unittype, unit, count(*) cont, sum(points) points 
              FROM tw 
              WHERE guildRefId = '".$player[0]["guildRefId"]."' and unittype in ('def', 'off', 'used') 
              group by unittype, unit";
-        
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
-   
+
     $arrDef = array("charPoints" => 0, "shipPoints" => 0, "charBattles" => 0, "shipBattles" => 0, "char" => array(), "ships" => array());
     $arrUsed = array("charPoints" => 0, "shipPoints" => 0, "charBattles" => 0, "shipBattles" => 0, "char" => array(), "ships" => array());
     $arrOff = array("charPoints" => 0, "shipPoints" => 0, "charBattles" => 0, "shipBattles" => 0, "char" => array(), "ships" => array());
     while ($row = $res->fetch_assoc()) {
       $unitName = TUnits::unitNameFromUnitId($row['unit'], $this->dataObj);
       if ($unitName == "") $unitName = $row['unit'];
-        
+
       if (TUnits::isAShip($row['unit'], $this->dataObj)) {
         switch ($row['unittype']) {
-          case 'off':  
+          case 'off':
             $arrOff["ships"][$unitName] = array("cont" => $row['cont'], "points" => $row['cont']);
             $arrOff["shipPoints"] = $arrOff["shipPoints"] + $row['points'];
             $arrOff["shipBattles"] = $arrOff["shipBattles"] + $row['cont'];
             break;
-          case 'def':  
+          case 'def':
             $arrDef["ships"][$unitName] = array("cont" => $row['cont'], "points" => $row['cont']);
             $arrDef["shipBattles"] = $arrDef["shipBattles"] + $row['cont'];
             break;
-          case 'used':  
+          case 'used':
             $arrUsed["ships"][$unitName] = array("cont" => $row['cont'], "points" => $row['cont']);
             $arrUsed["shipBattles"] = $arrUsed["shipBattles"] + $row['cont'];
             break;
         }
-      } 
+      }
       else {
         switch ($row['unittype']) {
           case 'off':
@@ -815,14 +816,14 @@ class TTW extends TBase {
             break;
         }
       }
-    }	
-    ksort($arrOff);	
-    ksort($arrDef);	
-    ksort($arrUsed);	
-        
+    }
+    ksort($arrOff);
+    ksort($arrDef);
+    ksort($arrUsed);
+
     $ret  = $this->translatedText("txtTw22", $player[0]["guildName"]);          // "TW General Vision for ".$player[0]["guildName"]."\n\n";
-    
-    // imprimim defenses      
+
+    // imprimim defenses
     $ret .= $this->translatedText("txtTw23");                                   // "<b>Defense</b>\n";
     $ret .= $this->translatedText("txtTw24", $arrDef["shipBattles"]);           // "<i>Ships</i> (def: ".$arrDef["shipBattles"].")\n";
     foreach ($arrDef["ships"] as $unit => $values) {
@@ -833,8 +834,8 @@ class TTW extends TBase {
     foreach ($arrDef["char"] as $unit => $values) {
       $ret .= "   ".$unit.": ".$values["cont"]."\n";
     }
-    $ret .= "\n"; 
-        
+    $ret .= "\n";
+
     // imprimim unitats usades
     $ret .= $this->translatedText("txtTw43");                                   // "<b>Used in others teams</b>\n";
     $ret .= $this->translatedText("txtTw44", $arrUsed["shipBattles"]);          // "<i>Ships</i>\n";
@@ -846,9 +847,9 @@ class TTW extends TBase {
     foreach ($arrUsed["char"] as $unit => $values) {
       $ret .= "   ".$unit.": ".$values["cont"]."\n";
     }
-    $ret .= "\n"; 
-    
-    // imprimim atacs      
+    $ret .= "\n";
+
+    // imprimim atacs
     $ret .= $this->translatedText("txtTw26");                                   // "<b>Offense</b>\n";
     $ret .= $this->translatedText("txtTw27", array($arrOff["shipBattles"], $arrOff["shipPoints"]));   // "<i>Ships</i> (battles: ".$arrOff["shipBattles"].", points:".$arrOff["shipPoints"].")\n";
     foreach ($arrOff["ships"] as $unit => $values) {
@@ -860,43 +861,43 @@ class TTW extends TBase {
       $ret .= "   ".$unit.": ".$values["cont"]."\n";
     }
     $ret .= "\n";
-    
-    $idcon->close(); 
-        
+
+    $idcon->close();
+
     return $ret;
   }
-  
+
   /**************************************************************************
     retorna la llista de rogues falses
   **************************************************************************/
   private function rogueList() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
 
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-  
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-        
+
     // cerquem registres
     $sql  = "SELECT name, points FROM tw WHERE guildRefId = '".$player[0]["guildRefId"]."' and unittype = 'rogue' ";
-    
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
 
     $arr = array();
     while ($row = $res->fetch_assoc()) {
       $arr[$row['name']] = $row['points'];
-    }	
+    }
     uksort($arr, 'strnatcasecmp');
-    
+
     $ret  = $this->translatedText("txtTw29", $player[0]["guildName"]);          // "TW General Rogue List for ".$player[0]["guildName"]."\n\n";
 
     foreach ($arr as $name => $points) {
@@ -904,36 +905,36 @@ class TTW extends TBase {
     }
     $ret .= "\n";
 
-    $idcon->close(); 
-  
+    $idcon->close();
+
     return $ret;
   }
- 
+
   /**************************************************************************
     retorna tots els equips utilitzats per tots els membres del gremi en la TW
   **************************************************************************/
   private function estampometro() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
 
     $player = $this->getInfoPlayer();
-  
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-  
+
     // cerquem registres
     $sql  = "SELECT * FROM tw where guildRefId = '".$player[0]["guildRefId"]."' and unittype = 'off'";
 
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-  
+
     // informem arrays
     $arr = array();
     $noFirst = array();
@@ -946,15 +947,15 @@ class TTW extends TBase {
         $arr[$key] = array(
                         //   'keyContra' => $key,
                         //   'keyCon' => $key1,
-                           'vs' => $vsName, 
-                           'unit' => $unitName, 
-                           'primera' => 0, 
-                           'total' => 0, 
+                           'vs' => $vsName,
+                           'unit' => $unitName,
+                           'primera' => 0,
+                           'total' => 0,
                            'sumaPuntos' => 0,
-                           'totalPuntos' => 0 
+                           'totalPuntos' => 0
                           );
       }
-        
+
       if (TUnits::isAShip($row['unit'], $this->dataObj)) {
         $arr[$key]['totalPuntos'] = $arr[$key]['totalPuntos'] + 22;
         if ($row['points'] >= 18) {
@@ -964,7 +965,7 @@ class TTW extends TBase {
           if ($row['points'] != 0)
             $noFirst[$row['name']] = $noFirst[$row['name']] + $this->extraPointsToSum($row['unit'], $row['points']);
         }
-      } 
+      }
       else {
         $arr[$key]['totalPuntos'] = $arr[$key]['totalPuntos'] + 20;
         if ($row['points'] >= 16) {
@@ -977,11 +978,11 @@ class TTW extends TBase {
       }
       $arr[$key]['total'] = $arr[$key]['total'] + 1;
       $arr[$key]['sumaPuntos'] = $arr[$key]['sumaPuntos'] + $row['points'];
-    }	
-    $idcon->close(); 
-  
-    ksort($noFirst);	
-      
+    }
+    $idcon->close();
+
+    ksort($noFirst);
+
     // imprimim resultat
     $ret = array();
     $ret[0]  = $this->translatedText("txtTw30", $player[0]["guildName"]);       // "TW estampómetro for ".$player[0]["guildName"]."\n";
@@ -995,24 +996,24 @@ class TTW extends TBase {
     $tmpVersus = "";
     $idx = 0;
     foreach ($arr as $versus) {
-      if ($tmpVersus != $versus['vs']) { 
+      if ($tmpVersus != $versus['vs']) {
         $ret[$idx] .= $this->translatedText("txtTw31", $versus['vs']);             // "\n<b>Versus ".$versus['vs']."</b>\n";
         $tmpVersus = $versus['vs'];
       }
-      
-      if ($versus['totalPuntos'] == 0) 
+
+      if ($versus['totalPuntos'] == 0)
         $num = 0;
-      else 
+      else
         $num = number_format(($versus['sumaPuntos'] * 100) / $versus['totalPuntos'], 2);
-      
+
       $ret[$idx] .= "   - ".$versus['unit'].": ".$versus['primera']."P / ".$versus['total']."T / ".$versus['sumaPuntos']." puntos / ".$num."% \n";
-      
+
       if (strlen($ret[$idx]) > $this->dataObj->maxChars) {
         $idx++;
       }
     }
     $ret[$idx] .= "\n";
-    
+
 
     // visió CON
     usort($arr, function($a, $b) {
@@ -1023,81 +1024,81 @@ class TTW extends TBase {
     $tmpVs = "";
     $idx++;
     foreach ($arr as $versus) {
-      if ($tmpVs != $versus['unit']) { 
+      if ($tmpVs != $versus['unit']) {
         $ret[$idx] .= $this->translatedText("txtTw46", $versus['unit']);             // "\n<b>With ".$versus['vs']."</b>\n";
         $tmpVs = $versus['unit'];
       }
-      
-      if ($versus['totalPuntos'] == 0) 
+
+      if ($versus['totalPuntos'] == 0)
         $num = 0;
-      else 
+      else
         $num = number_format(($versus['sumaPuntos'] * 100) / $versus['totalPuntos'], 2);
-      
+
       $ret[$idx] .= "   - ".$versus['vs'].": ".$versus['primera']."P / ".$versus['total']."T / ".$versus['sumaPuntos']." puntos / ".$num."% \n";
-      
+
       if (strlen($ret[$idx]) > $this->dataObj->maxChars) {
         $idx++;
       }
     }
     $ret[$idx] .= "\n";
-        
-    
+
+
     // atacas no al primer intent
     $tmp = $this->translatedText("txtTw32");                                    // "<b>No first attack</b>\n\n";
-        
+
     $idx++;
     foreach ($noFirst as $key => $value) {
       $tmp .= $key.": ".$value."\n";
     }
     $tmp .= "\n";
     $ret[$idx] = $tmp;
-       
+
     return $ret;
   }
-  
+
   /**************************************************************************
     retorna un llistats dels atacs + rogues per persona en la TW
   **************************************************************************/
   private function attacks() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
 
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-        
+
     // cerquem registres
     $sql  = "SELECT *
              FROM tw 
              WHERE guildRefId = '".$player[0]["guildRefId"]."' and unittype in ('off', 'rogue')";
-        
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
-        
+
     $arr = array();
     while ($row = $res->fetch_assoc()) {
-      if (!array_key_exists($row['name'], $arr)) 
+      if (!array_key_exists($row['name'], $arr))
         $arr[$row['name']] = array(
                                    'name' => $row['name'],
-                                   'off' => 0, 
-                                   'points' => 0, 
-                                   'maxpoints' => 0, 
-                                   'rogues' => 0, 
+                                   'off' => 0,
+                                   'points' => 0,
+                                   'maxpoints' => 0,
+                                   'rogues' => 0,
                                    'percent' => 0
                                   );
-        
+
       if ($row['unittype'] == 'off') {
         $arr[$row['name']]['points'] = $arr[$row['name']]['points'] + $row['points'] + $this->extraPointsToSum($row['unit'], $row['points']);
-        $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1; 
-        
+        $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1;
+
         if (TUnits::isAShip($row['unit'], $this->dataObj)) {
             $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
         } else {
@@ -1107,15 +1108,15 @@ class TTW extends TBase {
       else {
         $arr[$row['name']]['rogues'] = $arr[$row['name']]['rogues'] + $row['points'];
       }
-    }	
-        
-    $idcon->close(); 
-        
+    }
+
+    $idcon->close();
+
     // calculem el %
     foreach ($arr as $key => $data) {
       $arr[$key]['percent'] = $data['maxpoints'] === 0 ? '0.00' : number_format(($data['points'] * 100)/$data['maxpoints'], 2);
     }
-        
+
     // ordenem
     switch (strtolower($this->sort)) {
       case 'rogues':
@@ -1151,12 +1152,12 @@ class TTW extends TBase {
           return strtoupper($a['name']) <=> strtoupper($b['name']);
         });
     }
-    
-    // imprimim   
+
+    // imprimim
     $ret  = $this->translatedText("txtTw33", $player[0]["guildName"]);          // "TW attacks for ".$player[0]["guildName"]."\n\n";
     $ret .= "rogues|battles|points|%\n";
     $ret .= "<pre>";
-    
+
     $sumOff = 0;
     foreach ($arr as $data) {
       $sumOff = $sumOff + $data['off'];
@@ -1172,7 +1173,7 @@ class TTW extends TBase {
     }
     $ret .= "</pre>";
     $ret .= "\n";
-    
+
     return $ret;
   }
 
@@ -1181,7 +1182,7 @@ class TTW extends TBase {
   **************************************************************************/
   private function defenses() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
 
     $players = $this->getInfoGuild();
 
@@ -1204,7 +1205,7 @@ class TTW extends TBase {
 
       // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
     // cerquem registres
     $sql  = "SELECT 
@@ -1235,7 +1236,7 @@ class TTW extends TBase {
             : 30;
 
         $arr[$playerName] = $record;
-    }	
+    }
 
     foreach ($arr as $index => $record) {
         if (isset($record['telegramTag'])) {
@@ -1271,8 +1272,8 @@ class TTW extends TBase {
         });
         break;
     }
-    
-    // imprimim   
+
+    // imprimim
     $ret  = $this->translatedText("txtTw34", $guildName);          // "TW defenses for ".$player[0]["guildName"]."\n\n";
     $ret .= "teams|points \n";
 
@@ -1289,132 +1290,132 @@ class TTW extends TBase {
     }
     $ret .= join(" \n", $lines);
     $ret .= "\n";
-    
+
     return $ret;
   }
-  
+
   /**************************************************************************
     guarda el resultat d'una TW a l'històric de la base de dades
   **************************************************************************/
   private function save() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-  
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     // comprovem data  yyyymmdd
     if (!$this->isCorrectDate($this->date))
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! '".$this->date."' is not a valid date. Correct date format yyyymmdd and max date today.\n\n";
- 
+
     // esborrem dades que puguin haver-hi
     $this->deleteH();
-      
+
     // agafem dades
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-      
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
-  
+
     // cerquem registres
     $sql  = "SELECT *
              FROM tw 
              WHERE guildRefId = '".$player[0]["guildRefId"]."' and unittype in ('off', 'rogue')
              order by name";
-      
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
-      
+
     $arr = array();
     while ($row = $res->fetch_assoc()) {
-      if (!array_key_exists($row['name'], $arr)) 
+      if (!array_key_exists($row['name'], $arr))
         $arr[$row['name']] = array(
                                    'name' => $row['name'],
-                                   'allyCode' => $row['allyCode'], 
-                                   'off' => 0, 
-                                   'points' => 0, 
+                                   'allyCode' => $row['allyCode'],
+                                   'off' => 0,
+                                   'points' => 0,
                                    'maxpoints' => 0,
-                                   'rogues' => 0, 
+                                   'rogues' => 0,
                                    'percent' => 0
                                   );
-      
+
       if ($row['unittype'] == 'off') {
         $arr[$row['name']]['points'] = $arr[$row['name']]['points'] + $row['points'] + $this->extraPointsToSum($row['unit'], $row['points']);
-        $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1; 
-      
+        $arr[$row['name']]['off'] = $arr[$row['name']]['off'] + 1;
+
         if (TUnits::isAShip($row['unit'], $this->dataObj)) {
             $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 22;
         } else {
             $arr[$row['name']]['maxpoints'] = $arr[$row['name']]['maxpoints'] + 20;
         }
-      } 
+      }
       else {
           $arr[$row['name']]['rogues'] = $arr[$row['name']]['rogues'] + $row['points'];
       }
-    }	
-      
+    }
+
     // calculem el %
     foreach ($arr as $key => $data) {
       $arr[$key]['percent'] = $data['maxpoints'] === 0
         ? 0
         : number_format(($data['points'] * 100) / $data['maxpoints'], 2);
     }
-    
-    // guardem 1 registre per persona  
+
+    // guardem 1 registre per persona
     foreach ($arr as $data) {
       $sql  = "INSERT INTO twh (guildRefId, twDate, allyCode, name, rogues, battles, points, percent) ";
       $sql .= "VALUES ('".$player[0]["guildRefId"]."', '". $this->date."', '".$data['allyCode']."', '".$data["name"]."', ".$data["rogues"].", ".$data["off"].", ".$data["points"].", ".$data["percent"].") ";
-      $sql .= "ON DUPLICATE KEY UPDATE name='".$data["name"]."', rogues=".$data["rogues"].", battles=".$data["off"].", points=".$data["points"].", percent=".$data["percent"];  
+      $sql .= "ON DUPLICATE KEY UPDATE name='".$data["name"]."', rogues=".$data["rogues"].", battles=".$data["off"].", points=".$data["points"].", percent=".$data["percent"];
       $res = $idcon->query( $sql );
     }
-    $idcon->close(); 
-      
+    $idcon->close();
+
     // retornem resultat
     $ret  = $this->translatedText("txtTw35", $player[0]["guildName"]);          // "TW saved for ".$player[0]["guildName"]."\n\n";
-      
+
     return $ret;
-  }  
-  
+  }
+
   /**************************************************************************
     esborra un resultat d'una TW de l'històric de la base de dades
   **************************************************************************/
   private function deleteH() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-  
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     // comprovem data  yyyymmdd
     if (!$this->isCorrectDate($this->date))
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! '".$this->date."' is not a valid date. Correct date format yyyymmdd and max date today.\n\n";
-      
+
     // agafem dades
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-    
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.\n\n";
-      
+
     // esborrem dades
     $sql  = "delete from twh where guildRefId = '".$player[0]["guildRefId"]."' and twDate = '".$this->date."'";
-      
+
     $idcon->query( $sql );
     if ($idcon->error) {
-      $idcon->close(); 
+      $idcon->close();
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.";
-    } 
-  
+    }
+
     // retornem resultat
     $ret  = $this->translatedText("txtTw36", $player[0]["guildName"]);          // "TW deleted for ".$player[0]["guildName"]."\n\n";
-      
-    return $ret;    
+
+    return $ret;
   }
 
   /**************************************************************************
@@ -1422,31 +1423,31 @@ class TTW extends TBase {
   **************************************************************************/
   private function listH() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-  
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     // comprovem data yyyymmdd
     if (($this->date != "") && (!$this->isCorrectDate($this->date)))
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! '".$this->date."' is not a valid date. Correct date format yyyymmdd and max date today.\n\n";
-      
+
     // agafem dades
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-  
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.\n\n";
-      
+
     // esborrem dades antigues (2 anys d'històric)
     $today = getdate();
     $today['year'] = $today['year'] - 2;
     $today = $today['year'].str_pad($today['mon'], 2, " ", STR_PAD_LEFT).str_pad($today['mday'], 2, " ", STR_PAD_LEFT);
     $sql = "delete from twh where twDate < '".$today."'";
     $idcon->query( $sql );
-      
+
     // cerquem informació a la base de dades
     if ($this->date != "")
       $sql = "SELECT * FROM twh where guildRefId = '".$player[0]["guildRefId"]."' and twDate = '".$this->date."' order by name";
@@ -1456,13 +1457,13 @@ class TTW extends TBase {
               where guildRefId = '".$player[0]["guildRefId"]."'
               group by twDate
               order by twDate";
-      
+
     $res = $idcon->query( $sql );
     if ($idcon->error) {
-      $idcon->close(); 
+      $idcon->close();
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.";
-    } 
-  
+    }
+
     // recuperem resultat
     $arr = array();
     $arr['zzzavg'] = array(
@@ -1478,12 +1479,12 @@ class TTW extends TBase {
         $key = $row['name'];
       else
         $key = $row['twDate'];
-      
+
       $arr[$key] = array(
                          'name' => $key,
-                         'battles' => $row['battles'], 
-                         'points' => $row['points'], 
-                         'rogues' => $row['rogues'], 
+                         'battles' => $row['battles'],
+                         'points' => $row['points'],
+                         'rogues' => $row['rogues'],
                          'percent' => number_format($row['percent'], 2)
                         );
       $arr['zzzavg']['battles'] = $arr['zzzavg']['battles'] + $row['battles'];
@@ -1497,7 +1498,7 @@ class TTW extends TBase {
     usort($arr, function($a, $b) {
       return strtoupper($a['name']) <=> strtoupper($b['name']);
     });
-      
+
     // imprimim resultat
     $ret  = $this->translatedText("txtTw37", $player[0]["guildName"]);          // "TW History for ".$player[0]["guildName"]."\n\n";
     if ($this->date != "")
@@ -1523,59 +1524,59 @@ class TTW extends TBase {
             $this->translatedText("txtTw47", $zzzavg['cont'])."\n";             // "Average (%s)";
     $ret .= "</pre>";
     $ret .= "\n";
-      
+
     return $ret;
   }
-  
+
    /**************************************************************************
     llista les dates guardades de TW o bé la info d'una determinada data
   **************************************************************************/
   private function history() {
     if (!$this->checkAllyCode($this->allyCode))
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
-  
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
+
     $players = $this->getInfoGuild();
-    
+
     // mirem que haguem trobat Id Guild
     if ($players[0]["id"] == "")
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
-      
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error) 
+    if ($idcon->connect_error)
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.\n\n";
-      
+
     // agafem llistat de jugadors del gremi
     $playerList = "";
     foreach ($players[0]['roster'] as $player) {
-      if ($playerList != "") 
+      if ($playerList != "")
         $playerList .= ",";
       $playerList .= "'".$player['allyCode']."'";
     }
-  
+
     // cerquem registres
     if ($this->all)
       $sql  = "SELECT name, count(*) gts, avg(rogues) rogues, avg(battles) battles, avg(points) points, avg(percent) percent FROM twh where guildRefId = '".$players[0]["id"]."' group by name";
     else
       $sql  = "SELECT name, count(*) gts, avg(rogues) rogues, avg(battles) battles, avg(points) points, avg(percent) percent FROM twh where guildRefId = '".$players[0]["id"]."' and allyCode in (".$playerList.") group by name";
-      
+
     $res = $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("twerr2", $this->date);                      // "Ooooops! An error has occurred getting data.";
-      
+
     $arr = array();
     while ($row = $res->fetch_assoc()) {
       $arr[$row['name']] = array(
-                                 'name' => $row['name'], 
-                                 'battles' => number_format($row['battles'], 1), 
-                                 'points' => number_format($row['points'], 1), 
-                                 'rogues' => number_format($row['rogues'], 1), 
+                                 'name' => $row['name'],
+                                 'battles' => number_format($row['battles'], 1),
+                                 'points' => number_format($row['points'], 1),
+                                 'rogues' => number_format($row['rogues'], 1),
                                  'percent' => number_format($row['percent'], 1),
                                  'gts' => number_format($row['gts'], 0)
                                 );
-    }	
-    $idcon->close(); 
-      
+    }
+    $idcon->close();
+
     // ordenem
     switch ($this->sort) {
       case 'rogues':
@@ -1619,13 +1620,13 @@ class TTW extends TBase {
         });
         break;
     }
-    
-    // imprimim   
+
+    // imprimim
     $ret  = $this->translatedText("txtTw33", $players[0]["name"]);              // "TW attacks for ".$players[0]["name"]."\n\n";
     $ret .= $this->translatedText("txtTw39");                                   // "Average of...\n";
     $ret .= "rogues|battles|points|%|gts\n";
     $ret .= "<pre>";
-    
+
     foreach ($arr as $data) {
       $ret .= str_pad($data['rogues'], 3, " ", STR_PAD_LEFT)."|".
               str_pad($data['battles'], 4, " ", STR_PAD_LEFT)."|".
@@ -1636,10 +1637,10 @@ class TTW extends TBase {
     }
     $ret .= "</pre>";
     $ret .= "\n";
-    
+
     return $ret;
-  } 
-  
+  }
+
   /**************************************************************************
     retorna els punts extra a sumar d'un atac en la TW
   **************************************************************************/
@@ -1652,7 +1653,7 @@ class TTW extends TBase {
           return 5;
         case (($points >= 1) && ($points <= 12)):
           return 10;
-        default: 
+        default:
           return 0;
       }
     }
@@ -1664,40 +1665,40 @@ class TTW extends TBase {
           return 5;
         case (($points >= 1) && ($points <= 10)):
           return 10;
-        default: 
+        default:
           return 0;
       }
     }
   }
 
   /**************************************************************************
-    retorna un llistat de les dates en que s'han fet els atacs 
+    retorna un llistat de les dates en que s'han fet els atacs
   **************************************************************************/
   private function dates() {
     if (!$this->checkAllyCode($this->allyCode)) {
-      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n"; 
+      return $this->getHelp("tw", $this->translatedText("error3", $this->allyCode));  // $this->error = "The ".$params[2]." parameter is a bad AllyCode parameter. See help...\n\n";
     }
 
     $player = $this->getInfoPlayer();
-    
+
     // mirem que haguem trobat Id Guild
     if ($player[0]["guildRefId"] == "") {
       return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
-  
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
     }
-      
+
     // cerquem registres
     $sql  = "SELECT * FROM tw WHERE guildRefId = '".$player[0]["guildRefId"]."' and unittype in ('off') order by name, datectrl";
     $res = $idcon->query( $sql );
     if ($idcon->error) {
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.";
     }
-      
+
     $arr = array();
     $current = '';
     $first = false;
@@ -1712,9 +1713,9 @@ class TTW extends TBase {
                      'first' => $first
                     );
       $first = false;
-    }	
-    $idcon->close(); 
-      
+    }
+    $idcon->close();
+
     // ordenem
     switch (strtolower($this->sort)) {
       case 'date':
@@ -1734,18 +1735,18 @@ class TTW extends TBase {
         });
         break;
     }
-    
-    // imprimim   
+
+    // imprimim
     $ret = array();
     $idx = 0;
     $ret[$idx]  = $this->translatedText("txtTw33", $player[0]["guildName"]);          // "TW attacks for %s \n\n";
     $ret[$idx] .= "date|name \n";
     $ret[$idx] .= "<pre>";
-    
+
     foreach ($arr as $data) {
       if ($ret[$idx] == "")
         $ret[$idx] = "<pre>";
-      
+
       $ret[$idx] .= $data['date']."|".
                     $data['name'];
       if ($data['first']) {
@@ -1760,25 +1761,25 @@ class TTW extends TBase {
     }
     $ret[$idx] .= "</pre>";
     $ret[$idx] .= "\n";
-    
+
     return $ret;
   }
 
   /**************************************************************************
-    afegeix allycodes com a no registrats en la TW per a no tenir-los en compte 
+    afegeix allycodes com a no registrats en la TW per a no tenir-los en compte
   **************************************************************************/
   private function noreg() {
     // mirem si volem llistar
     if (strcasecmp($this->params[1], 'list') == 0 ) {
       return $this->listNoReg();
     }
-      
+
     // posem allycodes en un array
     $arr = explode(',', $this->params[1]);
-    
+
     // agafem dades de la guild
     $guild = $this->getInfoGuild();
-      
+
     // comprovem la existència dels allycodes
     $notfound = array();
     $yesfound = array();
@@ -1793,12 +1794,12 @@ class TTW extends TBase {
       if ($found == false)
         array_push($notfound, $ally);
     }
-    
+
     // i hi ha algun allycode incorrecte, els mostrem i sortim
     if (count($notfound) > 0) {
       $ret = $this->translatedText("txtTw48", $guild[0]["name"]);               // "There are some allycodes incorrects for %s:\n\n";
       foreach ($notfound as $ally) {
-        $ret .= $ally."\n"; 
+        $ret .= $ally."\n";
       }
       $ret .= "\n";
       $ret .= $this->translatedText("txtTw49");                                 // "All allycodes are discarted!\n\n";
@@ -1811,46 +1812,46 @@ class TTW extends TBase {
     if ($idcon->connect_error) {echo "\n\n";
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
     }
-      
+
     // afegim registre
     $sql  = "INSERT INTO twconf (guildRefId, noreg) ";
     $sql .= "VALUES ('".$guild[0]["id"]."', '".$this->params[1]."') ";
     $sql .= "ON DUPLICATE KEY UPDATE noreg='".$this->params[1]."'";
     $idcon->query( $sql );
-    if ($idcon->error) 
+    if ($idcon->error)
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
-    
-    $idcon->close(); 
+
+    $idcon->close();
 
     // retornem allycodes/players afegits
     $ret = $this->translatedText("txtTw50", $guild[0]["name"]);                 // "These allycodes have been added for %s:\n\n";
     foreach ($yesfound as $ally => $player) {
-      $ret .= $ally." - ".$player."\n"; 
+      $ret .= $ally." - ".$player."\n";
     }
     $ret .= "\n";
     return $ret;
   }
-  
+
   /**************************************************************************
-    llista els allycodes no registrats en la TW 
+    llista els allycodes no registrats en la TW
   **************************************************************************/
   private function listNoReg() {
     // agafem dades de la guild
     $guild = $this->getInfoGuild();
-      
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {echo "\n\n";
       return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
     }
-      
+
     // busquem registre
     $sql  = "SELECT noreg FROM twconf WHERE guildRefId = '".$guild[0]["id"]."'";
     $res = $idcon->query( $sql );
     if ($idcon->error) {
       return $this->translatedText("error4");                                   // $ret = "Ooooops! An error has occurred getting data.";
     }
-    
+
     // busquem noms
     $players = array();
     $row = $res->fetch_assoc();
@@ -1862,38 +1863,38 @@ class TTW extends TBase {
         }
       }
     }
-    
-    $idcon->close(); 
-    
+
+    $idcon->close();
+
     // imprimim resultat
     $ret = $this->translatedText("txtTw51", $guild[0]["name"]);                 // "There are some allycodes incorrects for %s:\n\n";
     foreach ($players as $ally => $player) {
-      $ret .= $ally." - ".$player."\n"; 
+      $ret .= $ally." - ".$player."\n";
     }
     $ret .= "\n";
     return $ret;
   }
-  
+
   /**************************************************************************
-    retorna un array amb els allycodes no registrats en la TW 
+    retorna un array amb els allycodes no registrats en la TW
   **************************************************************************/
   private function getNoReg() {
     // agafem dades de la guild
     $guild = $this->getInfoGuild();
-      
+
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {echo "\n\n";
       return array();
     }
-      
+
     // busquem registre
     $sql  = "SELECT noreg FROM twconf WHERE guildRefId = '".$guild[0]["id"]."'";
     $res = $idcon->query( $sql );
     if ($idcon->error) {
       return array();
     }
-    
+
     // busquem noms
     $row = $res->fetch_assoc() ?? [];
 
@@ -1902,11 +1903,47 @@ class TTW extends TBase {
 
     private function check(?string $teamAlias = null, ?string $allyCode = null, bool $onlyPending = false)
     {
+        $telegramInteractiveMssage = new TelegramInteractiveMessage(
+            $this->dataObj->chatId,
+            $this->dataObj->messageId
+        );
+
+        $message = <<<EOF
+        <b>Comprobación de mods para GT</b>
+            ▫️ Recuperar perfil de Jugador
+            ▫️ Leer equipos del Gremio
+            ▫️ Recuperar estadísticas del Jugador
+            ▫️ Comprobar equipos
+EOF;
+
+        $telegramInteractiveMssage->start($message);
+
+        $message = <<<EOF
+        <b>Comprobación de mods para GT</b>
+            💬️ Recuperar perfil de Jugador
+            ▫️ Leer equipos del Gremio
+            ▫️ Recuperar estadísticas del Jugador
+            ▫️ Comprobar equipos
+EOF;
+        $telegramInteractiveMssage->update($message);
+
         if (!is_null($allyCode)) {
             $this->actAsUser($allyCode);
         }
 
-        $player = $this->getInfoPlayer();
+        $player     = $this->getInfoPlayer();
+        $guildName  = $player[0]["guildName"];
+        $playerName = $player[0]["name"];
+
+
+        $message = <<<EOF
+        <b>Comprobación de mods para GT</b>
+            🟢️ Recuperar perfil de Jugador [$guildName][$playerName]
+            💬️ Leer equipos del Gremio [$guildName]
+            ▫️ Recuperar estadísticas del Jugador
+            ▫️ Comprobar equipos
+EOF;
+        $telegramInteractiveMssage->update($message);
 
         $stats = $this->loadGuildRequirements($this->dataObj->guildId, $teamAlias);
         $unitsToLoadStats = $stats->unitIds();
@@ -1915,15 +1952,34 @@ class TTW extends TBase {
             return $this->translatedText('txtTwCheck2');
         }
 
+        $message = <<<EOF
+        <b>Comprobación de mods para GT</b>
+            🟢️ Recuperar perfil del Jugador [$guildName][$playerName]
+            🟢️ Leer equipos del Gremio [$guildName]
+            💬️ Recuperar estadísticas del Jugador
+            ▫️ Comprobar equipos
+EOF;
+        $telegramInteractiveMssage->update($message);
         $playerRosterWithStats = $this->playerStats($player[0], $unitsToLoadStats);
 
-        $header = $this->translatedText('txtTwCheck1', [ $player[0]["guildName"], $player[0]["name"]]);
-        $now = new DateTimeImmutable();
-        $updated = (new DateTimeImmutable())->setTimestamp(intval($player[0]['updated'] / 1000));
+        $message = <<<EOF
+        <b>Comprobación de mods para GT</b>
+            🟢️ Recuperar perfil del Jugador [$guildName][$playerName]
+            🟢️ Leer equipos del Gremio [$guildName]
+            🟢️ Recuperar estadísticas del Jugador
+            💬️ Comprobar equipos
+EOF;
+        $telegramInteractiveMssage->update($message);
+
+        $header     = $this->translatedText('txtTwCheck1', [ $guildName, $playerName ]);
+        $now        = new DateTimeImmutable();
+        $updated    = (new DateTimeImmutable())->setTimestamp(intval($player[0]['updated'] / 1000));
         $nextUpdate = $updated->add(new DateInterval('PT4H'));
-        $ago = $updated->diff($now)->format('%Hh %Im');
-        $next = $now->diff($nextUpdate)->format('%Hh %Im');
-        $footer = $this->translatedText('txtTwCheck3', [ $ago, $next ]);
+        $ago        = $updated->diff($now)->format('%Hh %Im');
+        $next       = $now->diff($nextUpdate)->format('%Hh %Im');
+        $footer     = $this->translatedText('txtTwCheck3', [ $ago, $next ]);
+
+        $telegramInteractiveMssage->finish();
 
         return [
             $header,
