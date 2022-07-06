@@ -5,15 +5,32 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    ports:
-      - "80:80"
-    expose:
-      - 9003
     volumes:
       - ./Telegram:/var/www/html/
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./docker/php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./Telegram:/var/www/html
+    links:
+      - php
+    depends_on:
+      - php
+
+#  telegram:
+#    image: ghcr.io/lukaszraczylo/tdlib-telegram-bot-api-docker/telegram-api-server:latest
+#    command: --local
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      TELEGRAM_API_ID: ${TELEGRAM_API_ID}
+#      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
 
   db:
     image: mysql
@@ -33,6 +50,7 @@ services:
     restart: always
     ports:
       - "8080:8080"
+
 
 volumes:
   mysql-data:

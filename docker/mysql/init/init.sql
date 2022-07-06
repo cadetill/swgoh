@@ -137,7 +137,7 @@ CREATE TABLE `twh` (
 --
 
 CREATE TABLE `users` (
-                         `id` int(11) NOT NULL,
+                         `id` bigint NOT NULL,
                          `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                          `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                          `allycode` int(11) NOT NULL,
