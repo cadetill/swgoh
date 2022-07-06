@@ -477,6 +477,7 @@ class TTranslate {
     $this->translated["ENG_US"]["statserr1"] = "Unit '%s' not defined into States list.\n\n";
     $this->translated["ENG_US"]["statserr2"] = "No units found into your rooster.\n\n";
     $this->translated["ENG_US"]["statserr3"] = "Incorrect requisite.\n\n";
+    $this->translated["SPA_XM"]["statserr4"] = "Team requested not found.\n\n";
     $this->translated["ENG_US"]["txtStats1"] = "Stat unit added.\n";
     $this->translated["ENG_US"]["txtStats2"] = "<b>Units to control</b>\n";
     $this->translated["ENG_US"]["txtStats3"] = "Stat unit '%s' was deleted.\n\n";
@@ -538,6 +539,7 @@ class TTranslate {
     $this->translated["SPA_XM"]["statserr1"] = "La unidad '%s' no está definida en la lista Stats.\n\n";
     $this->translated["SPA_XM"]["statserr2"] = "No se han encontrado las unidades en tu inventario.\n\n";
     $this->translated["SPA_XM"]["statserr3"] = "Requisito incorrecto.\n\n";
+    $this->translated["SPA_XM"]["statserr4"] = "No se ha encontrado el equipo solicitado.\n\n";
     $this->translated["SPA_XM"]["txtStats1"] = "Unidad Stat añadida.\n";
     $this->translated["SPA_XM"]["txtStats2"] = "<b>Unidades a controlar</b>\n";
     $this->translated["SPA_XM"]["txtStats3"] = "La unidad Stat '%s' ha sido borrada.\n\n";

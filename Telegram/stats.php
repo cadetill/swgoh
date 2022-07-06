@@ -356,7 +356,6 @@ class TStats extends TBase {
     else {
       $guild = $this->getInfoGuild($this->unit);
     }
-    $data = $this->getInfoGuildExtra($guild);
 
     // mirem que haguem trobat Id Guild
     if ($guild[0]["id"] == "") {
@@ -383,14 +382,20 @@ class TStats extends TBase {
     }
     
     // preparem array vuit de la info necessaria per jugador
+    if (!isset($statArr[$defId])) {
+      return $this->translatedText("statserr4", $this->subcomand);
+    }
     $empty = $statArr[$defId];
+    $unitsToFilter = array_keys($empty);
     foreach ($empty as $key => $value) {
       foreach ($value as $k => $v) {
         $empty[$key][$k] = "";
       }
     }
+
+    $data = $this->guildStats($unitsToFilter);
     
-//    $roster = array();
+    $roster = [];
     foreach ($data as $player) {
       $roster[$player['name']] = $empty;
       foreach ($player['roster'] as $unit) {
