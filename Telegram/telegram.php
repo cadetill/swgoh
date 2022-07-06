@@ -41,11 +41,11 @@ use Longman\TelegramBot\Request;
 
 http_response_code(200);
   fastcgi_finish_request();
-  
+
   require_once 'translate.php';
   require_once 'SwgohHelp.php';
   require_once 'config.php';
-  require_once 'generalfunc.php'; 
+  require_once 'generalfunc.php';
   require_once 'tbase_class.php';
   require_once 'help.php';
   require_once 'register.php';
@@ -73,7 +73,7 @@ http_response_code(200);
   require_once './textimage/class.textPainter.php';
 
     $data = new TData();
-        processRequest($data);
+    processRequest($data);
 
     $memoryInMb = intval(memory_get_peak_usage(true) / 1024 / 1024);
 
@@ -335,20 +335,26 @@ function processRequest ($data) {
         $response = array($response);
     }
 
-    // debug($data, [ 'Responses count: '.count($response) ]);
-    // debug($data, [ 'Responses size: '.strlen(json_encode($response)) ]);
     sendMessage($data, $response, $reply);
-    // debug($data, [ 'Telegram responses count: '.count($tgResponses) ]);
-    // debug($data, [ 'Telegram responses size: '.strlen(json_encode($tgResponses)) ]);
-    // debug($data, [ 'Telegram responses: '. json_encode($tgResponses) ]);
 }
 
 /**************************************************************************
   funció que enviarà missatges a Telegram
 **************************************************************************/
 function sendMessage($data, $response, $reply = true, $keyboard = NULL) {
-    return sendGetMessage($data, $response, $reply, $keyboard);
-    // sendPostMessage($data, $response, $reply, $keyboard);
+    $first = true;
+    foreach ($response as $res) {
+        $message = [
+            'chat_id'    => $data->chatId,
+            'parse_mode' => 'html',
+        ];
+        if ($first && $reply) {
+            $message['reply_to_message_id'] = $data->messageId;
+            $first = false;
+        }
+        $message['text'] = $res;
+        Request::sendMessage($message);
+    }
 }
 
 function sendGetMessage($data, $response, $reply = true, $keyboard = NULL) {
@@ -408,7 +414,7 @@ function sendPhoto($data, $photoFile, $photoUrl, $photoText) {
     $photo = $photoUrl;
   }
   $url = $data->website.'/sendPhoto?chat_id='.$data->chatId.'&reply_to_message_id='.$data->messageId.'&parse_mode=HTML&caption='.urlencode($photoText).'&photo='.$photo;
-       
+
   file_get_contents($url);
 }
 
@@ -423,13 +429,13 @@ function getDataFromId($data) {
     echo "Error: " . $idcon->connect_error . "\n";
     return "Ooooops! An error has occurred getting data...";
   }
-  
+
   $ret = "";
   $sql = 'select * FROM users WHERE id ='.$data->userId;
   $res = $idcon->query( $sql );
   if ($idcon->error) {
     $ret = "Ooooops! An error has occurred getting data.";
-  } 
+  }
   else {
     $row = $res->fetch_assoc();
     if (isset($row)) {
