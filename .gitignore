@@ -84,3 +84,7 @@ Telegram/tmp/*
 Telegram/vendor/*
 
 Telegram/config.php
+
+Telegram/.env.prod
+Telegram/.phpunit.result.cache
+Telegram/json/*.json
