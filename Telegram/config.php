@@ -28,8 +28,12 @@ class TData
     public $messageId   = "";
     public $ackId       = "";
     public $messageDate = "";
+
+    // player data
+    public $name        = "";
     public $guildId     = "";
     public $guildName   = "";
+
     public $debugChatId = "";
 
     // noms d'arxius

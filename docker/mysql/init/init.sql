@@ -141,8 +141,10 @@ CREATE TABLE `users` (
                          `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                          `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                          `allycode` int(11) NOT NULL,
-                         `language` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+                         `language` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                         `last_command_at` datetime null;
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create unique index users_allycode_uindex on users (allycode);
 
 CREATE TABLE `guild_requirements` (
                          `id` int(11) NOT NULL AUTO_INCREMENT,

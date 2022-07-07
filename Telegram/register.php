@@ -45,12 +45,27 @@ class TRegister extends TBase {
     }
       
     $this->lang = strtoupper($this->lang);
+    $player = $this->getInfoPlayer($this->allyCode);
       
-    $sql  = "INSERT INTO users (id, username, name, allycode, language) ";
-    $sql .= "VALUES(".$this->dataObj->userId.", \"".$this->dataObj->username."\", \"".$this->dataObj->firstname."\", ".$this->allyCode.", \"".$this->lang."\") ";
-    $sql .= "ON DUPLICATE KEY UPDATE allycode=".$this->allyCode.", language=\"".$this->lang."\"";
-    echo "\n\n".$sql."\n\n";
-    $idcon->query( $sql );
+    $sql  = <<<EOF
+        SET
+            @id = {$this->dataObj->userId},
+            @username = '{$this->dataObj->username}',
+            @name = '{$player[0]['name']}',
+            @allycode = {$this->allyCode},
+            @lang = '{$this->lang}',
+            @now = NOW(); 
+        INSERT INTO users (id, username, name, allycode, language, last_command_at) 
+        VALUES(@id, @username, @name, @allycode, @lang, @now)
+        ON DUPLICATE KEY UPDATE 
+             id=@id,
+             username=@username,
+             name=@name,
+             allycode=@allycode, 
+             language=@lang,
+             last_command_at=@now
+    EOF;
+    $idcon->multi_query($sql);
       
     if ($idcon->error) {
       $ret = "Ooooops! An error has occurred saving data.";

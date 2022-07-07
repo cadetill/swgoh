@@ -145,39 +145,9 @@ function processRequest ($data) {
         return;
     }
 
-    // agafem informació del jugador emmagatzemada en la base de dades (allycode i idioma del bot)
-    $response = getDataFromId($data);
-    if ($response != "") {
-        sendMessage($data, array($response));
-        return;
-    }
-
-    // si no ens intentem registrar i no ho estem, sortim
-    if (($command != '/register') && ($command != '/register@impman_bot') &&
-        ($command != '/help') && ($command != '/help@impman_bot') &&
-        ($data->allycode == "")) {
-        sendMessage($data, array("You must register before using the bot.\n\n"));
-        return;
-    }
-    else {
-        // agafem informació del jugador per saber de quin gremi és
-        $player = getPlayer($data);
-        $data->guildId = $player[0]["guildRefId"];
-        $data->guildName = $player[0]["guildName"];
-
-        //sendMessage($data, array("RefId: ".$player[0]["guildRefId"]."\n\n"));
-        // si no és un gremi IM, sortim
-        if (($command != '/register') && ($command != '/register@impman_bot') &&
-            ($command != '/help') && ($command != '/help@impman_bot') &&
-            !isIMGuild($player[0]["guildRefId"], $data) &&
-            (!isUserAdmin($data->username, $data))) {
-            sendMessage($data, array("You are not from an IM guild.\n\n"));
-            return;
-        }
-    }
-
-    // processem la petició realitzada
     $reply = true;
+
+    // handle anonymous commands
     switch ($command) {
         case '/help':
         case '/help@impman_bot':
@@ -214,12 +184,52 @@ function processRequest ($data) {
                     }
                     break;
             }
-            break;
+            if (!is_array($response)) {
+                $response = array($response);
+            }
+
+            sendMessage($data, $response, $reply);
+            return;
         case '/register':
         case '/register@impman_bot':
             $reg = new TRegister($arr, $data);
             $response = $reg->doRegister();
-            break;
+            if (!is_array($response)) {
+                $response = array($response);
+            }
+
+            sendMessage($data, $response, $reply);
+            return;
+    }
+
+    // agafem informació del jugador emmagatzemada en la base de dades (allycode i idioma del bot)
+    $response = getDataFromId($data);
+    if ($response != "") {
+        sendMessage($data, array($response));
+        return;
+    }
+
+    // si no ens intentem registrar i no ho estem, sortim
+    if ($data->allycode == "") {
+        sendMessage($data, array("You must register before using the bot.\n\n"));
+        return;
+    }
+    else {
+        // agafem informació del jugador per saber de quin gremi és
+        $player = getPlayer($data);
+        $data->guildId = $player[0]["guildRefId"];
+        $data->guildName = $player[0]["guildName"];
+
+        //sendMessage($data, array("RefId: ".$player[0]["guildRefId"]."\n\n"));
+        // si no és un gremi IM, sortim
+        if (!isIMGuild($player[0]["guildRefId"], $data) && !isUserAdmin($data->username, $data)) {
+            sendMessage($data, array("You are not from an IM guild.\n\n"));
+            return;
+        }
+    }
+
+    // processem la petició realitzada
+    switch ($command) {
         case '/unregister':
         case '/unregister@impman_bot':
             $reg = new TUnRegister($arr, $data);
@@ -441,11 +451,30 @@ function getDataFromId($data) {
     if (isset($row)) {
       $data->allycode = $row['allycode'];
       $data->language = $row['language'];
+      $data->name     = $row['name'];
+
+      // Update table row if username has changed
+      $sets = [ 'last_command_at = NOW()' ];
+      if ($row['username'] !== $data->username) {
+          $sets[] = 'username = "' . $data->username. '"';
+      }
+      $query = sprintf(
+          'UPDATE users SET %s WHERE id = %s',
+          join(', ', $sets),
+          $data->userId
+      );
+      $idcon->query($query);
     }
   }
   $idcon->close();
 
   return $ret;
+}
+
+function updatePlayerName(TData $data, string $name) {
+    $idcon = new mysqli($data->bdserver, $data->bduser, $data->bdpas, $data->bdnamebd);
+    $idcon->query(sprintf('UPDATE users SET name = "%s" WHERE id = %s', $name, $data->userId));
+    $idcon->close();
 }
 
 function debug ($data, $response) {
@@ -459,5 +488,11 @@ function debug ($data, $response) {
 function getPlayer($data)
 {
     $repository = new SwgohHelpRepository($data->swgohUser, $data->swgohPass);
-    return $repository->player(intval($data->allycode));
+    $player = $repository->player(intval($data->allycode));
+
+    // Update player name if has changed
+    if ($player[0]['name'] !== $data->name) {
+        updatePlayerName($data, $player[0]['name']);
+    }
+    return $player;
 }
