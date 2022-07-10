@@ -968,6 +968,9 @@ class TBase {
           $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'l.png');
         }
       }
+      else if ($unit['gear'] === 0) {
+          $b = imagecreatefrompng('./img/gear-icon-g1.png');
+      }
       else {
         $b = imagecreatefrompng('./img/gear-icon-g'.$unit['gear'].'.png');
       }
