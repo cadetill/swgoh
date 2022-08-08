@@ -302,6 +302,8 @@ class TBase {
         $this->allyCode = $allyCode;
         $this->dataObj->guildId = $player[0]['guildRefId'];
         $this->dataObj->guildName = $player[0]['guildName'];
+        $this->dataObj->allycode = $allyCode;
+        $this->dataObj->name = $player[0]['name'];
     }
 
     /*

@@ -12,10 +12,12 @@ class TInfo extends TBase {
       case 1:
         $params[1] = $dataObj->allycode;
       case 2:
-        if (!$this->checkAllyCode($params[1]))
-          $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        if (!$this->checkAllyCode($params[1])) {
+            $this->error = $this->translatedText("error3", $params[1]); // "The %s isn't a correct AllyCode.\n";
+        }
       
         $this->allyCode = $params[1];
+        $this->actAsUser($this->allyCode);
         break;
       default:
         $this->error = $this->translatedText("error1"); // Bad request. See help: \n\n
