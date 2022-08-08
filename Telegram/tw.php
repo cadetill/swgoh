@@ -317,7 +317,7 @@ class TTW extends TBase {
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
     if ($idcon->connect_error) {
-      return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.\n\n";
+        return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.\n\n";
     }
 
     // esborrem posible contingut del gremi
@@ -1199,10 +1199,14 @@ class TTW extends TBase {
         return $this->translatedText("error6");                                   // "Ooooops! API server may have shut down. Try again later.\n\n"
     }
 
+    $noRegAllycodes = $this->getNoReg();
     $guildName = $players[0]['name'];
     // creem array amb tots els jugadors
     $arr = array();
       foreach ($players[0]['roster'] as $player) {
+          if (in_array($player['allyCode'], $noRegAllycodes)) {
+              continue;
+          }
           $arr[$player['name']] = [
               'playerName' => $player['name'],
               'allyCode'   => $player['allyCode'],
@@ -1213,8 +1217,11 @@ class TTW extends TBase {
 
       // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error)
-      return $this->translatedText("error4");                                   // "Ooooops! An error has occurred getting data.\n\n";
+    if ($idcon->connect_error) {
+        return $this->translatedText(
+            "error4"
+        );                                   // "Ooooops! An error has occurred getting data.\n\n";
+    }
     // cerquem registres
     $sql  = "SELECT 
                 tw.allyCode as allyCode
@@ -1906,7 +1913,7 @@ class TTW extends TBase {
     // busquem noms
     $row = $res->fetch_assoc() ?? [];
 
-    return explode(',', $row['noreg'] ?? '');
+    return array_map('intval', explode(',', $row['noreg'] ?? ''));
   }
 
     private function check(?string $teamAlias = null, ?string $allyCode = null, bool $onlyPending = false)
