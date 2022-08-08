@@ -310,12 +310,15 @@ class TTW extends TBase {
     inicialitza una TW per un gremi donat
   **************************************************************************/
   private function initializeTW() {
+    set_time_limit(0);
     $player = $this->getInfoPlayer();
+    $guildName = $player[0]["guildName"];
 
     // conectem a la base de dades
     $idcon = new mysqli($this->dataObj->bdserver, $this->dataObj->bduser, $this->dataObj->bdpas, $this->dataObj->bdnamebd);
-    if ($idcon->connect_error)
+    if ($idcon->connect_error) {
       return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.\n\n";
+    }
 
     // esborrem posible contingut del gremi
     $sql = "delete from tw where guildRefId = '".$player[0]["guildRefId"]."'";
@@ -323,13 +326,18 @@ class TTW extends TBase {
     $sql = "delete from twconf where guildRefId = '".$player[0]["guildRefId"]."'";
     $idcon->query( $sql );
     if ($idcon->error) {
+        $idcon->close();
         return $this->translatedText("error4");      // "Ooooops! An error has occurred getting data.";
     } else {
+        $idcon->close();
         $guild = $this->getInfoGuild();
-        $this->getInfoGuildExtra($guild);
-        return $this->translatedText("txtTw01", $player[0]["guildName"]);      // "TW for ".$player[0]["guildName"]." has been initialized\n\n";
+        $players = $this->getInfoGuildExtra($guild);
+        foreach ($players as $player) {
+            // Do nothing, only for trigger decoder listener
+        }
+
+        return $this->translatedText("txtTw01", $guildName);      // "TW for ".$player[0]["guildName"]." has been initialized\n\n";
     }
-    $idcon->close();
   }
 
   /**************************************************************************
