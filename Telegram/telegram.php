@@ -122,7 +122,7 @@ function processRequest ($data) {
     $data->messageDate = $json["message"]["date"];
 
     // agafem posible "comando" (sempre serà la primera paraula de la conversa)
-    $arr = explode(' ',trim($data->message));
+    $arr = explode(' ', strtolower(trim($data->message)));
     $command = strtolower($arr[0]);
 
     // si no es un comando correcte, ja sortim
